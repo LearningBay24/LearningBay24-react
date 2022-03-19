@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
 import { RenderFooter } from './App'
+
+import FullCalendar from '@fullcalendar/react' // must go before plugins
+import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
+
 export class Stundenplan extends Component {
   constructor(props) {
     super(props)
@@ -16,6 +20,10 @@ export class Stundenplan extends Component {
         <button value="AI1" onClick={this.toggle1}>AI1</button>
         <button value="AI2" onClick={this.toggle2}>AI2</button>
         <button value="fill" onClick={this.Fillcalender}>Render Calender</button>
+        <FullCalendar
+          plugins={[dayGridPlugin]}
+          initialView="dayGridMonth"
+        />
         <RenderFooter />
       </div>
     )
@@ -31,10 +39,10 @@ export class Stundenplan extends Component {
 
   Fillcalender = () => {
     let t = document.getElementById("table")
-    for (let r=1;r<6;r++) {
-        for (let c=1;c<6;c++) {
+    for (let r = 1; r < 6; r++) {
+      for (let c = 1; c < 6; c++) {
 
-          t.rows[r].cells[c].innerHTML = " "
+        t.rows[r].cells[c].innerHTML = " "
 
       }
     }
