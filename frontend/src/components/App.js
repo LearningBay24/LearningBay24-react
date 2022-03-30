@@ -1,5 +1,4 @@
 import '../App.css';
-import '../test.css';
 import Logo from '../images/Logo.png';
 import {
   Link,
@@ -13,8 +12,16 @@ function App() {
   return (
     <div className="App">
       <ShowHeader />
-      <h1>Home</h1>
-      <ShowNavbar />
+      <div className="Content">
+      <Container className="a container-fluid">
+        <Row className="b">
+          <Col md={2} className="c"><ShowNavbar /></Col>
+          <Col md={10} className="d"><h1>Home</h1></Col>
+        </Row>
+      </Container>
+      </div>
+      
+      
     </div>
 
   );
@@ -22,7 +29,7 @@ function App() {
 
 function ShowNavbar() {
   return (
-    <footer>
+    <div className="Navbar">
       <ul>
         <li><Link to="/">Home</Link></li>
         <li><Link to="/abgabenuebersicht">Abgabenübersicht</Link></li>
@@ -37,7 +44,7 @@ function ShowNavbar() {
         <li><Link to="/profil">Profil</Link></li>
         <li><Link to="/stundenplan">Stundenplan</Link></li>
       </ul>
-    </footer>
+    </div>
   )
 }
 
