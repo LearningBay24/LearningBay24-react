@@ -3,19 +3,26 @@ import { ShowHeader, ShowNavbar } from './App'
 
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
+import { Col, Container, Row } from 'react-bootstrap'
 
 export class Stundenplan extends Component {
   render() {
     return (
-      <div>
+      <div className="Stundenplan">
         <ShowHeader />
-        <h1>Stundenplan</h1>
-        <FullCalendar
-          plugins={[dayGridPlugin]}
-          initialView="dayGridWeek"
-          height={700}
-        />
-        <ShowNavbar />
+        <div className="Body">
+          <Container className="Container" fluid>
+            <Row className="Row" fluid>
+              <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
+              <Col xs={10} className="ColContent" fluid><h1>Stundenplan</h1>
+                <FullCalendar
+                  plugins={[dayGridPlugin]}
+                  initialView="dayGridWeek"
+                  height={700}
+                /></Col>
+            </Row>
+          </Container>
+        </div>
       </div>
     )
   }

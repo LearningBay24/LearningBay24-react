@@ -20,17 +20,25 @@
     top: 40%;
 }
 
-.Content {
+.Body {
     background-color: yellow;
     align-items: left;
     display:flex;
     margin:0;
     padding:0;
 }
+.Container{
+    margin:0;
+    padding: 0;
+}
 
-.a {
+.ColNav {
+    padding:0;
+}
+
+.ColContent {
     background-color: white;
-    width:120%;
+    
     align-items: left;
     margin:0;
     padding:0;
@@ -42,4 +50,9 @@
     border-right:solid 1px grey;
     height: 300%;
     
+}
+
+.Foter {
+    background-color: lightblue;
+    border-top: solid 1px grey;
 }

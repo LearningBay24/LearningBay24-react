@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Col, Container, Row } from 'react-bootstrap'
 import { ShowHeader, ShowNavbar } from './App'
 export class Profil extends Component {
   constructor(props) {
@@ -20,18 +21,24 @@ export class Profil extends Component {
   }
   render() {
     return (
-      <div>
+      <div className="Profil">
         <ShowHeader />
-        <h1>Profil</h1>
-        <p>{this.state.title} {this.state.surname}, {this.state.name}</p>
-        <p>{this.state.email}</p>
-        <p>{this.state.graduation}</p>
-        <p>{this.state.job}</p>
-        <p>{this.state.location}</p>
-        <p>{this.state.institutionlocation}</p>
-        <input type="text" id="bio" defaultValue={this.state.bio} onInput={this.ChangeBio} ></input>
-        <this.FillCourses />
-        <ShowNavbar />
+        <div className="Body">
+          <Container className="Container" fluid>
+            <Row className="Row" fluid>
+              <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
+              <Col xs={10} className="ColContent" fluid><h1>Profil</h1>
+                <p>{this.state.title} {this.state.surname}, {this.state.name}</p>
+                <p>{this.state.email}</p>
+                <p>{this.state.graduation}</p>
+                <p>{this.state.job}</p>
+                <p>{this.state.location}</p>
+                <p>{this.state.institutionlocation}</p>
+                <input type="text" id="bio" defaultValue={this.state.bio} onInput={this.ChangeBio} ></input>
+                <this.FillCourses /></Col>
+            </Row>
+          </Container>
+        </div>
       </div>
     )
   }

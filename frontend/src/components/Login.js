@@ -19,6 +19,8 @@ export class Login extends Component {
         <input type="submit" value="log out" onClick={logout}></input>
         <ShowNavbar />
       </div>
+
+      
     )
   }
 }

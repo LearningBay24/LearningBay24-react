@@ -12,16 +12,14 @@ function App() {
   return (
     <div className="App">
       <ShowHeader />
-      <div className="Content">
-      <Container className="a container-fluid">
-        <Row className="b">
-          <Col md={2} className="c"><ShowNavbar /></Col>
-          <Col md={10} className="d"><h1>Home</h1></Col>
-        </Row>
-      </Container>
+      <div className="Body">
+        <Container className="Container" fluid>
+          <Row className="Row" fluid>
+            <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
+            <Col xs={10} className="ColContent" fluid><h1>Home</h1></Col>
+          </Row>
+        </Container>
       </div>
-      
-      
     </div>
 
   );
@@ -51,14 +49,14 @@ function ShowNavbar() {
 function ShowHeader() {
   return (
     <div className="Header">
-    <Container>
-      <Row>
-        <Col md={2}><img src={Logo} width="100px" height="100px" alt="Logo"></img></Col>
-        <Col md={8}><input type="text" id="tfSearchbar"></input>
-          <button id="btnSearchbar">Search</button></Col>
-        <Col md={2}><Link to="/profil" id="lnkProfile">Profil</Link></Col>
-      </Row>
-    </Container>
+      <Container>
+        <Row>
+          <Col md={2}><img src={Logo} width="100px" height="100px" alt="Logo"></img></Col>
+          <Col md={8}><input type="text" id="tfSearchbar"></input>
+            <button id="btnSearchbar">Search</button></Col>
+          <Col md={2}><Link to="/profil" id="lnkProfile">Profil</Link></Col>
+        </Row>
+      </Container>
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Col, Container, Row } from 'react-bootstrap'
 import { ShowHeader, ShowNavbar } from './App'
 export class Kursuebersicht extends Component {
   constructor(props) {
@@ -32,12 +33,18 @@ export class Kursuebersicht extends Component {
 
   render() {
     return (
-      <div>
+      <div className="Kursuebersicht">
         <ShowHeader />
-        <h1>Kursuebersicht</h1>
-        <input id="input" type="text" onChange={this.checkname}></input>
-        <p id="output"></p>
-        <ShowNavbar />
+        <div className="Body">
+          <Container className="Container" fluid>
+            <Row className="Row" fluid>
+              <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
+              <Col xs={10} className="ColContent" fluid><h1>Kursübersicht</h1>
+                <input id="input" type="text" onChange={this.checkname}></input>
+                <p id="output"></p></Col>
+            </Row>
+          </Container>
+        </div>
       </div>
     )
   }
