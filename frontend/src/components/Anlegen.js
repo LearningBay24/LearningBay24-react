@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { RenderFooter } from './App'
+import { ShowHeader, ShowNavbar } from './App'
 
 export class Anlegen extends Component {
   render() {
     return (
       <div>
+        <ShowHeader ClassName='Header'/>
         <h1>Anlegen</h1>
-        <RenderFooter />
+        <ShowNavbar />
       </div>
     )
   }

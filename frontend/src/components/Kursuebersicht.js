@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { RenderFooter } from './App'
+import { ShowHeader, ShowNavbar } from './App'
 export class Kursuebersicht extends Component {
   constructor(props) {
     super(props)
@@ -19,13 +19,13 @@ export class Kursuebersicht extends Component {
   }
 
   checkname = () => {
-    
+
     let start = document.getElementById("input").value;
     document.getElementById("output").innerHTML = "";
     for (let i = 0; i < this.state.courses.length; i++) {
       let course = this.state.courses[i]
       if (course.name.match(new RegExp(start))) {
-        document.getElementById("output").innerHTML += '<div><h2>'+ course.name+'</h2><p>taken:'+course.taken+'</p><p>Zeitslots:('+course.times[0] + ') / (' + course.times[1]+')</div>'
+        document.getElementById("output").innerHTML += '<div><h2>' + course.name + '</h2><p>taken:' + course.taken + '</p><p>Zeitslots:(' + course.times[0] + ') / (' + course.times[1] + ')</div>'
       }
     }
   }
@@ -33,10 +33,11 @@ export class Kursuebersicht extends Component {
   render() {
     return (
       <div>
+        <ShowHeader />
         <h1>Kursuebersicht</h1>
         <input id="input" type="text" onChange={this.checkname}></input>
         <p id="output"></p>
-        <RenderFooter />
+        <ShowNavbar />
       </div>
     )
   }

@@ -1,0 +1,22 @@
+.Header {
+    background-color: lightgreen;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#tfSearchbar{
+    position: relative;
+    top: 40%;
+}
+
+#btnSearchbar{
+    position: relative;
+    top: 40%;
+}
+
+#lnkProfile{
+    position: relative;
+    top: 40%;
+}

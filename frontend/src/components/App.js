@@ -1,21 +1,26 @@
 import '../App.css';
-
+import '../test.css';
+import Logo from '../images/Logo.png';
 import {
   Link,
 
 } from "react-router-dom"
 
+import { Container, Row, Col } from 'react-bootstrap'
+
+
 function App() {
   return (
     <div className="App">
+      <ShowHeader />
       <h1>Home</h1>
-      <RenderFooter />
+      <ShowNavbar />
     </div>
 
   );
 }
 
-function RenderFooter() {
+function ShowNavbar() {
   return (
     <footer>
       <ul>
@@ -35,6 +40,21 @@ function RenderFooter() {
     </footer>
   )
 }
+
+function ShowHeader() {
+  return (
+    <div className="Header">
+    <Container>
+      <Row>
+        <Col md={2}><img src={Logo} width="100px" height="100px" alt="Logo"></img></Col>
+        <Col md={8}><input type="text" id="tfSearchbar"></input>
+          <button id="btnSearchbar">Search</button></Col>
+        <Col md={2}><Link to="/profil" id="lnkProfile">Profil</Link></Col>
+      </Row>
+    </Container>
+    </div>
+  )
+}
 export default App;
-export { RenderFooter };
+export { ShowNavbar, ShowHeader };
 

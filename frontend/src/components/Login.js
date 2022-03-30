@@ -1,22 +1,23 @@
 import React, { Component } from 'react'
-import { RenderFooter } from './App'
+import { ShowHeader, ShowNavbar } from './App'
 export class Login extends Component {
   render() {
     return (
       <div>
+        <ShowHeader />
         <h1>Login</h1>
         <p><pre>Anmeldung (admin:password/user:abc)           currently logged in as: <label id="account">not logged in</label></pre></p>
         <label for="user">Username</label>
-        <br/>
+        <br />
         <input id="user" type="text"></input>
-        <br/>
+        <br />
         <label for="password">Passwort</label>
-        <br/>
+        <br />
         <input id="password" type="password"></input>
-        <br/>
+        <br />
         <input type="submit" value="log in" onClick={login}></input>
         <input type="submit" value="log out" onClick={logout}></input>
-        <RenderFooter />
+        <ShowNavbar />
       </div>
     )
   }

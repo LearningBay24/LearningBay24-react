@@ -5,6 +5,7 @@ import {BrowserRouter as
   Routes,
   Route
 } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './index.css';
 import App from './components/App';
@@ -19,6 +20,7 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Profil from './components/Profil';
 import Stundenplan from './components/Stundenplan';
+
 
 
 ReactDOM.render(

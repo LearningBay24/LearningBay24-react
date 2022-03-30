@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { RenderFooter } from './App'
+import { ShowHeader, ShowNavbar } from './App'
 
 export class Klausurenuebersicht extends Component {
   render() {
     return (
       <div>
+        <ShowHeader />
         <h1>Klausurenuebersicht</h1>
-        <RenderFooter />
+        <ShowNavbar />
       </div>
     )
   }
