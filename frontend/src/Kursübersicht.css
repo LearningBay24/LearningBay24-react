@@ -1,0 +1,10 @@
+.Course {
+    margin-bottom: 7px;
+    padding: 0px;
+    border: solid 1px lightblue;
+}
+
+.Section{
+    border-bottom:solid 3px lightgrey;
+    margin: 0px;
+}

@@ -1,35 +1,10 @@
 import React, { Component } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { ShowHeader, ShowNavbar } from './App'
+
+import '../Kursübersicht.css'
 export class Kursuebersicht extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      courses: [
-        { name: "Prog1", taken: false, times: [[1, 2], [3, 2]] },
-        { name: "Prog2", taken: false, times: [[0, 4], [4, 1]] },
-        { name: "Prog3", taken: false, times: [[2, 2], [1, 1]] },
-        { name: "Mathe1", taken: false, times: [[1, 3], [3, 4]] },
-        { name: "Mathe2", taken: false, times: [[2, 1], [4, 4]] },
-        { name: "Mathe3", taken: false, times: [[1, 4], [3, 0]] },
-        { name: "Projekt1", taken: false, times: [[4, 1], [1, 3]] },
-        { name: "Projekt2", taken: false, times: [[1, 2], [3, 2]] },
-      ]
-    }
-  }
-
-  checkname = () => {
-
-    let start = document.getElementById("input").value;
-    document.getElementById("output").innerHTML = "";
-    for (let i = 0; i < this.state.courses.length; i++) {
-      let course = this.state.courses[i]
-      if (course.name.match(new RegExp(start))) {
-        document.getElementById("output").innerHTML += '<div><h2>' + course.name + '</h2><p>taken:' + course.taken + '</p><p>Zeitslots:(' + course.times[0] + ') / (' + course.times[1] + ')</div>'
-      }
-    }
-  }
+  
 
   render() {
     return (
@@ -39,15 +14,46 @@ export class Kursuebersicht extends Component {
           <Container className="Container" fluid>
             <Row className="Row" fluid>
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" fluid><h1>Kursübersicht</h1>
-                <input id="input" type="text" onChange={this.checkname}></input>
-                <p id="output"></p></Col>
+              <Col xs={10} className="ColContent" fluid>
+                <Row className="Section">
+                  <h1>Kursübersicht</h1>
+                  <Col xs={4} fluid> <ShowCourse /></Col>
+                  <Col xs={4} fluid> <ShowCourse /></Col>
+                  <Col xs={4} fluid> <ShowCourse /></Col>
+                  <Col xs={4} fluid> <ShowCourse /></Col>
+                </Row>
+                <Row className="Section">
+                  <h1>Vorgeschlagene Kurse</h1>
+                  <Col xs={4} fluid> <ShowCourse /></Col>
+                  <Col xs={4} fluid> <ShowCourse /></Col>
+                  <Col xs={4} fluid> <ShowCourse /></Col>
+                  <Col xs={4} fluid> <ShowCourse /></Col>
+                </Row>
+                <Row className="Section">
+                  <h1>Meine Kurse</h1>
+                  <Col xs={4} fluid> <ShowCourse /></Col>
+                  <Col xs={4} fluid> <ShowCourse /></Col>
+                  <Col xs={4} fluid> <ShowCourse /></Col>
+                  <Col xs={4} fluid> <ShowCourse /></Col>
+                </Row>
+              </Col>
             </Row>
           </Container>
         </div>
       </div>
     )
   }
+}
+
+function ShowCourse() {
+  return (
+    <div className="Course">
+      <h4 className='CourseName'>Kursname</h4>
+      <p className='CourseOwner'>Kursersteller</p>
+      <p className='CourseDeskription'>Kursbeschreibung</p>
+      <p className='CourseDegree'>Studiengang</p>
+    </div>
+  )
 }
 
 export default Kursuebersicht

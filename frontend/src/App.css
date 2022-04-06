@@ -3,6 +3,7 @@
     text-align: center;
     align-items: center;
     border-bottom: solid grey 1px;
+    margin-bottom: 0px;
 }
 
 #tfSearchbar{
@@ -56,3 +57,4 @@
     background-color: lightblue;
     border-top: solid 1px grey;
 }
+
