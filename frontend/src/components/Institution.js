@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { ShowHeader, ShowNavbar } from './App'
+
+
+import '../css/App.css';
+
 export class Institution extends Component {
   render() {
     return (

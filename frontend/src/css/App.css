@@ -22,12 +22,15 @@
 }
 
 .Body {
+    /* backgroundcolor yellow just for debugging*/
     background-color: yellow;
     align-items: left;
     display:flex;
     margin:0;
     padding:0;
 }
+
+
 .Container{
     margin:0;
     padding: 0;
@@ -53,8 +56,4 @@
     
 }
 
-.Foter {
-    background-color: lightblue;
-    border-top: solid 1px grey;
-}
 

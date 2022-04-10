@@ -5,6 +5,9 @@ import FullCalendar from '@fullcalendar/react' // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
 import { Col, Container, Row } from 'react-bootstrap'
 
+
+import '../css/App.css';
+
 export class Stundenplan extends Component {
   render() {
     return (

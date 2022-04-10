@@ -1,11 +1,9 @@
-import '../App.css';
 import Logo from '../images/Logo.png';
-import {
-  Link,
-
-} from "react-router-dom"
-
+import {Link} from "react-router-dom"
 import { Container, Row, Col } from 'react-bootstrap'
+
+
+import '../css/App.css';
 
 
 function App() {
@@ -60,6 +58,7 @@ function ShowHeader() {
     </div>
   )
 }
+
 export default App;
 export { ShowNavbar, ShowHeader };
 

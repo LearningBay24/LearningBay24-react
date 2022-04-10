@@ -1,12 +1,17 @@
 import React, { Component } from 'react'
-import { ShowHeader, ShowNavbar } from './App'
+import {Link} from "react-router-dom"
+import { Container, Row, Col } from 'react-bootstrap'
+import Logo from '../images/Logo.png';
+
+
+import '../css/App.css';
+
 export class Login extends Component {
   render() {
     return (
       <div>
-        <ShowHeader />
+        <ShowLoginHeader />
         <h1>Login</h1>
-        <p><pre>Anmeldung (admin:password/user:abc)           currently logged in as: <label id="account">not logged in</label></pre></p>
         <label for="user">Username</label>
         <br />
         <input id="user" type="text"></input>
@@ -15,36 +20,28 @@ export class Login extends Component {
         <br />
         <input id="password" type="password"></input>
         <br />
-        <input type="submit" value="log in" onClick={login}></input>
-        <input type="submit" value="log out" onClick={logout}></input>
-        <ShowNavbar />
+        <input type="submit" value="log in"></input>
+        <br />
+        <br />
+        <br />
+        <Link to="/">Home</Link>
       </div>
-
-      
     )
   }
 }
-function login() {
-  let users = { "admin": "password", "user": "abc" };
-  let user = document.getElementById("user").value;
-  let password = document.getElementById("password").value;
 
-  if (user in users) {
-    if (password === users[user]) {
-      alert("successfully logged in");
-      document.getElementById("account").innerHTML = user
-    }
-    else {
-      alert("wrong password");
-    }
-  }
-  else {
-    alert("user does not exist");
-  }
-}
-
-function logout() {
-  document.getElementById("account").innerHTML = "not logged in";
+function ShowLoginHeader() {
+  return (
+    <div className="Header">
+      <Container>
+        <Row>
+          <Col md={2}><img src={Logo} width="100px" height="100px" alt="Logo"></img></Col>
+          <Col md={8}><h1>LEARNINGBAY24</h1></Col>
+          <Col md={2}><img src={Logo} width="100px" height="100px" alt="Logo"></img></Col>
+        </Row>
+      </Container>
+    </div>
+  )
 }
 
 export default Login

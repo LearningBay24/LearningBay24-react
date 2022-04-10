@@ -7,7 +7,7 @@ import {BrowserRouter as
 } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import './index.css';
+import './css/index.css';
 import App from './components/App';
 import Abgabenuebersicht from './components/Abgabenuebersicht';
 import Anlegen from './components/Anlegen';
