@@ -23,7 +23,14 @@ export class Klausurenuebersicht extends Component {
                 <Col xs={4} fluid> <ShowExam /></Col>
               </Row>
               <Row className="Section">
-                <h1>Klausuren aus ihren Kursen</h1>
+                <h1>Anmelden</h1>
+                <Col xs={4} fluid> <ShowExam /></Col>
+                <Col xs={4} fluid> <ShowExam /></Col>
+                <Col xs={4} fluid> <ShowExam /></Col>
+                <Col xs={4} fluid> <ShowExam /></Col>
+              </Row>
+              <Row className="Section">
+                <h1>Vergangene Klausuren</h1>
                 <Col xs={4} fluid> <ShowExam /></Col>
                 <Col xs={4} fluid> <ShowExam /></Col>
                 <Col xs={4} fluid> <ShowExam /></Col>
@@ -41,10 +48,24 @@ export class Klausurenuebersicht extends Component {
 function ShowExam() {
   return (
     <div className="Exam">
-      <h4 className='ExamName'>Klausurname</h4>
-      <p className='ExamCourse'>Kurs</p>
-      <p className='ExamOwner'>Klausurersteller</p>
-      <p className='ExamDegree'>Studiengang</p>
+    <table>
+      <tr>
+        <td>
+          <p className="ExamName">Klausurname</p>
+          <p className="ExamCourse">Kursname</p>
+          <p className="ExamOwner">Klausurersteller</p>
+          <p className="ExamDegree">Studiengang</p>
+          <p> </p>
+        </td>
+        <td>
+          <p className="ExamDate">Datum</p>
+          <p className="ExamTime">Uhrzeit</p>
+          <p className="ExamRoom">Raum</p>
+          <p className="Examduration">Dauer</p>
+        </td>
+      </tr>
+    </table>
+      
     </div>
   )
 }

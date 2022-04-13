@@ -23,4 +23,5 @@ export class Benachrichtigungen extends Component {
   }
 }
 
+
 export default Benachrichtigungen

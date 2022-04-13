@@ -14,7 +14,12 @@ export class Institution extends Component {
         <Container className="Container" fluid>
           <Row className="Row" fluid>
             <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
-            <Col xs={10} className="ColContent" fluid><h1>Institution</h1></Col>
+            <Col xs={10} className="ColContent" fluid>
+              <h1>Institution</h1>
+              <p> Anzahl der Nutzer:</p><p>xy</p>
+              <p> Anzahl der Endnutzer:</p><p>xy</p>
+              <p> Angebotene Fachrichtungen:</p>
+            </Col>
           </Row>
         </Container>
       </div>

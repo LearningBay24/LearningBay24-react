@@ -6,7 +6,7 @@ import { ShowHeader, ShowNavbar } from './App'
 import '../css/App.css';
 
 export class Abgabenuebersicht extends Component {
-  render() {
+  render(test) {
     return (
       <div className="Abgabenuebersicht">
       <ShowHeader />
@@ -14,13 +14,59 @@ export class Abgabenuebersicht extends Component {
         <Container className="Container" fluid>
           <Row className="Row" fluid>
             <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
-            <Col xs={10} className="ColContent" fluid><h1>Abgabenuebersicht</h1></Col>
+            <Col xs={10} className="ColContent" fluid>
+            <Row className="Section">
+                <h1>Abgaben fällig</h1>
+                <Col xs={4} fluid> <ShowAssignment /></Col>
+                <Col xs={4} fluid> <ShowAssignment /></Col>
+                <Col xs={4} fluid> <ShowAssignment /></Col>
+                <Col xs={4} fluid> <ShowAssignment /></Col>
+              </Row>
+              <Row className="Section">
+                <h1>Abgegeben</h1>
+                <Col xs={4} fluid> <ShowAssignment /></Col>
+                <Col xs={4} fluid> <ShowAssignment /></Col>
+                <Col xs={4} fluid> <ShowAssignment /></Col>
+                <Col xs={4} fluid> <ShowAssignment /></Col>
+              </Row>
+              <Row className="Section">
+                <h1>Bewertet</h1>
+                <Col xs={4} fluid> <ShowAssignment /></Col>
+                <Col xs={4} fluid> <ShowAssignment /></Col>
+                <Col xs={4} fluid> <ShowAssignment /></Col>
+                <Col xs={4} fluid> <ShowAssignment /></Col>
+              </Row>
+            </Col>
           </Row>
         </Container>
       </div>
     </div>
     )
   }
+}
+
+function ShowAssignment() {
+  return (
+    <div className="Exercise">
+    <table>
+      <tr>
+        <td>
+          <p className="AssignmentName">Klausurname</p>
+          <p className="AssignmentCourse">Kursname</p>
+          <p className="AssignmentOwner">Klausurersteller</p>
+          <p className="AssignmentDegree">Studiengang</p>
+        </td>
+        <td>
+          <p className="AssignmentDate">Datum</p>
+          <p className="AssignmentTime">Uhrzeit</p>
+          <p className="AssignmentDeadline">Deadline</p>
+          <input type="text" className="AssignmentComment" placeholder="Kommentar" />
+        </td>
+      </tr>
+    </table>
+      
+    </div>
+  )
 }
 
 export default Abgabenuebersicht

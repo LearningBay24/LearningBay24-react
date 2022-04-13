@@ -14,7 +14,12 @@ export class Anlegen extends Component {
         <Container className="Container" fluid>
           <Row className="Row" fluid>
             <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
-            <Col xs={10} className="ColContent" fluid><h1>Anlegen</h1></Col>
+            <Col xs={10} className="ColContent" fluid>
+              <h1>Anlegen</h1>
+              <input type="submit" value="Neuen Nutzer anlegen" />
+              <br/>
+              <input type="submit" value="Neuen Endnutzer anlegen" />
+            </Col>
           </Row>
         </Container>
       </div>
