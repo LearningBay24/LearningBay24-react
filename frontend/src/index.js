@@ -21,7 +21,11 @@ import Dashboard from './components/Dashboard';
 import Profil from './components/Profil';
 import Stundenplan from './components/Stundenplan';
 
+// Redux
+import {createStore} from 'redux';
+import allReducers from './reducers/reducerCollection';
 
+const store = createStore(allReducers);
 
 ReactDOM.render(
   <Router>
