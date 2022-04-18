@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { ShowHeader, ShowNavbar } from './App'
 
-
 import '../css/App.css';
 import '../css/Kursübersicht.css'
+
+
 export class Kursuebersicht extends Component {
-  
 
   render() {
     return (
