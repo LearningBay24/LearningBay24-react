@@ -10,9 +10,12 @@ export class Kursansicht extends Component {
     super(props)
 
     this.state = {
+
+      CourseAdmin: false, // true if active user has adminrights 
+
       CourseName: "Beispielkurs",
       CourseOwner: "Mustermann, Max",
-      CourseAppointments: [["Montag 11:00 ","Vorlesung" ],["Freitag 8:00","Praktikum"]],
+      CourseAppointments: [{day:"Montag", time:"11:00", content:"Vorlesung"},{day:"Freitag", time:"8:00",content:"Praktikum"}],
       CourseBio: "Das ist ein Beispielkurs",
       CourseCreatedAt: "17.04.2022",
       CourseForum:"",
@@ -31,7 +34,7 @@ export class Kursansicht extends Component {
     var generallist = [<h1>{this.state.CourseName}</h1>];
     generallist.push(<p>{this.state.CourseOwner}</p>)
     for (const Appointment of this.state.CourseAppointments){
-      generallist.push(<h3>{Appointment}</h3>)
+      generallist.push(<h3>{Appointment.day} {Appointment.time} {Appointment.content}</h3>)
     }
     generallist.push(<p>{this.state.CourseBio}</p>)
 
@@ -51,8 +54,8 @@ export class Kursansicht extends Component {
     }
 
     var examlist = []
-    for (const exam of this.state.CourseExams){
-      examlist.push(<ShowMaterial name={exam.name} content={exam.content} date={exam.date} duration={exam.duration}/>)
+    for (const Exam of this.state.CourseExams){
+      examlist.push(<ShowMaterial name={Exam.name} content={Exam.content} date={Exam.date} duration={Exam.duration}/>)
     }
     
 
