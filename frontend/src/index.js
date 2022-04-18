@@ -24,26 +24,29 @@ import Stundenplan from './components/Stundenplan';
 // Redux
 import {createStore} from 'redux';
 import allReducers from './reducers/reducerCollection';
+import {Provider} from 'react-redux';
 
 const store = createStore(allReducers);
 
 ReactDOM.render(
-  <Router>
-    <Routes>
-      <Route exact path="/" element={<App />} />
-      <Route exact path="/abgabenuebersicht" element={<Abgabenuebersicht />} />
-      <Route exact path="/anlegen" element={<Anlegen />} />
-      <Route exact path="/benachrichtigungen" element={<Benachrichtigungen />} />
-      <Route exact path="/dashboard" element={<Dashboard />} />
-      <Route exact path="/institution" element={<Institution />} />
-      <Route exact path="/klausurenuebersicht" element={<Klausurenuebersicht />} />
-      <Route exact path="/kursansicht" element={<Kursansicht />} />
-      <Route exact path="/kursuebersicht" element={<Kursuebersicht />} />
-      <Route exact path="/login" element={<Login />} />
-      <Route exact path="/profil" element={<Profil />} />
-      <Route exact path="/stundenplan" element={<Stundenplan />} />
-      
-    </Routes>
-  </Router>,
+    <Provider store={store}>
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<App />} />
+          <Route exact path="/abgabenuebersicht" element={<Abgabenuebersicht />} />
+          <Route exact path="/anlegen" element={<Anlegen />} />
+          <Route exact path="/benachrichtigungen" element={<Benachrichtigungen />} />
+          <Route exact path="/dashboard" element={<Dashboard />} />
+          <Route exact path="/institution" element={<Institution />} />
+          <Route exact path="/klausurenuebersicht" element={<Klausurenuebersicht />} />
+          <Route exact path="/kursansicht" element={<Kursansicht />} />
+          <Route exact path="/kursuebersicht" element={<Kursuebersicht />} />
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/profil" element={<Profil />} />
+          <Route exact path="/stundenplan" element={<Stundenplan />} />
+          
+        </Routes>
+      </Router>
+    </Provider>,
   document.getElementById('root')
 );
