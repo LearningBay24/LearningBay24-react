@@ -10,17 +10,20 @@ export class Kursansicht extends Component {
     super(props)
 
     this.state = {
+
+      CourseAdmin: false, // true if active user has adminrights 
+
       CourseName: "Beispielkurs",
       CourseOwner: "Mustermann, Max",
-      CourseAppointments: [["Montag 11:00 ","Vorlesung" ],["Freitag 8:00","Praktikum"]],
+      CourseAppointments: [{Day:"Montag", Time:"11:00", Content:"Vorlesung"},{Day:"Freitag", Time:"8:00",Content:"Praktikum"}],
       CourseBio: "Das ist ein Beispielkurs",
       CourseCreatedAt: "17.04.2022",
       CourseForum:"",
 
-      CourseMaterial: [{name:"mat1",content:"https://www.youtube.com/watch?v=dQw4w9WgXcQ"}],
-      CourseAssignments: [{name: "Abgabe1",content:"https://www.youtube.com/watch?v=dQw4w9WgXcQ", date:"17.04.2022",deadline:"25.04.2022 0:00"}],
-      CourseSurveys: [{name:"Umfrage1",content:"https://www.youtube.com/watch?v=dQw4w9WgXcQ"}],
-      CourseExams: [{name:"Klausur1", date:"30.4.2022", duration:"1:30h"}]
+      CourseMaterial: [{Name:"mat1",Content:"https://www.youtube.com/watch?v=dQw4w9WgXcQ"}],
+      CourseAssignments: [{Name: "Abgabe1",Content:"https://www.youtube.com/watch?v=dQw4w9WgXcQ", Date:"17.04.2022",Deadline:"25.04.2022 0:00"}],
+      CourseSurveys: [{Name:"Umfrage1",Content:"https://www.youtube.com/watch?v=dQw4w9WgXcQ"}],
+      CourseExams: [{Name:"Klausur1", Date:"30.4.2022", Duration:"1:30h"}]
     }
   }
 
@@ -28,31 +31,31 @@ export class Kursansicht extends Component {
 
   render() {
 
-    var generallist = [<h1>{this.state.CourseName}</h1>];
-    generallist.push(<p>{this.state.CourseOwner}</p>)
+    var Generallist = [<h1>{this.state.CourseName}</h1>];
+    Generallist.push(<p>{this.state.CourseOwner}</p>)
     for (const Appointment of this.state.CourseAppointments){
-      generallist.push(<h3>{Appointment}</h3>)
+      Generallist.push(<h3>{Appointment.Day} {Appointment.Time} {Appointment.Content}</h3>)
     }
-    generallist.push(<p>{this.state.CourseBio}</p>)
+    Generallist.push(<p>{this.state.CourseBio}</p>)
 
-    var materiallist = []
+    var Materiallist = []
     for (const Mat of this.state.CourseMaterial){
-      materiallist.push(<ShowMaterial name={Mat.name} content={Mat.content}/>)
+      Materiallist.push(<ShowMaterial Name={Mat.Name} Content={Mat.Content}/>)
     }
 
-    var assignmentlist = []
+    var Assignmentlist = []
     for (const Assignment of this.state.CourseAssignments){
-      assignmentlist.push(<ShowAssignment name={Assignment.name} content={Assignment.content} date={Assignment.date} deadline={Assignment.deadline} />)
+      Assignmentlist.push(<ShowAssignment Name={Assignment.Name} Content={Assignment.Content} Date={Assignment.Date} Deadline={Assignment.Deadline} />)
     }
 
-    var surveylist = []
+    var Surveylist = []
     for (const Survey of this.state.CourseSurveys){
-      surveylist.push(<ShowSurvey name={Survey.name} content={Survey.content}/>)
+      Surveylist.push(<ShowSurvey Name={Survey.Name} Content={Survey.Content}/>)
     }
 
-    var examlist = []
-    for (const exam of this.state.CourseExams){
-      examlist.push(<ShowMaterial name={exam.name} content={exam.content} date={exam.date} duration={exam.duration}/>)
+    var Examlist = []
+    for (const Exam of this.state.CourseExams){
+      Examlist.push(<ShowExam Name={Exam.Name} Content={Exam.Content} Date={Exam.Date} Duration={Exam.Duration} hidden={this.state.CourseAdmin}/>)
     }
     
 
@@ -65,26 +68,26 @@ export class Kursansicht extends Component {
           <Row className="Row" fluid>
             <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
             <Col xs={10} className="ColContent" fluid>
-              {generallist}
+              {Generallist}
 
               <div className="MaterialSection Section">
                 <h2>Material</h2>
-                {materiallist}
+                {Materiallist}
               </div>
 
               <div className="AssignmentSection Section">
                 <h2>Abgaben</h2>
-                {assignmentlist}
+                {Assignmentlist}
               </div>
 
               <div className="SurveySection Section">
                 <h2>Umfragen</h2>
-                {surveylist}
+                {Surveylist}
               </div>
 
               <div className="ExamSection Section">
                 <h2>Klausuren</h2>
-                {examlist}
+                {Examlist}
               </div>
               
             </Col>
@@ -101,8 +104,8 @@ function ShowMaterial(props)
 {
   return(
       <div className='MaterialContainer'>
-        <h6>{props.name}</h6>
-        <a href={props.content} target='_blank' rel='noreferrer'>{props.content}</a>
+        <h6>{props.Name}</h6>
+        <a href={props.Content} target='_blank' rel='noreferrer'>{props.content}</a>
       </div>)
 }
 
@@ -110,10 +113,10 @@ function ShowAssignment(props)
 {
   return(
       <div className='AssignmentContainer'>
-        <h6>{props.name}</h6>
-        <a href={props.content} target='_blank' rel='noreferrer'>{props.content}</a>
-        <p className='AssignmentDate'>{props.date}</p>
-        <p className='AssignmentDeadline'>{props.deadline}</p>
+        <h6>{props.Name}</h6>
+        <a href={props.Content} target='_blank' rel='noreferrer'>{props.Content}</a>
+        <p className='AssignmentDate'>{props.Date}</p>
+        <p className='AssignmentDeadline'>{props.Deadline}</p>
         <br/>
         <input type="submit" value= "Datei abgeben" />
       </div>)
@@ -123,12 +126,12 @@ function ShowExam(props)
 {
   return(
       <div className='ExamContainer'>
-        <h6>{props.name}</h6>
-        <a href={props.content} target='_blank' rel='noreferrer'>{props.content}</a>
-        <p>Zeit: {props.duration}</p>
-        <p>Datum: {props.date}</p>
+        <h6>{props.Name}</h6>
+        <a href={props.Content} target='_blank' rel='noreferrer'>{props.Content}</a>
+        <p>Zeit: {props.Duration}</p>
+        <p>Datum: {props.Date}</p>
         <br/>
-        <input type="submit" value= "zur Prüfung anmelden" />
+        <input type="submit" value= "zur Prüfung anmelden"/>
       </div>)
 }
 
@@ -136,8 +139,8 @@ function ShowSurvey(props)
 {
   return(
       <div className='SurveyContainer'>
-        <h6>{props.name}</h6>
-        <a href={props.content} target='_blank' rel='noreferrer'>{props.content}</a>
+        <h6>{props.Name}</h6>
+        <a href={props.Content} target='_blank' rel='noreferrer'>{props.Content}</a>
       </div>)
 }
 

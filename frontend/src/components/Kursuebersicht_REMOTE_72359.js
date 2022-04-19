@@ -1,15 +1,11 @@
 import React, { Component } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { ShowHeader, ShowNavbar } from './App'
-import {callFetchCourses} from '../containers/APICalls'
+
 
 import '../css/App.css';
 import '../css/Kursübersicht.css'
-
-
 export class Kursuebersicht extends Component {
-<<<<<<< HEAD
-=======
   constructor(props) {
     super(props)
 
@@ -28,7 +24,6 @@ export class Kursuebersicht extends Component {
     }
   }
 
->>>>>>> fcaaf04df338b7b2d12fd24f8cd29c390bca0807
 
   render() {
     var MyCourseslist = []
@@ -62,21 +57,11 @@ export class Kursuebersicht extends Component {
             <Row className="Row" fluid>
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" fluid>
-<<<<<<< HEAD
-                <Row className="Section">
-                  <h1>Kursübersicht</h1>
-
-                  <Col xs={4} fluid> <ShowCourse /></Col>
-                  <Col xs={4} fluid> <ShowCourse /></Col>
-                  <Col xs={4} fluid> <ShowCourse /></Col>
-                  <Col xs={4} fluid> <ShowCourse /></Col>
-=======
                 <Row className="Section" hidden={!this.state.UserRights}>
                   <h1>Meine Kurse</h1>
                   {MyCourseslist}
 
                   <input type="submit" value="Kurs erstellen" />
->>>>>>> fcaaf04df338b7b2d12fd24f8cd29c390bca0807
                 </Row>
                 <Row className="Section">
                   <h1>Belegte Kurse</h1>
