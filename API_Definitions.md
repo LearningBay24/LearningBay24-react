@@ -34,18 +34,18 @@ Components: Kursansicht.js
 Method: PUT
 Description: write a new course to DB
 Backend point:
-Frontend url: 
-Current Frontend url:
-Where:
-Components:
+Frontend url: /courses
+Current Frontend url: /kursuebersicht
+Where: Kursübersicht
+Components:  Kursuebersicht.js
 
 Method: GET
 Description: action: subscribe to a course -> get certificate if course requires it
 Backend point:
-Frontend url: 
-Current Frontend url:
-Where:
-Components:
+Frontend url: /course
+Current Frontend url: /kursansicht
+Where: Kursansicht
+Components: Kursansicht.js
 
 
 --- The following is not relevant for next E2E ---
