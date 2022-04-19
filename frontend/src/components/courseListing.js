@@ -22,10 +22,10 @@ const courseListing = () => {
         console.log(response.data);
     };
 
-    useEffect(() => {
-        fetchCourses();
-    }, []);
+    useEffect(() => { fetchCourses(); }, []);
+
     console.log(courses);
+
     return (
         <div>
             //TODO
