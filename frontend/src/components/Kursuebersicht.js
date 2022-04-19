@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { ShowHeader, ShowNavbar } from './App'
+import {callFetchCourses} from '../containers/APICalls'
 
 import '../css/App.css';
 import '../css/Kursübersicht.css'
@@ -19,6 +20,7 @@ export class Kursuebersicht extends Component {
               <Col xs={10} className="ColContent" fluid>
                 <Row className="Section">
                   <h1>Kursübersicht</h1>
+
                   <Col xs={4} fluid> <ShowCourse /></Col>
                   <Col xs={4} fluid> <ShowCourse /></Col>
                   <Col xs={4} fluid> <ShowCourse /></Col>
