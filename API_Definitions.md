@@ -42,7 +42,7 @@ Components:  Kursuebersicht.js
 Method: GET
 Description: action: subscribe to a course -> get certificate if course requires it
 Backend point:
-Frontend url: /course
+Frontend url: /courses/id
 Current Frontend url: /kursansicht
 Where: Kursansicht
 Components: Kursansicht.js
