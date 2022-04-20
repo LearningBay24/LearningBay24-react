@@ -71,6 +71,13 @@ export class Kursuebersicht extends Component {
             <Row className="Row" fluid>
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" fluid>
+                <Row className="Section">
+                  <h1>Kursübersicht</h1>
+
+                  <Col xs={4} fluid> <ShowCourse /></Col>
+                  <Col xs={4} fluid> <ShowCourse /></Col>
+                  <Col xs={4} fluid> <ShowCourse /></Col>
+                  <Col xs={4} fluid> <ShowCourse /></Col>
                 <Row className="Section" hidden={!this.state.UserRights}>
                   <h1>Meine Kurse</h1>
                   {MyCourseslist}
@@ -98,6 +105,7 @@ export class Kursuebersicht extends Component {
 
                 </Row>
 
+                </Row>
               </Col>
             </Row>
           </Container>

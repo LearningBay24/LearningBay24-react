@@ -21,12 +21,8 @@ import Dashboard from './components/Dashboard';
 import Profil from './components/Profil';
 import Stundenplan from './components/Stundenplan';
 
-// Redux
-import {createStore} from 'redux';
-import allReducers from './reducers/reducerCollection';
 import {Provider} from 'react-redux';
-
-const store = createStore(allReducers);
+import store from './redux/store';
 
 ReactDOM.render(
     <Provider store={store}>

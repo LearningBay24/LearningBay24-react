@@ -2,8 +2,6 @@ import Logo from '../images/Logo.png';
 import React from 'react';
 import {Link} from "react-router-dom"
 import { Container, Row, Col } from 'react-bootstrap'
-
-
 import '../css/App.css';
 
 
