@@ -2,9 +2,17 @@ import React, { Component } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { ShowHeader, ShowNavbar } from './App'
 
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+
 
 import '../css/App.css';
 import '../css/Kursübersicht.css'
+
+
 export class Kursuebersicht extends Component {
   constructor(props) {
     super(props)
@@ -13,23 +21,29 @@ export class Kursuebersicht extends Component {
 
       UserRights: true, // true if active user can create courses
 
-      MyCourses: [{ CourseName: "test", CourseOwner: "abcs", CourseBio: "asdf", CourseDegree: "AI", CourseCreatedAt: "hre" }, { CourseName: "dhj", CourseOwner: "fgj", CourseBio: "dghjm", CourseCreatedAt: "hg" }],
+      MyCourses: [{ CourseName: "test1", CourseOwner: "Peter", CourseBio: "das ist mein Kurs", CourseDegree: "AI", CourseCreatedAt: "19.04.2022" }],
 
-      CoursesTaken: [{ CourseName: "dhj", CourseOwner: "fgj", CourseBio: "dghjm", CourseCreatedAt: "hg" }],
+      CoursesTaken: [{ CourseName: "test2", CourseOwner: "Hans", CourseBio: "das ist ein anderer Kurs", CourseCreatedAt: "19.04.2022" }],
 
-      CoursesSuggested: [{ CourseName: "sgfh", CourseOwner: "sgjf", CourseBio: "fgj", CourseCreatedAt: "dj" }],
+      CoursesSuggested: [{ CourseName: "test3", CourseOwner: "Klaus", CourseBio: "Dieser Kurs könnte ihnen gefallen", CourseCreatedAt: "19.04.2022" }],
 
-
+      createCourse: false
 
     }
+
   }
+
+  toggleCreateCourse = () => {
+    this.setState({createCourse : !this.state.createCourse})
+}
+  
 
 
   render() {
     var MyCourseslist = []
     for (const Course of this.state.MyCourses) {
-      MyCourseslist.push(<Col xs={4} fluid><ShowCourse CourseName={Course.CourseName} 
-        CourseOwner={Course.CourseOwner} CourseBio={Course.CourseBio} 
+      MyCourseslist.push(<Col xs={4} fluid><ShowCourse CourseName={Course.CourseName}
+        CourseOwner={Course.CourseOwner} CourseBio={Course.CourseBio}
         CourseDegree={Course.CourseDegree} CourseCreatedAt={Course.CourseCreatedAt} /></Col>)
     }
 
@@ -61,7 +75,18 @@ export class Kursuebersicht extends Component {
                   <h1>Meine Kurse</h1>
                   {MyCourseslist}
 
-                  <input type="submit" value="Kurs erstellen" />
+                  <input type="submit" value="Kurs erstellen" onClick={this.toggleCreateCourse} />
+                  <Dialog open={this.state.createCourse} onClose={this.toggleCreateCourse}>
+                    <DialogTitle>Kurs erstellen</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText>
+                        Hier können Sie einen Kurs erstellen.
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <button onClick={this.toggleCreateCourse}>Kurs erstellen</button>
+                    </DialogActions>
+                  </Dialog>
                 </Row>
                 <Row className="Section">
                   <h1>Belegte Kurse</h1>
@@ -94,5 +119,7 @@ function ShowCourse(props) {
     </div>
   )
 }
+
+
 
 export default Kursuebersicht

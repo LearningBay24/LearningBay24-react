@@ -105,7 +105,7 @@ function ShowMaterial(props)
   return(
       <div className='MaterialContainer'>
         <h6>{props.Name}</h6>
-        <a href={props.Content} target='_blank' rel='noreferrer'>{props.content}</a>
+        <a href={props.Content} target='_blank' rel='noopener noreferrer'>{props.content}</a>
       </div>)
 }
 
@@ -114,7 +114,7 @@ function ShowAssignment(props)
   return(
       <div className='AssignmentContainer'>
         <h6>{props.Name}</h6>
-        <a href={props.Content} target='_blank' rel='noreferrer'>{props.Content}</a>
+        <a href={props.Content} target='_blank' rel='noopener noreferrer'>{props.Content}</a>
         <p className='AssignmentDate'>{props.Date}</p>
         <p className='AssignmentDeadline'>{props.Deadline}</p>
         <br/>
@@ -127,7 +127,7 @@ function ShowExam(props)
   return(
       <div className='ExamContainer'>
         <h6>{props.Name}</h6>
-        <a href={props.Content} target='_blank' rel='noreferrer'>{props.Content}</a>
+        <a href={props.Content} target='_blank' rel='noopener noreferrer'>{props.Content}</a>
         <p>Zeit: {props.Duration}</p>
         <p>Datum: {props.Date}</p>
         <br/>
@@ -140,7 +140,7 @@ function ShowSurvey(props)
   return(
       <div className='SurveyContainer'>
         <h6>{props.Name}</h6>
-        <a href={props.Content} target='_blank' rel='noreferrer'>{props.Content}</a>
+        <a href={props.Content} target='_blank' rel='noopener noreferrer'>{props.Content}</a>
       </div>)
 }
 
