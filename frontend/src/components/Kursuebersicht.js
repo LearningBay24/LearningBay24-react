@@ -73,11 +73,6 @@ export class Kursuebersicht extends Component {
               <Col xs={10} className="ColContent" fluid>
                 <Row className="Section">
                   <h1>Kursübersicht</h1>
-
-                  <Col xs={4} fluid> <ShowCourse /></Col>
-                  <Col xs={4} fluid> <ShowCourse /></Col>
-                  <Col xs={4} fluid> <ShowCourse /></Col>
-                  <Col xs={4} fluid> <ShowCourse /></Col>
                 <Row className="Section" hidden={!this.state.UserRights}>
                   <h1>Meine Kurse</h1>
                   {MyCourseslist}
@@ -88,10 +83,26 @@ export class Kursuebersicht extends Component {
                     <DialogContent>
                       <DialogContentText>
                         Hier können Sie einen Kurs erstellen.
+                        <br/>
+                        <label for="CreateCourseName">Kursname:</label>
+                        <input type="text" id="CreateCourseNameId" placeholder='Kursname'/>
+                        <br/>
+                        <label for="CreateCourseBioId">Kursbeschreibung:</label>
+                        <input type="text" id="CreateCourseBioId" placeholder='Kursbeschreibung'/>
+                        <br/>
+                        <label for="CreateCourseDegreeId">Studiengang:</label>
+                        <input type="text" id="CreateCourseDegreeId" placeholder='Studiengang'/>
+                        <br/>
+                        <label for="CreateCourseLocationId">Veranstaltungsort:</label>
+                        <input type="text" id="CreateCourseLocationId" placeholder='Veranstaltungsort'/>
+                        <br/>
+                        <label for="CreateCourseKeyId">Einschreibeschlüssel:</label>
+                        <input type="text" id="CreateCourseKeyId" placeholder='Einschreibeschlüssel'/>
                       </DialogContentText>
                     </DialogContent>
                     <DialogActions>
                       <button onClick={this.toggleCreateCourse}>Kurs erstellen</button>
+                      <button onClick={this.toggleCreateCourse}>abbrechen</button>
                     </DialogActions>
                   </Dialog>
                 </Row>
