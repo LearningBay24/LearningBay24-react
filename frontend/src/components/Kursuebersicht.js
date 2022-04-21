@@ -8,6 +8,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
+import { getCourse } from '../api';
+import axios from 'axios';
 
 import '../css/App.css';
 import '../css/Kursübersicht.css'
@@ -27,8 +29,10 @@ export class Kursuebersicht extends Component {
 
       CoursesSuggested: [{ CourseName: "test3", CourseOwner: "Klaus", CourseBio: "Dieser Kurs könnte ihnen gefallen", CourseCreatedAt: "19.04.2022" }],
 
-      createCourse: false
+      createCourse: false,
 
+      testObj: {},
+        
     }
 
   }
@@ -37,13 +41,42 @@ export class Kursuebersicht extends Component {
     this.setState({createCourse : !this.state.createCourse})
 }
   
+    componentDidMount()
+    {
+    //    const tst = getCourse(1);
+        /*
+        const courseID = 1;
+        const req = axios.get(`http://localhost:8080/courses/${courseID}`)
+                .then(res => {
+//                    data = res.data;
+                    this.setState({ testObj: res.data });
+                });
 
+                */
+        fetch(`http://localhost:8080/courses/1`, {
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
+            /*mode: 'same-origin', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+              'Content-Type': 'application/json',
+//                'Access-Control-Allow-Origin': '*',
+//           "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            */
+          })
+            .then((response) => response.json())
+            .then((data) => this.setState({ testObj: data}))
+            .catch((error) => console.error(error));
+    }
 
   render() {
     var MyCourseslist = []
     for (const Course of this.state.MyCourses) {
-      MyCourseslist.push(<Col xs={4} fluid><ShowCourse CourseName={Course.CourseName}
-        CourseOwner={Course.CourseOwner} CourseBio={Course.CourseBio}
+      MyCourseslist.push(<Col xs={4} fluid><ShowCourse CourseName={this.state.testObj.id}
+        CourseOwner={this.state.testObj.name} CourseBio={Course.CourseBio}
         CourseDegree={Course.CourseDegree} CourseCreatedAt={Course.CourseCreatedAt} /></Col>)
     }
 
