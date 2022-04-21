@@ -93,9 +93,6 @@ export class Kursuebersicht extends Component {
                         <label for="CreateCourseDegreeId">Studiengang:</label>
                         <input type="text" id="CreateCourseDegreeId" placeholder='Studiengang'/>
                         <br/>
-                        <label for="CreateCourseLocationId">Veranstaltungsort:</label>
-                        <input type="text" id="CreateCourseLocationId" placeholder='Veranstaltungsort'/>
-                        <br/>
                         <label for="CreateCourseKeyId">Einschreibeschlüssel:</label>
                         <input type="text" id="CreateCourseKeyId" placeholder='Einschreibeschlüssel'/>
                       </DialogContentText>
