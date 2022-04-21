@@ -27,16 +27,35 @@ export class Kursuebersicht extends Component {
 
       CoursesSuggested: [{ CourseName: "test3", CourseOwner: "Klaus", CourseBio: "Dieser Kurs könnte ihnen gefallen", CourseCreatedAt: "19.04.2022" }],
 
-      createCourse: false
+      createCourse: false,
+
+      // this object will be filled by the createCourse Dialog and will be sent to the server
+      NewCourse: { CourseName: "", CourseOwner: "user", CourseBio: "", CourseDegree: "", CourseKey: "", CourseCreatedAt: new Date() }
 
     }
+    this.onInputchange = this.onInputchange.bind(this);
+    this.onCreateCourse = this.onCreateCourse.bind(this);
 
   }
 
   toggleCreateCourse = () => {
-    this.setState({createCourse : !this.state.createCourse})
-}
-  
+    this.setState({ createCourse: !this.state.createCourse })
+  }
+
+  onInputchange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+  onCreateCourse() {
+    this.state.NewCourse.CourseName = this.state.NewName;
+    this.state.NewCourse.CourseBio = this.state.NewBio;
+    this.state.NewCourse.CourseDegree = this.state.NewDegree;
+    this.state.NewCourse.CourseKey = this.state.NewKey;
+    //Todo: send this.state.NewCourse to server
+  }
+
 
 
   render() {
@@ -73,45 +92,45 @@ export class Kursuebersicht extends Component {
               <Col xs={10} className="ColContent" fluid>
                 <Row className="Section">
                   <h1>Kursübersicht</h1>
-                <Row className="Section" hidden={!this.state.UserRights}>
-                  <h1>Meine Kurse</h1>
-                  {MyCourseslist}
+                  <Row className="Section" hidden={!this.state.UserRights}>
+                    <h1>Meine Kurse</h1>
+                    {MyCourseslist}
 
-                  <input type="submit" value="Kurs erstellen" onClick={this.toggleCreateCourse} />
-                  <Dialog open={this.state.createCourse} onClose={this.toggleCreateCourse}>
-                    <DialogTitle>Kurs erstellen</DialogTitle>
-                    <DialogContent>
-                      <DialogContentText>
-                        Hier können Sie einen Kurs erstellen.
-                        <br/>
-                        <label for="CreateCourseName">Kursname:</label>
-                        <input type="text" id="CreateCourseNameId" placeholder='Kursname'/>
-                        <br/>
-                        <label for="CreateCourseBioId">Kursbeschreibung:</label>
-                        <input type="text" id="CreateCourseBioId" placeholder='Kursbeschreibung'/>
-                        <br/>
-                        <label for="CreateCourseDegreeId">Studiengang:</label>
-                        <input type="text" id="CreateCourseDegreeId" placeholder='Studiengang'/>
-                        <br/>
-                        <label for="CreateCourseKeyId">Einschreibeschlüssel:</label>
-                        <input type="text" id="CreateCourseKeyId" placeholder='Einschreibeschlüssel'/>
-                      </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <button onClick={this.toggleCreateCourse}>Kurs erstellen</button>
-                      <button onClick={this.toggleCreateCourse}>abbrechen</button>
-                    </DialogActions>
-                  </Dialog>
-                </Row>
-                <Row className="Section">
-                  <h1>Belegte Kurse</h1>
-                  {CoursesTakenlist}
-                </Row>
-                <Row className="Section">
-                  <h1>Vorgeschlagene Kurse</h1>
-                  {CoursesSuggestedlist}
+                    <button className="primary" onClick={this.toggleCreateCourse}> Kurs erstellen </button>
+                    <Dialog open={this.state.createCourse} onClose={this.toggleCreateCourse}>
+                      <DialogTitle>Kurs erstellen</DialogTitle>
+                      <DialogContent>
+                        <DialogContentText>
+                          Hier können Sie einen Kurs erstellen.
+                          <br />
+                          <label for="CreateCourseName">Kursname:</label>
+                          <input type="text" id="CreateCourseNameId" placeholder='Kursname' name="NewName" onChange={this.onInputchange}/>
+                          <br />
+                          <label for="CreateCourseBioId">Kursbeschreibung:</label>
+                          <input type="text" id="CreateCourseBioId" placeholder='Kursbeschreibung' name="NewBio" onChange={this.onInputchange} />
+                          <br />
+                          <label for="CreateCourseDegreeId">Studiengang:</label>
+                          <input type="text" id="CreateCourseDegreeId" placeholder='Studiengang' name="NewDegree" onChange={this.onInputchange}/>
+                          <br />
+                          <label for="CreateCourseKeyId">Einschreibeschlüssel:</label>
+                          <input type="text" id="CreateCourseKeyId" placeholder='Einschreibeschlüssel' name="NewKey" onChange={this.onInputchange}/>
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <button onClick={this.toggleCreateCourse}>Kurs erstellen</button>
+                        <button onClick={this.toggleCreateCourse}>abbrechen</button>
+                      </DialogActions>
+                    </Dialog>
+                  </Row>
+                  <Row className="Section">
+                    <h1>Belegte Kurse</h1>
+                    {CoursesTakenlist}
+                  </Row>
+                  <Row className="Section">
+                    <h1>Vorgeschlagene Kurse</h1>
+                    {CoursesSuggestedlist}
 
-                </Row>
+                  </Row>
 
                 </Row>
               </Col>

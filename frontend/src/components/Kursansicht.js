@@ -13,30 +13,54 @@ export class Kursansicht extends Component {
 
       CourseAdmin: true, // true if active user has adminrights
       CourseEdit: false, // true if admin is editing course
+      Course: {
 
-      CourseName: "Beispielkurs",
+        CourseName: "Beispielkurs",
 
-      CourseOwner: { LastName: "Mustermann", FirstName: "Max", id: "" },
-      CourseParticipants: [{ FirstName: "", LastName: "", Role: "", id: "" }],
-      CourseTutors: [{ FirstName: "", LastName: "", Role: "", id: "" }],
-
-
-      CourseAppointments: [{ Day: "Montag", Time: "11:00", Duration: "1:30h", Content: "Vorlesung", Location: "Raum A123" },
-      { Day: "Freitag", Time: "8:00", Duration: "1:30h", Content: "Praktikum", Location: "Raum A123" }],
-
-      CourseBio: "Das ist ein Beispielkurs",
-      CourseCreatedAt: "17.04.2022",
-      CourseForum: "",
+        CourseOwner: { LastName: "Mustermann", FirstName: "Max", id: "" },
+        CourseParticipants: [{ FirstName: "", LastName: "", Role: "", id: "" }],
+        CourseTutors: [{ FirstName: "", LastName: "", Role: "", id: "" }],
 
 
-      CourseMaterial: [{ Name: "mat1", Content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" }],
-      CourseAssignments: [{
-        Name: "Abgabe1", Content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        Date: "17.04.2022", Deadline: "25.04.2022 0:00"
-      }],
+        CourseAppointments: [{ Day: "Montag", Time: "11:00", Duration: "1:30h", Content: "Vorlesung", Location: "Raum A123", id: "1" },
+        { Day: "Freitag", Time: "8:00", Duration: "1:30h", Content: "Praktikum", Location: "Raum A123", id: "2" }],
 
-      CourseSurveys: [{ Name: "Umfrage1", Content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" }],
-      CourseExams: [{ Name: "Klausur1", Date: "30.4.2022", Duration: "1:30h", Location: "Raum A123" }]
+        CourseBio: "Das ist ein Beispielkurs",
+        CourseCreatedAt: "17.04.2022",
+        CourseForum: "",
+
+
+        CourseMaterial: [{ Name: "mat1", Content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", id: "" }],
+        CourseAssignments: [{
+          Name: "Abgabe1", Content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          Date: "17.04.2022", Deadline: "25.04.2022 0:00", id: ""
+        }],
+
+        CourseSurveys: [{ Name: "Umfrage1", Content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", id: "" }],
+        CourseExams: [{ Name: "Klausur1", Date: "30.4.2022", Duration: "1:30h", Location: "Raum A123", id: "" }]
+      }
+    };
+    this.onInputchange = this.onInputchange.bind(this);
+    this.onSaveAppointmentChange = this.onSaveAppointmentChange.bind(this);
+  }
+
+  // save inputs to extravariables in state until user commits them to Course object by clicking save button 
+  onInputchange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+  onSaveAppointmentChange() {
+    for (let i = 0; i < this.state.Course.CourseAppointments.length; i++) {
+      if (this.state.Course.CourseAppointments[i].id == this.state.ChangeAppointmentId) {
+        let NewState = this.state.Course.CourseAppointments[i]
+        NewState.Day = this.state.NewWeekDay
+        NewState.Time = this.state.NewCourseTime
+        NewState.Duration = this.state.NewCourseDuration
+        NewState.Location = this.state.NewCourseLocation
+        NewState.Content = this.state.NewCourseContent
+      }
     }
   }
 
@@ -49,35 +73,35 @@ export class Kursansicht extends Component {
     // Lists for general view
     // ____________________________________________________________________________________________________________________________________
 
-    var Generallist = [<h1>{this.state.CourseName}</h1>,
+    var Generallist = [<h1>{this.state.Course.CourseName}</h1>,
     <button hidden={!this.state.CourseAdmin} onClick={() => this.setState({ CourseEdit: !this.state.CourseEdit })}>
       Kurs bearbeiten</button>]
 
-    Generallist.push(<p hidden={this.state.CourseEdit}>{this.state.CourseOwner.FirstName} {this.state.CourseOwner.LastName}</p>)
-    for (const Appointment of this.state.CourseAppointments) {
+    Generallist.push(<p hidden={this.state.CourseEdit}>{this.state.Course.CourseOwner.FirstName} {this.state.Course.CourseOwner.LastName}</p>)
+    for (const Appointment of this.state.Course.CourseAppointments) {
       Generallist.push(<h3 hidden={this.state.CourseEdit}>{Appointment.Day} {Appointment.Time} {Appointment.Duration} {Appointment.Content}
         {Appointment.Location}</h3>)
     }
-    Generallist.push(<p hidden={this.state.CourseEdit}>{this.state.CourseBio}</p>)
+    Generallist.push(<p hidden={this.state.CourseEdit}>{this.state.Course.CourseBio}</p>)
 
     var Materiallist = []
-    for (const Mat of this.state.CourseMaterial) {
+    for (const Mat of this.state.Course.CourseMaterial) {
       Materiallist.push(<ShowMaterial Name={Mat.Name} Content={Mat.Content} />)
     }
 
     var Assignmentlist = []
-    for (const Assignment of this.state.CourseAssignments) {
+    for (const Assignment of this.state.Course.CourseAssignments) {
       Assignmentlist.push(<ShowAssignment Name={Assignment.Name} Content={Assignment.Content} Date={Assignment.Date}
         Deadline={Assignment.Deadline} />)
     }
 
     var Surveylist = []
-    for (const Survey of this.state.CourseSurveys) {
+    for (const Survey of this.state.Course.CourseSurveys) {
       Surveylist.push(<ShowSurvey Name={Survey.Name} Content={Survey.Content} />)
     }
 
     var Examlist = []
-    for (const Exam of this.state.CourseExams) {
+    for (const Exam of this.state.Course.CourseExams) {
       Examlist.push(<ShowExam Name={Exam.Name} Content={Exam.Content} Date={Exam.Date} Duration={Exam.Duration}
         Location={Exam.Location} />)
     }
@@ -87,36 +111,36 @@ export class Kursansicht extends Component {
     // lists for edit course view
     // ____________________________________________________________________________________________________________________________________
     var EditAppointments = [<option>Veranstaltung hinzufügen</option>]
-    for (const Appointment of this.state.CourseAppointments) {
-      EditAppointments.push(<option>{Appointment.Day} {Appointment.Time} {Appointment.Content} {Appointment.Location}</option>)
+    for (const Appointment of this.state.Course.CourseAppointments) {
+      EditAppointments.push(<option value={Appointment.id}>{Appointment.Day} {Appointment.Time} {Appointment.Content} {Appointment.Location}</option>)
     }
 
     var EditParticipants = []
-    for (const Participant of this.state.CourseParticipants) {
-      EditParticipants.push(<option>{Participant.FirstName} {Participant.LastName} {Participant.Role}</option>)
+    for (const Participant of this.state.Course.CourseParticipants) {
+      EditParticipants.push(<option value={Participant.id}>{Participant.FirstName} {Participant.LastName} {Participant.Role}</option>)
     }
 
     var EditMaterial = [<option>Material hinzufügen</option>]
-    for (const Mat of this.state.CourseMaterial) {
-      EditMaterial.push(<option>{Mat.Name}</option>)
+    for (const Mat of this.state.Course.CourseMaterial) {
+      EditMaterial.push(<option value={Mat.id}>{Mat.Name}</option>)
     }
 
     var EditAssignment = [<option>Abgabe hinzufügen</option>]
-    for (const Assignment of this.state.CourseAssignments) {
-      EditAssignment.push(<option>{Assignment.Name} {Assignment.Date}</option>)
+    for (const Assignment of this.state.Course.CourseAssignments) {
+      EditAssignment.push(<option value={Assignment.id}>{Assignment.Name} {Assignment.Date}</option>)
     }
 
     var EditSurvey = [<option>Umfrage hinzufügen</option>]
-    for (const Survey of this.state.CourseSurveys) {
-      EditSurvey.push(<option>{Survey.Name}</option>)
+    for (const Survey of this.state.Course.CourseSurveys) {
+      EditSurvey.push(<option value={Survey.id}>{Survey.Name}</option>)
     }
 
     var EditExam = [<option>Klausur hinzufügen</option>]
-    for (const Exam of this.state.CourseExams) {
-      EditExam.push(<option>{Exam.Name} {Exam.Date}</option>)
+    for (const Exam of this.state.Course.CourseExams) {
+      EditExam.push(<option value={Exam.id}>{Exam.Name} {Exam.Date}</option>)
     }
 
-
+    // ____________________________________________________________________________________________________________________________________
 
     return (
       <div className="Kursansicht">
@@ -130,62 +154,86 @@ export class Kursansicht extends Component {
 
                 <div className="editSection Section" hidden={!this.state.CourseEdit}>
                   <h2>Kurs Bearbeiten</h2>
-                  <input type="text" id="EditCourseBioId" placeholder={this.state.CourseBio} />
-                  <button>Beschreibung speichern</button>
+                  <div className="Section">
+                    <input type="text" id="EditCourseBioId" name="NewBio" placeholder={this.state.Course.CourseBio} onChange={this.onInputchange} />
+                    <button onClick={this.state.Course.CourseBio = this.state.NewBio} >Beschreibung speichern</button>
+                  </div>
                   <br />
-                  <select>{EditAppointments}</select>
-                  <label for="EditCourseWeekday">Wochentag:</label>
-                  <input type="Text" id="EditCourseWeekday" placeholder="Wochentag"></input>
-                  <label for="EditCourseTime">Uhrzeit:</label>
-                  <input type="Time" id="EditCourseTime" ></input>
-                  <label for="EditCourseContent">Inhalt:</label>
-                  <input type="Text" id="EditCourseduration" placeholder="Dauer"></input>
-                  <label for="EditCourseLocation">Raum:</label>
-                  <input type="Text" id="EditLocation" placeholder="Raum"></input>
+                  <div className="Section">
+                    <select name="ChangeAppointmentId" onChange={this.onInputchange}>{EditAppointments}</select>
+                    <label htmlFor="EditCourseWeekday" >Wochentag:</label>
+                    <input type="Text" id="EditCourseWeekday" name="NewWeekDay" placeholder="Wochentag" onChange={this.onInputchange}></input>
+                    <label htmlFor="EditCourseTime">Uhrzeit:</label>
+                    <input type="Time" id="EditCourseTime" name="NewCourseTime" onChange={this.onInputchange}></input>
+                    <label htmlFor="EditCourseDuration">Dauer:</label>
+                    <input type="Text" id="EditCourseduration" name="NewCourseDuration" placeholder="Dauer" onChange={this.onInputchange}></input>
+                    <label htmlFor="EditCourseContent">Veranstaltung:</label>
+                    <input type="Text" id="EditCourseContent" name="NewCourseContent" placeholder="Veranstaltung" onChange={this.onInputchange}></input>
+                    <label htmlFor="EditCourseLocation">Raum:</label>
+                    <input type="Text" id="EditLocation" name="NewCourseLocation" placeholder="Raum" onChange={this.onInputchange}></input>
+                    <br />
+                    <button>Löschen</button>
+                    <button onClick={this.onSaveAppointmentChange}>Speichern</button>
+                  </div>
                   <br />
-                  <select>{EditParticipants}</select>
-                  <button>Tutorenrechte geben/entziehen</button>
-                  <button>Ausschreiben</button>
+                  <div className="Section">
+                    <select>{EditParticipants}</select>
+                    <br />
+                    <button>Tutorenrechte geben/entziehen</button>
+                    <button>Ausschreiben</button>
+                  </div>
                   <br />
-                  <select>{EditMaterial}</select>
-                  <label for="EditMaterialName">Name:</label>
-                  <input type="Text" id="EditMaterialName" placeholder="Materialname"></input>
+                  <div className="Section">
+                    <select>{EditMaterial}</select>
+                    <label htmlFor="EditMaterialName">Name:</label>
+                    <input type="Text" id="EditMaterialName" placeholder="Materialname"></input>
                   // TODO add material
-                  <button>Löschen</button>
-                  <button>Speichern</button>
+                    <br />
+                    <button>Löschen</button>
+                    <button>Speichern</button>
+                  </div>
                   <br />
-                  <select>{EditAssignment}</select>
-                  <label for="EditAssignmentName">Name:</label>
-                  <input type="Text" id="EditAssignmentName" placeholder="Abgabename"></input>
-                  <label for="EditAssignmentDate">Datum:</label>
-                  <input type="Date" id="EditAssignmentDate" ></input>
-                  <label for="EditAssignmentTime">Uhrzeit:</label>
-                  <input type="Time" id="EditAssignmentTime" ></input>
+                  <div className="Section">
+                    <select>{EditAssignment}</select>
+                    <label htmlFor="EditAssignmentName">Name:</label>
+                    <input type="Text" id="EditAssignmentName" placeholder="Abgabename"></input>
+                    <label htmlFor="EditAssignmentDate">Datum:</label>
+                    <input type="Date" id="EditAssignmentDate" ></input>
+                    <label htmlFor="EditAssignmentTime">Uhrzeit:</label>
+                    <input type="Time" id="EditAssignmentTime" ></input>
                   // TODO add material
-                  <button>Löschen</button>
-                  <button>Speichern</button>
+                    <br />
+                    <button>Löschen</button>
+                    <button>Speichern</button>
+                  </div>
                   <br />
-                  <select>{EditSurvey}</select>
-                  <label for="EditSurveyName">Name:</label>
-                  <input type="Text" id="EditSurveyName" placeholder="Umfragename"></input>
-                  <label for="EditSurveyLink">Link:</label>
-                  <input type="Text" id="EditSurveyLink" placeholder="Umfragelink"></input>
-                  <button>Löschen</button>
-                  <button>Speichern</button>
+                  <div className="Section">
+                    <select>{EditSurvey}</select>
+                    <label htmlFor="EditSurveyName">Name:</label>
+                    <input type="Text" id="EditSurveyName" placeholder="Umfragename"></input>
+                    <label htmlFor="EditSurveyLink">Link:</label>
+                    <input type="Text" id="EditSurveyLink" placeholder="Umfragelink"></input>
+                    <br />
+                    <button>Löschen</button>
+                    <button>Speichern</button>
+                  </div>
                   <br />
-                  <select>{EditExam}</select>
-                  <label for="EditExamName">Name:</label>
-                  <input type="Text" id="EditExamName" placeholder="Klausurname"></input>
-                  <label for="EditExamDate">Datum:</label>
-                  <input type="Date" id="EditExamDate"></input>
-                  <label for="EditExamTime">Uhrzeit:</label>
-                  <input type="Time" id="EditExamTime"></input>
-                  <label for="EditExamDuration">Dauer:</label>
-                  <input type="Text" id="EditExamDuration" placeholder="Dauer"></input>
+                  <div className="Section">
+                    <select>{EditExam}</select>
+                    <label htmlFor="EditExamName">Name:</label>
+                    <input type="Text" id="EditExamName" placeholder="Klausurname"></input>
+                    <label htmlFor="EditExamDate">Datum:</label>
+                    <input type="Date" id="EditExamDate"></input>
+                    <label htmlFor="EditExamTime">Uhrzeit:</label>
+                    <input type="Time" id="EditExamTime"></input>
+                    <label htmlFor="EditExamDuration">Dauer:</label>
+                    <input type="Text" id="EditExamDuration" placeholder="Dauer"></input>
 
                   // TODO add material
-                  <button>Löschen</button>
-                  <button>Speichern</button>
+                    <br />
+                    <button>Löschen</button>
+                    <button>Speichern</button>
+                  </div>
                   <br />
 
                 </div>
@@ -214,7 +262,7 @@ export class Kursansicht extends Component {
             </Row>
           </Container>
         </div>
-      </div>
+      </div >
     )
   }
 

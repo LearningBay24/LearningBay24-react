@@ -50,7 +50,7 @@ function ShowHeader() {
         <Row>
           <Col md={2}><img src={Logo} width="100px" height="100px" alt="Logo"></img></Col>
           <Col md={8}><input type="text" id="tfSearchbar"></input>
-            <button id="btnSearchbar">Search</button></Col>
+            <button id="btnSearchbar">Suche</button></Col>
           <Col md={2}><Link to="/profil" id="lnkProfile">Profil</Link></Col>
         </Row>
       </Container>
