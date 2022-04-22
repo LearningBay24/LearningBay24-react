@@ -23,62 +23,107 @@ export class Kursuebersicht extends Component {
 
       UserRights: true, // true if active user can create courses
 
+        /*
       MyCourses: [{ CourseName: "test1", CourseOwner: "Peter", CourseBio: "das ist mein Kurs", CourseDegree: "AI", CourseCreatedAt: "19.04.2022" }],
 
       CoursesTaken: [{ CourseName: "test2", CourseOwner: "Hans", CourseBio: "das ist ein anderer Kurs", CourseCreatedAt: "19.04.2022" }],
 
       CoursesSuggested: [{ CourseName: "test3", CourseOwner: "Klaus", CourseBio: "Dieser Kurs könnte ihnen gefallen", CourseCreatedAt: "19.04.2022" }],
-
+      */
+        MyCourses: [],
+        CoursesTaken: [],
+        CoursesSuggested: [],
       createCourse: false,
 
       testObj: {},
+
+      courseObj: { CourseName: "", CourseId: 1, CourseBio: "", CourseKey: ""},
+
+        CourseId : 1,
+        CourseName : "",
+        CourseBio : "",
+        CourseDegree : "",
+        CourseKey : "",
         
     }
+
+      this.createCourse = this.createCourse.bind(this);
 
   }
 
   toggleCreateCourse = () => {
     this.setState({createCourse : !this.state.createCourse})
-}
+    }
   
     componentDidMount()
     {
-    //    const tst = getCourse(1);
         /*
         const courseID = 1;
         const req = axios.get(`http://localhost:8080/courses/${courseID}`)
                 .then(res => {
-//                    data = res.data;
                     this.setState({ testObj: res.data });
                 });
-
                 */
-        fetch(`http://localhost:8080/courses/1`, {
-            method: 'GET', // *GET, POST, PUT, DELETE, etc.
-            /*mode: 'same-origin', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-              'Content-Type': 'application/json',
-//                'Access-Control-Allow-Origin': '*',
-//           "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            */
-          })
+
+        fetch(`http://learningbay24.de:8080/courses`, { method: 'GET' })
             .then((response) => response.json())
-            .then((data) => this.setState({ testObj: data}))
+            .then((data) => this.setState({ MyCourses: data }))
+            .catch((error) => console.error(error));
+    }
+    
+
+    createCourse(courseObj)
+    {
+        this.toggleCreateCourse();
+        this.setState({ CourseId: this.state.CourseId + 1});
+
+        const newCourse = {
+            name: this.state.CourseName,
+            description: this.state.CourseBio,
+            enroll_key: this.state.CourseKey,
+        };
+
+        const requestOptions = {
+                method: 'POST',
+                body: JSON.stringify(newCourse)
+            };
+
+        fetch('http://learningbay24.de:8080/courses', requestOptions)
+            .then((response) => response.json())
+            .then((data) => this.setState({MyCourses: [data]}))
             .catch((error) => console.error(error));
     }
 
+    onInputChange = event => {
+        switch(event.target.id)
+        {
+            case "CreateCourseNameId":
+                this.setState({ CourseName: event.target.value });
+                break;
+            case "CreateCourseBioId":
+                this.setState({ CourseBio: event.target.value });
+                break;
+            case "CreateCourseDegreeId":
+                this.setState({ CourseDegree: event.target.value });
+                break;
+            case "CreateCourseKeyId":
+                this.setState({ CourseKey: event.target.value });
+                break;
+        }
+    }
+
+
   render() {
     var MyCourseslist = []
-    for (const Course of this.state.MyCourses) {
-      MyCourseslist.push(<Col xs={4} fluid><ShowCourse CourseName={this.state.testObj.id}
-        CourseOwner={this.state.testObj.name} CourseBio={Course.CourseBio}
-        CourseDegree={Course.CourseDegree} CourseCreatedAt={Course.CourseCreatedAt} /></Col>)
-    }
+    if(!(this.state.MyCourses == null))
+      {
+        for (const Course of this.state.MyCourses) {
+              MyCourseslist.push(<Col xs={4} fluid><ShowCourse CourseName={Course.name}
+                CourseOwner={""} CourseBio={Course.description}
+                CourseDegree={""} CourseCreatedAt={Course.CourseCreatedAt} /></Col>)
+            }
+      }
+    
 
     var CoursesTakenlist = []
     for (const Course of this.state.CoursesTaken) {
@@ -93,8 +138,6 @@ export class Kursuebersicht extends Component {
         CourseOwner={Course.CourseOwner} CourseBio={Course.CourseBio}
         CourseDegree={Course.CourseDegree} CourseCreatedAt={Course.CourseCreatedAt} /></Col>)
     }
-
-
 
     return (
       <div className="Kursuebersicht">
@@ -118,20 +161,20 @@ export class Kursuebersicht extends Component {
                         Hier können Sie einen Kurs erstellen.
                         <br/>
                         <label for="CreateCourseName">Kursname:</label>
-                        <input type="text" id="CreateCourseNameId" placeholder='Kursname'/>
+                        <input type="text" id="CreateCourseNameId" placeholder='Kursname' onChange={evt => this.onInputChange(evt)}/>
                         <br/>
                         <label for="CreateCourseBioId">Kursbeschreibung:</label>
-                        <input type="text" id="CreateCourseBioId" placeholder='Kursbeschreibung'/>
+                        <input type="text" id="CreateCourseBioId" placeholder='Kursbeschreibung' onChange={evt => this.onInputChange(evt)}/>
                         <br/>
                         <label for="CreateCourseDegreeId">Studiengang:</label>
-                        <input type="text" id="CreateCourseDegreeId" placeholder='Studiengang'/>
+                        <input type="text" id="CreateCourseDegreeId" placeholder='Studiengang' onChange={evt => this.onInputChange(evt)}/>
                         <br/>
                         <label for="CreateCourseKeyId">Einschreibeschlüssel:</label>
-                        <input type="text" id="CreateCourseKeyId" placeholder='Einschreibeschlüssel'/>
+                        <input type="text" id="CreateCourseKeyId" placeholder='Einschreibeschlüssel' onChange={evt => this.onInputChange(evt)}/>
                       </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                      <button onClick={this.toggleCreateCourse}>Kurs erstellen</button>
+                      <button onClick={this.createCourse}>Kurs erstellen</button>
                       <button onClick={this.toggleCreateCourse}>abbrechen</button>
                     </DialogActions>
                   </Dialog>
