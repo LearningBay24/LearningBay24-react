@@ -57,15 +57,7 @@ export class Kursuebersicht extends Component {
   
     componentDidMount()
     {
-        /*
-        const courseID = 1;
-        const req = axios.get(`http://localhost:8080/courses/${courseID}`)
-                .then(res => {
-                    this.setState({ testObj: res.data });
-                });
-                */
-
-        fetch(`http://learningbay24.de:8080/courses`, { method: 'GET' })
+        fetch(`https://learningbay24.de/api/v1/courses`, { method: 'GET' })
             .then((response) => response.json())
             .then((data) => this.setState({ MyCourses: data }))
             .catch((error) => console.error(error));
@@ -88,7 +80,7 @@ export class Kursuebersicht extends Component {
                 body: JSON.stringify(newCourse)
             };
 
-        fetch('http://learningbay24.de:8080/courses', requestOptions)
+        fetch('https://learningbay24.de/api/v1/courses', requestOptions)
             .then((response) => response.json())
             .then((data) => this.setState({MyCourses: [data]}))
             .catch((error) => console.error(error));
