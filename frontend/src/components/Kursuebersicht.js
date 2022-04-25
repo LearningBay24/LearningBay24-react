@@ -8,6 +8,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
+import { getMyCourses, postNewCourse } from '../api';
 
 import '../css/App.css';
 import '../css/Kursübersicht.css'
@@ -54,6 +55,11 @@ export class Kursuebersicht extends Component {
     this.state.NewCourse.CourseDegree = this.state.NewDegree;
     this.state.NewCourse.CourseKey = this.state.NewKey;
     //Todo: send this.state.NewCourse to server
+    postNewCourse(this, this.state.NewCourse);
+  }
+
+  componentDidMount() {
+    getMyCourses(this);
   }
 
 
