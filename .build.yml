@@ -7,9 +7,11 @@ sources:
 secrets:
   - 3a8daec5-761a-4c5f-951f-f6463081dce2 # learningbay24 deploy
 tasks:
-  - build: |
+  - setup: |
       cd LearningBay24-react/frontend/
       npm install
+  - build: |
+      cd LearningBay24-react/frontend/
       npm run build
   - deploy: |
       if [ "$GITHUB_REF" != "refs/heads/main" ]
