@@ -18,5 +18,5 @@ tasks:
         exit
       fi
       echo "StrictHostKeyChecking=no" >> ~/.ssh/config
-      cd LearningBay24-frontend/frontend/
+      cd LearningBay24-react/frontend/
       rsync -r ./build/ srht-deploy@learningbay24.de:/var/www/learningbay24/html/
