@@ -4,7 +4,7 @@ Info:
 
 Frontend API: LB24-react/frontend/src/api/index.js
 
-
+//COURSES
 Method: GET
 Description: get subscribed courses
 Return: ^
