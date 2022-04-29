@@ -14,7 +14,7 @@ import Anlegen from './components/Anlegen';
 import Benachrichtigungen from './components/Benachrichtigungen';
 import Institution from './components/Institution';
 import Klausurenuebersicht from './components/Klausurenuebersicht';
-import Kursansicht from './components/Kursansicht';
+import Wrapper from './components/Kursansicht';
 import Kursuebersicht from './components/Kursuebersicht';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
@@ -32,7 +32,7 @@ ReactDOM.render(
       <Route exact path="/dashboard" element={<Dashboard />} />
       <Route exact path="/institution" element={<Institution />} />
       <Route exact path="/klausurenuebersicht" element={<Klausurenuebersicht />} />
-      <Route exact path="/kursansicht" element={<Kursansicht />} />
+      <Route exact path="/kursansicht/:id" element={<Wrapper />} />
       <Route exact path="/kursuebersicht" element={<Kursuebersicht />} />
       <Route exact path="/login" element={<Login />} />
       <Route exact path="/profil" element={<Profil />} />

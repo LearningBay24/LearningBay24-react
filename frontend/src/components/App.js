@@ -26,18 +26,18 @@ function ShowNavbar() {
   return (
     <div className="Navbar">
       <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/abgabenuebersicht">Abgabenübersicht</Link></li>
-        <li><Link to="/anlegen">Anlegen</Link></li>
-        <li><Link to="/benachrichtigungen">Benachrichtigungen</Link></li>
-        <li><Link to="/dashboard">Dashboard</Link></li>
-        <li><Link to="/institution">Institution</Link></li>
-        <li><Link to="/klausurenuebersicht">Klausurenübersicht</Link></li>
-        <li><Link to="/kursansicht">Kursansicht</Link></li>
-        <li><Link to="/kursuebersicht">Kursübersicht</Link></li>
-        <li><Link to="/login">Login</Link></li>
-        <li><Link to="/profil">Profil</Link></li>
-        <li><Link to="/stundenplan">Stundenplan</Link></li>
+        <li key="1"><Link to="/">Home</Link></li>
+        <li key="2"><Link to="/abgabenuebersicht">Abgabenübersicht</Link></li>
+        <li key="3"><Link to="/anlegen">Anlegen</Link></li>
+        <li key="4"><Link to="/benachrichtigungen">Benachrichtigungen</Link></li>
+        <li key="5"><Link to="/dashboard">Dashboard</Link></li>
+        <li key="6"><Link to="/institution">Institution</Link></li>
+        <li key="7"><Link to="/klausurenuebersicht">Klausurenübersicht</Link></li>
+        <li key="8"><Link to="/kursansicht/:1">Kurs1</Link></li>
+        <li key="9"><Link to="/kursuebersicht">Kursübersicht</Link></li>
+        <li key="10"><Link to="/login">Login</Link></li>
+        <li key="11"><Link to="/profil">Profil</Link></li>
+        <li key="12"><Link to="/stundenplan">Stundenplan</Link></li>
       </ul>
     </div>
   )
