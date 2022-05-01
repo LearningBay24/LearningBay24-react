@@ -24,16 +24,16 @@ export class Kursuebersicht extends Component {
 
       UserRights: true, // true if active user can create courses
 
-      MyCourses: [{ CourseName: "test1", CourseOwner: "Peter", CourseBio: "das ist mein Kurs", CourseDegree: "AI", CourseCreatedAt: "19.04.2022", id:"1" }],
+      MyCourses: [{ name: "test1", owner: "Peter", description: "das ist mein Kurs", created_at: "19.04.2022", id:"1" }],
 
-      CoursesTaken: [{ CourseName: "test2", CourseOwner: "Hans", CourseBio: "das ist ein anderer Kurs", CourseCreatedAt: "19.04.2022", id: "2" }],
+      CoursesTaken: [{ name: "test2", owner: "Hans", description: "das ist ein anderer Kurs", created_at: "19.04.2022", id: "2" }],
 
-      CoursesSuggested: [{ CourseName: "test3", CourseOwner: "Klaus", CourseBio: "Dieser Kurs könnte ihnen gefallen", CourseCreatedAt: "19.04.2022", id:"3" }],
+      CoursesSuggested: [{ name: "test3", owner: "Klaus", description: "Dieser Kurs könnte ihnen gefallen", created_at: "19.04.2022", id:"3" }],
 
       createCourse: false,
 
       // this object will be filled by the createCourse Dialog and will be sent to the server
-      NewCourse: { CourseName: "", CourseOwner: "user", CourseBio: "", CourseDegree: "", CourseKey: "", CourseCreatedAt: new Date() }
+      NewCourse: { name: "", owner: "user", description: "", enroll_key: ""}
 
     }
     this.onInputchange = this.onInputchange.bind(this);
@@ -52,12 +52,12 @@ export class Kursuebersicht extends Component {
   }
 
   onCreateCourse() {
-    this.state.NewCourse.CourseName = this.state.NewName;
-    this.state.NewCourse.CourseBio = this.state.NewBio;
-    this.state.NewCourse.CourseDegree = this.state.NewDegree;
-    this.state.NewCourse.CourseKey = this.state.NewKey;
-    //Todo: send this.state.NewCourse to server
+    this.state.NewCourse.name = this.state.NewName;
+    this.state.NewCourse.description = this.state.NewBio;
+    this.state.NewCourse.enroll_key = this.state.NewKey;
     postNewCourse(this, this.state.NewCourse);
+    this.toggleCreateCourse();
+    this.componentDidMount()
   }
 
   componentDidMount() {
@@ -68,24 +68,25 @@ export class Kursuebersicht extends Component {
 
   render() {
     var MyCourseslist = []
+    console.log(this.state.MyCourses)
     for (const Course of this.state.MyCourses) {
-      MyCourseslist.push(<Col xs={4} fluid><ShowCourse CourseName={Course.CourseName}
-        CourseOwner={Course.CourseOwner} CourseBio={Course.CourseBio}
-        CourseDegree={Course.CourseDegree} CourseCreatedAt={Course.CourseCreatedAt} id={Course.id} /></Col>)
+      MyCourseslist.push(<Col xs={4} fluid><ShowCourse name={Course.name}
+        owner={Course.CourseOwner} description={Course.description}
+        created_at={Course.created_at} id={Course.id} /></Col>)
     }
 
     var CoursesTakenlist = []
     for (const Course of this.state.CoursesTaken) {
-      CoursesTakenlist.push(<Col xs={4} fluid><ShowCourse CourseName={Course.CourseName}
-        CourseOwner={Course.CourseOwner} CourseBio={Course.CourseBio}
-        CourseDegree={Course.CourseDegree} CourseCreatedAt={Course.CourseCreatedAt} id={Course.id} /></Col>)
+      CoursesTakenlist.push(<Col xs={4} fluid><ShowCourse name={Course.name}
+        owner={Course.CourseOwner} description={Course.description}
+        created_at={Course.created_at} id={Course.id} /></Col>)
     }
 
     var CoursesSuggestedlist = []
     for (const Course of this.state.CoursesSuggested) {
-      CoursesSuggestedlist.push(<Col xs={4} fluid><ShowCourse CourseName={Course.CourseName}
-        CourseOwner={Course.CourseOwner} CourseBio={Course.CourseBio}
-        CourseDegree={Course.CourseDegree} CourseCreatedAt={Course.CourseCreatedAt} id={Course.id} /></Col>)
+      CoursesSuggestedlist.push(<Col xs={4} fluid><ShowCourse name={Course.name}
+        owner={Course.CourseOwner} description={Course.description}
+        created_at={Course.created_at} id={Course.id} /></Col>)
     }
 
 
@@ -117,15 +118,12 @@ export class Kursuebersicht extends Component {
                           <label for="CreateCourseBioId">Kursbeschreibung:</label>
                           <input type="text" id="CreateCourseBioId" placeholder='Kursbeschreibung' name="NewBio" onChange={this.onInputchange} />
                           <br />
-                          <label for="CreateCourseDegreeId">Studiengang:</label>
-                          <input type="text" id="CreateCourseDegreeId" placeholder='Studiengang' name="NewDegree" onChange={this.onInputchange} />
-                          <br />
                           <label for="CreateCourseKeyId">Einschreibeschlüssel:</label>
                           <input type="text" id="CreateCourseKeyId" placeholder='Einschreibeschlüssel' name="NewKey" onChange={this.onInputchange} />
                         </DialogContentText>
                       </DialogContent>
                       <DialogActions>
-                        <button onClick={this.toggleCreateCourse}>Kurs erstellen</button>
+                        <button onClick={this.onCreateCourse}>Kurs erstellen</button>
                         <button onClick={this.toggleCreateCourse}>abbrechen</button>
                       </DialogActions>
                     </Dialog>
@@ -155,12 +153,11 @@ function ShowCourse(props) {
   return (
     <div className="Course">
       <Link to={link}>
-        <h4 className='CourseName'>{props.CourseName}</h4>
+        <h4 className='CourseName'>{props.name}</h4>
       </Link>
-      <p className='CourseOwner'>Kursbesitzer: {props.CourseOwner}</p>
-      <p className='CourseDeskription'>{props.CourseBio}</p>
-      <p className='CourseDegree'>Studiengang: {props.CourseDegree}</p>
-      <p className='CourseCreatedAt'>erstellt am:{props.CourseCreatedAt}</p>
+      <p className='CourseOwner'>Kursbesitzer: {props.owner}</p>
+      <p className='CourseDescription'>{props.description}</p>
+      <p className='CourseCreatedAt'>erstellt am:{props.created_at}</p>
 
     </div>
   )

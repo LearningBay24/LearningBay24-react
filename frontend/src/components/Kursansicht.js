@@ -72,7 +72,7 @@ export class Kursansicht extends Component {
 
   onSaveAppointmentChange() {
     
-    if(this.state.ChangeAppointmentId === -1) {
+    if(this.state.ChangeAppointmentId == -1) {
       console.log(this.state.ChangeAppointmentId)
       this.state.Course.CourseAppointments.push({
         
