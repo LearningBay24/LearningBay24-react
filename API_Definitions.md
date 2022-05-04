@@ -23,8 +23,8 @@ Needed Params:id (the course id) (given by URL)
 
 Method: GET
 Description: get all users in a course
-Return: 
-Frontend endpoint: 
+Return: ^
+Frontend endpoint: getUsersInCourse(caller, id)
 State name: 
 Url: "courses/:id/users"
 Needed Params:id (the course id) (given by URL)
@@ -34,7 +34,7 @@ Description: save a created course
 Return: id of new Course (?)
 Frontend endpoint: postNewCourse()
 State name: NewCourse
-Url: "/courses/create"
+Url: "/courses"
 Needed Params: name, description, enrollkey, user_id(the user that is logged in)
 
 Method: POST
@@ -45,29 +45,18 @@ State name:
 Url: "/courses/:id/enroll/user/:user_id"
 Needed Params: id (given by URL), user id (given by URL), enrollkey
 
-
 Method: PATCH
 Description: update a course with new data
 Return: 
-Frontend endpoint: 
+Frontend endpoint: updateCourse(caller, object, id)
 State name: 
-Url: "/courses/:id/update"
+Url: "/courses/:id"
 Needed Params: id (given by URL), name,description,enrollkey
-
-
-Method: PATCH
-Description: deactivate a course by its id
-Return: 
-Frontend endpoint: 
-State name: 
-Url: "/courses/:id/deactivate"
-Needed Params: id (given by URL)
-
 
 Method: DELETE
 Description: delete a course by its id
 Return: 
-Frontend endpoint: 
+Frontend endpoint: deleteCourse(caller, id)
 State name: 
 Url:"/courses/:id/delete"
 Needed Params:id (given by URL)

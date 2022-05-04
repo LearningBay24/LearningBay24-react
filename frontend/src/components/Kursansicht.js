@@ -11,14 +11,12 @@ export class Kursansicht extends Component {
   constructor(props) {
     super(props)
 
-    
-
     this.state = {
       id : parseInt(props.id),
 
       CourseAdmin: true, // true if active user has adminrights
       CourseEdit: false, // true if admin is editing course
-      //CurrentCourse: {name:"",description:""},
+
       Course: {
 
         name: "Beispielkurs",
@@ -46,9 +44,18 @@ export class Kursansicht extends Component {
         CourseExams: [{ Name: "Klausur1", Date: "30.4.2022", Duration: "1:30h", Location: "Raum A123", id: "" }]
       },
 
-
       //variables for editing course
-      ChangeAppointmentId : -1
+      ChangeAppointmentId : -1,
+
+        CurrentCourse: {
+            id : 0,
+            name : "",
+            description : "",
+            enroll_key : "",
+            forum_id : 0,
+            created_at : "",
+            updated_at : ""
+        }
 
     };
     this.onInputchange = this.onInputchange.bind(this);
@@ -58,12 +65,8 @@ export class Kursansicht extends Component {
 
   componentDidMount() {
     getCourse(this, this.state.id);
-    console.log(this.state);
   }
 
-  
-
-  
 
   // save inputs to extravariables in state until user commits them to Course object by clicking save button 
   onInputchange(event) {
@@ -102,16 +105,11 @@ export class Kursansicht extends Component {
 
 
   render() {
-    
-
-  
-
-    
     // ____________________________________________________________________________________________________________________________________
     // Lists for general view
     // ____________________________________________________________________________________________________________________________________
 
-    var Generallist = [<h1>{this.state.Course.CourseName}</h1>,
+    var Generallist = [<h1>{this.state.CurrentCourse.name}</h1>,
     <button hidden={!this.state.CourseAdmin} onClick={() => this.setState({ CourseEdit: !this.state.CourseEdit })}>
       Kurs bearbeiten</button>]
 

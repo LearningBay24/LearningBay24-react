@@ -68,7 +68,6 @@ export class Kursuebersicht extends Component {
 
   render() {
     var MyCourseslist = []
-    console.log(this.state.MyCourses)
     for (const Course of this.state.MyCourses) {
       MyCourseslist.push(<Col xs={4} fluid><ShowCourse name={Course.name}
         owner={Course.CourseOwner} description={Course.description}
