@@ -149,7 +149,7 @@ export class Kursuebersicht extends Component {
 }
 
 function ShowCourse(props) {
-  let link = "/kursansicht/:" + props.id;
+  let link = "/kursansicht/" + props.id;
   return (
     <div className="Course">
       <Link to={link}>

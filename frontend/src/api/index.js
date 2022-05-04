@@ -16,7 +16,7 @@ export function getCourse(caller, id)
 {
     fetch(`https://learningbay24.de/api/v1/courses/${id}`, { method: 'GET' })
         .then((response) => response.json())
-        .then((data) => caller.setState({ CurrentCourse: data }))
+        .then((data) => caller.setState({ CurrentCourse: data })/* console.log(data) */)
         .catch((error) => console.error(error));
 }
 

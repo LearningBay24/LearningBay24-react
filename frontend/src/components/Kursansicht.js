@@ -14,13 +14,14 @@ export class Kursansicht extends Component {
     
 
     this.state = {
-      id : props.id,
+      id : parseInt(props.id),
 
       CourseAdmin: true, // true if active user has adminrights
       CourseEdit: false, // true if admin is editing course
+      //CurrentCourse: {name:"",description:""},
       Course: {
 
-        CourseName: "Beispielkurs",
+        name: "Beispielkurs",
 
         CourseOwner: { LastName: "Mustermann", FirstName: "Max", id: "" },
         CourseParticipants: [{ FirstName: "", LastName: "", Role: "", id: "" }],
@@ -57,6 +58,7 @@ export class Kursansicht extends Component {
 
   componentDidMount() {
     getCourse(this, this.state.id);
+    console.log(this.state);
   }
 
   
@@ -113,7 +115,7 @@ export class Kursansicht extends Component {
     <button hidden={!this.state.CourseAdmin} onClick={() => this.setState({ CourseEdit: !this.state.CourseEdit })}>
       Kurs bearbeiten</button>]
 
-    Generallist.push(<p hidden={this.state.CourseEdit}>{this.state.Course.CourseOwner.FirstName} {this.state.Course.CourseOwner.LastName}</p>)
+    //Generallist.push(<p hidden={this.state.CourseEdit}> {this.state.Course.CourseOwner.FirstName} {this.state.Course.CourseOwner.LastName}</p>)
     for (const Appointment of this.state.Course.CourseAppointments) {
       Generallist.push(<h3 hidden={this.state.CourseEdit}>{Appointment.Day} {Appointment.Time} {Appointment.Duration} {Appointment.Content}
         {Appointment.Location}</h3>)
