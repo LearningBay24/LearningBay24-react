@@ -33,7 +33,7 @@ function ShowNavbar() {
         <li key="5"><Link to="/dashboard">Dashboard</Link></li>
         <li key="6"><Link to="/institution">Institution</Link></li>
         <li key="7"><Link to="/klausurenuebersicht">Klausurenübersicht</Link></li>
-        <li key="8"><Link to="/kursansicht/:1">Kurs1</Link></li>
+        <li key="8"><Link to="/kursansicht/38">Kurs1</Link></li>
         <li key="9"><Link to="/kursuebersicht">Kursübersicht</Link></li>
         <li key="10"><Link to="/login">Login</Link></li>
         <li key="11"><Link to="/profil">Profil</Link></li>

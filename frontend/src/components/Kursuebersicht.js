@@ -10,7 +10,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 import { Link } from "react-router-dom"
 
-import { getMyCourses, postNewCourse } from '../api';
+import { enrollUser, getMyCourses, postNewCourse } from '../api';
 
 import '../css/App.css';
 import '../css/Kursübersicht.css'
@@ -21,6 +21,7 @@ export class Kursuebersicht extends Component {
     super(props)
 
     this.state = {
+      NewCourseID : 0,
 
       UserRights: true, // true if active user can create courses
 
@@ -33,7 +34,7 @@ export class Kursuebersicht extends Component {
       createCourse: false,
 
       // this object will be filled by the createCourse Dialog and will be sent to the server
-      NewCourse: { name: "", owner: "user", description: "", enroll_key: ""}
+      NewCourse: { name: "", user_id: "", description: "", enroll_key: ""}
 
     }
     this.onInputchange = this.onInputchange.bind(this);
@@ -52,16 +53,17 @@ export class Kursuebersicht extends Component {
   }
 
   onCreateCourse() {
-    this.state.NewCourse.name = this.state.NewName;
-    this.state.NewCourse.description = this.state.NewBio;
-    this.state.NewCourse.enroll_key = this.state.NewKey;
-    postNewCourse(this, this.state.NewCourse);
-    this.toggleCreateCourse();
+    this.state.NewCourse.name = this.state.NewName
+    this.state.NewCourse.description = this.state.NewBio
+    this.state.NewCourse.enroll_key = this.state.NewKey
+    this.state.NewCourse.user_id = 4  // hardcoded user id
+    postNewCourse(this, this.state.NewCourse)
+    this.toggleCreateCourse()
     this.componentDidMount()
   }
 
   componentDidMount() {
-    getMyCourses(this);
+    getMyCourses(this)
   }
 
 

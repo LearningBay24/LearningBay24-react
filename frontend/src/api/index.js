@@ -6,9 +6,9 @@
 
 export function getMyCourses(caller)
 {
-    console.log("(getMyCourses): " + `https://learningbay24.de/api/v1/courses`)
+    console.log("(getMyCourses): " + `https://learningbay24.de/api/v1/courses/:4`)
 
-    fetch(`https://learningbay24.de/api/v1/courses`, { method: 'GET' })
+    fetch(`https://learningbay24.de/api/v1/users/4/courses`, { method: 'GET' })
         .then((response) => response.json())
         .then((data) => {
             console.log(data)
@@ -79,7 +79,8 @@ export function updateCourse(caller, object, id)
         .catch((error) => console.error(error));
 }
 
-export function enrollUser(caller, user, id)
+/*
+export function enrollUser(caller, user_id,id)
 {
     // NOTE: backend is not implemented correctly, do not use this function yet
 
@@ -87,7 +88,7 @@ export function enrollUser(caller, user, id)
 
     const requestOptions = {
         method: 'POST',
-        body: JSON.stringify(user)
+        body: JSON.stringify(user_id)
     };
 
     fetch(`https://learningbay24.de/api/v1/courses/${id}`, requestOptions)
@@ -98,6 +99,7 @@ export function enrollUser(caller, user, id)
         })
         .catch((error) => console.error(error));
 }
+*/
 
 export function deleteCourse(caller, id)
 {
