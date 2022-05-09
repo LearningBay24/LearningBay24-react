@@ -46,6 +46,7 @@ export function getUsersInCourse(caller, id)
 export function postNewCourse(caller, object)
 {
     console.log("(postNewCourse): " + `https://learningbay24.de/api/v1/courses`)
+    console.log(object)
 
     const requestOptions = {
         method: 'POST',
