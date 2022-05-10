@@ -4,6 +4,11 @@
  * to itself so that the function can save the return data in the components state
  */
 
+/**
+ * get subscribed courses
+ * @param {any} caller The component that calls the api function
+ * @return {void} returns nothing.
+ */
 export function getMyCourses(caller)
 {
     console.log("(getMyCourses): " + `https://learningbay24.de/api/v1/courses/:4`)
@@ -17,6 +22,12 @@ export function getMyCourses(caller)
         .catch((error) => console.error(error));
 }
 
+/**
+ * get a single course by id
+ * @param {any} caller The component that calls the api function
+ * @param {any} id id of the course
+ * @return {void} returns nothing.
+ */
 export function getCourse(caller, id)
 {
     console.log("(getCourse): " + `https://learningbay24.de/api/v1/courses/${id}`)
@@ -30,6 +41,12 @@ export function getCourse(caller, id)
         .catch((error) => console.error(error));
 }
 
+/**
+ * get all users in a course
+ * @param {any} caller The component that calls the api function
+ * @param {any} id id of the course
+ * @return {void} returns nothing.
+ */
 export function getUsersInCourse(caller, id)
 {
     console.log("(getUsersInCourse): " + `https://learningbay24.de/api/v1/courses/${id}/users`)
@@ -43,6 +60,12 @@ export function getUsersInCourse(caller, id)
         .catch((error) => console.error(error));
 }
 
+/**
+ * posts a new course to the database
+ * @param {any} caller The component that calls the api function
+ * @param {any} object infos about the course
+ * @return {void} returns nothing.
+ */
 export function postNewCourse(caller, object)
 {
     console.log("(postNewCourse): " + `https://learningbay24.de/api/v1/courses`)
@@ -61,6 +84,13 @@ export function postNewCourse(caller, object)
         .catch((error) => console.error(error));
 }
 
+/**
+ * updates a course in the database
+ * @param {any} caller The component that calls the api function
+ * @param {any} object new infos about the course
+ * @param {any} id id of the course
+ * @return {void} returns nothing.
+ */
 export function updateCourse(caller, object, id)
 {
     console.log("(updateCourse): " + `https://learningbay24.de/api/v1/courses/${id}`)
@@ -101,6 +131,12 @@ export function enrollUser(caller, user_id,id)
 }
 */
 
+/**
+ * deletes a course with id=id
+ * @param {any} caller The component that calls the api function
+ * @param {any} id id of the course
+ * @return {void} returns nothing.
+ */
 export function deleteCourse(caller, id)
 {
     console.log("(deleteCourse): " + `https://learningbay24.de/api/v1/courses/${id}`)
