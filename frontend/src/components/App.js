@@ -1,10 +1,7 @@
 import Logo from '../images/Logo.png';
 import React from 'react';
-
-
-
-import {Link} from 'react-router-dom';
-import {Container, Row, Col} from 'react-bootstrap';
+import {Link} from "react-router-dom"
+import { Container, Row, Col } from 'react-bootstrap'
 
 import '../css/Overlay.css';
 import '../css/App.css';
@@ -45,7 +42,7 @@ function ShowNavbar() {
         <li key="12"><Link to="/stundenplan">Stundenplan</Link></li>
       </ul>
     </div>
-  );
+  )
 }
 
 function ShowHeader() {
@@ -60,9 +57,9 @@ function ShowHeader() {
         </Row>
       </Container>
     </div>
-  );
+  )
 }
 
 export default App;
-export {ShowNavbar, ShowHeader};
+export { ShowNavbar, ShowHeader };
 

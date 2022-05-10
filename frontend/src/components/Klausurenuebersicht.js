@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {Col, Container, Row} from 'react-bootstrap';
-import {ShowHeader, ShowNavbar} from './App';
+import React, { Component } from 'react'
+import { Col, Container, Row } from 'react-bootstrap'
+import { ShowHeader, ShowNavbar } from './App'
 
 import '../css/Overlay.css';
 import '../css/Klausurenuebersicht.css';
@@ -40,34 +40,34 @@ export class Klausurenuebersicht extends Component {
           </Row>
         </Container>
       </div>
-    );
+    </div>
+    )
   }
 }
 
 function ShowExam() {
   return (
     <div className="Exam">
-      <table>
-        <tr>
-          <td>
-            <p className="ExamName">Klausurname</p>
-            <p className="ExamCourse">Kursname</p>
-            <p className="ExamOwner">Klausurersteller</p>
-            <p className="ExamDegree">Studiengang</p>
-            <p> </p>
-          </td>
-          <td>
-            <p className="ExamDate">Datum</p>
-            <p className="ExamTime">Uhrzeit</p>
-            <p className="ExamRoom">Raum</p>
-            <p className="Examduration">Dauer</p>
-          </td>
-        </tr>
-      </table>
-
+    <table>
+      <tr>
+        <td>
+          <p className="ExamName">Klausurname</p>
+          <p className="ExamCourse">Kursname</p>
+          <p className="ExamOwner">Klausurersteller</p>
+          <p className="ExamDegree">Studiengang</p>
+          <p> </p>
+        </td>
+        <td>
+          <p className="ExamDate">Datum</p>
+          <p className="ExamTime">Uhrzeit</p>
+          <p className="ExamRoom">Raum</p>
+          <p className="Examduration">Dauer</p>
+        </td>
+      </tr>
+    </table>
+      
     </div>
-  );
+  )
 }
-
 
 export default Klausurenuebersicht

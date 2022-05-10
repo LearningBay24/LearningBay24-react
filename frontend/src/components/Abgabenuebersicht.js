@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {Col, Container, Row} from 'react-bootstrap';
-import {ShowHeader, ShowNavbar} from './App';
+import React, { Component } from 'react'
+import { Col, Container, Row } from 'react-bootstrap'
+import { ShowHeader, ShowNavbar } from './App'
 
 import '../css/Overlay.css';
 
@@ -39,34 +39,33 @@ export class Abgabenuebersicht extends Component {
           </Row>
         </Container>
       </div>
-    );
+    </div>
+    )
   }
 }
 
 function ShowAssignment() {
   return (
     <div className="Exercise">
-      <table>
-        <tr>
-          <td>
-            <p className="AssignmentName">Klausurname</p>
-            <p className="AssignmentCourse">Kursname</p>
-            <p className="AssignmentOwner">Klausurersteller</p>
-            <p className="AssignmentDegree">Studiengang</p>
-          </td>
-          <td>
-            <p className="AssignmentDate">Datum</p>
-            <p className="AssignmentTime">Uhrzeit</p>
-            <p className="AssignmentDeadline">Deadline</p>
-            <input type="text" className="AssignmentComment" placeholder="Kommentar" />
-          </td>
-        </tr>
-      </table>
-
+    <table>
+      <tr>
+        <td>
+          <p className="AssignmentName">Klausurname</p>
+          <p className="AssignmentCourse">Kursname</p>
+          <p className="AssignmentOwner">Klausurersteller</p>
+          <p className="AssignmentDegree">Studiengang</p>
+        </td>
+        <td>
+          <p className="AssignmentDate">Datum</p>
+          <p className="AssignmentTime">Uhrzeit</p>
+          <p className="AssignmentDeadline">Deadline</p>
+          <input type="text" className="AssignmentComment" placeholder="Kommentar" />
+        </td>
+      </tr>
+    </table>
+      
     </div>
-  );
+  )
 }
 
-
 export default Abgabenuebersicht
-

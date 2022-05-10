@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {Container, Row, Col} from 'react-bootstrap';
+import React, { Component } from 'react'
+import {Link} from "react-router-dom"
+import { Container, Row, Col } from 'react-bootstrap'
 import Logo from '../images/Logo.png';
 
 import '../css/Overlay.css';
@@ -12,11 +12,11 @@ export class Login extends Component {
       <div>
         <ShowLoginHeader />
         <h1>Login</h1>
-        <label htmlFor="user">Username</label>
+        <label for="user">Username</label>
         <br />
         <input id="user" type="text"></input>
         <br />
-        <label htmlFor="password">Passwort</label>
+        <label for="password">Passwort</label>
         <br />
         <input id="password" type="password"></input>
         <br />
@@ -26,7 +26,7 @@ export class Login extends Component {
         <br />
         <Link to="/">Home</Link>
       </div>
-    );
+    )
   }
 }
 
@@ -41,8 +41,7 @@ function ShowLoginHeader() {
         </Row>
       </Container>
     </div>
-  );
+  )
 }
 
 export default Login
-
