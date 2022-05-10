@@ -1,93 +1,95 @@
-import React, {Component} from 'react';
-import {Col, Container, Row} from 'react-bootstrap';
-import {ShowHeader, ShowNavbar} from './App';
+import React, { Component } from 'react'
+import { Col, Container, Row } from 'react-bootstrap'
+import { ShowHeader, ShowNavbar } from './App'
 
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom"
 
-import {enrollUser, getMyCourses, postNewCourse} from '../api';
+import { enrollUser, getMyCourses, postNewCourse } from '../api';
 
-import '../css/App.css';
-import '../css/Kursübersicht.css';
+import '../css/Overlay.css';
+import '../css/Kursübersicht.css'
 
 
 export class Kursuebersicht extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
-      NewCourseID: 0,
+      NewCourseID : 0,
 
       UserRights: true, // true if active user can create courses
 
-      MyCourses: [{name: 'test1', owner: 'Peter', description: 'das ist mein Kurs', created_at: '19.04.2022', id: '1'}],
+      MyCourses: [{ name: "test1", owner: "Peter", description: "das ist mein Kurs", created_at: "19.04.2022", id:"1" }],
 
-      CoursesTaken: [{name: 'test2', owner: 'Hans', description: 'das ist ein anderer Kurs', created_at: '19.04.2022', id: '2'}],
+      CoursesTaken: [{ name: "test2", owner: "Hans", description: "das ist ein anderer Kurs", created_at: "19.04.2022", id: "2" }],
 
-      CoursesSuggested: [{name: 'test3', owner: 'Klaus', description: 'Dieser Kurs könnte ihnen gefallen', created_at: '19.04.2022', id: '3'}],
+      CoursesSuggested: [{ name: "test3", owner: "Klaus", description: "Dieser Kurs könnte ihnen gefallen", created_at: "19.04.2022", id:"3" }],
 
       createCourse: false,
 
       // this object will be filled by the createCourse Dialog and will be sent to the server
-      NewCourse: {name: '', user_id: '', description: '', enroll_key: ''},
+      NewCourse: { name: "", user_id: "", description: "", enroll_key: ""}
 
-    };
+    }
     this.onInputchange = this.onInputchange.bind(this);
     this.onCreateCourse = this.onCreateCourse.bind(this);
+
   }
 
   toggleCreateCourse = () => {
-    this.setState({createCourse: !this.state.createCourse});
-  };
+    this.setState({ createCourse: !this.state.createCourse })
+  }
 
   onInputchange(event) {
     this.setState({
-      [event.target.name]: event.target.value,
+      [event.target.name]: event.target.value
     });
   }
 
   onCreateCourse() {
-    this.state.NewCourse.name = this.state.NewName;
-    this.state.NewCourse.description = this.state.NewBio;
-    this.state.NewCourse.enroll_key = this.state.NewKey;
-    this.state.NewCourse.user_id = 4; // hardcoded user id
-    console.log(this.state.NewCourse);
-    postNewCourse(this, this.state.NewCourse);
-    this.toggleCreateCourse();
-    this.componentDidMount();
+    this.state.NewCourse.name = this.state.NewName
+    this.state.NewCourse.description = this.state.NewBio
+    this.state.NewCourse.enroll_key = this.state.NewKey
+    this.state.NewCourse.user_id = 4  // hardcoded user id
+    postNewCourse(this, this.state.NewCourse)
+    this.toggleCreateCourse()
+    this.componentDidMount()
   }
 
   componentDidMount() {
-    getMyCourses(this);
+    getMyCourses(this)
   }
 
 
+
   render() {
-    const MyCourseslist = [];
+    var MyCourseslist = []
     for (const Course of this.state.MyCourses) {
       MyCourseslist.push(<Col xs={4} fluid><ShowCourse name={Course.name}
         owner={Course.CourseOwner} description={Course.description}
-        created_at={Course.created_at} id={Course.id} /></Col>);
+        created_at={Course.created_at} id={Course.id} /></Col>)
     }
 
-    const CoursesTakenlist = [];
+    var CoursesTakenlist = []
     for (const Course of this.state.CoursesTaken) {
       CoursesTakenlist.push(<Col xs={4} fluid><ShowCourse name={Course.name}
         owner={Course.CourseOwner} description={Course.description}
-        created_at={Course.created_at} id={Course.id} /></Col>);
+        created_at={Course.created_at} id={Course.id} /></Col>)
     }
 
-    const CoursesSuggestedlist = [];
+    var CoursesSuggestedlist = []
     for (const Course of this.state.CoursesSuggested) {
       CoursesSuggestedlist.push(<Col xs={4} fluid><ShowCourse name={Course.name}
         owner={Course.CourseOwner} description={Course.description}
-        created_at={Course.created_at} id={Course.id} /></Col>);
+        created_at={Course.created_at} id={Course.id} /></Col>)
     }
+
 
 
     return (
@@ -95,7 +97,7 @@ export class Kursuebersicht extends Component {
         <ShowHeader />
         <div className="Body">
           <Container className="Container" fluid>
-            <Row className="Row" fluid>
+            <Row className="Content" fluid>
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" fluid>
                 <Row className="Section">
@@ -111,13 +113,13 @@ export class Kursuebersicht extends Component {
                         <DialogContentText>
                           Hier können Sie einen Kurs erstellen.
                           <br />
-                          <label htmlFor="CreateCourseName">Kursname:</label>
+                          <label for="CreateCourseName">Kursname:</label>
                           <input type="text" id="CreateCourseNameId" placeholder='Kursname' name="NewName" onChange={this.onInputchange} />
                           <br />
-                          <label htmlFor="CreateCourseBioId">Kursbeschreibung:</label>
+                          <label for="CreateCourseBioId">Kursbeschreibung:</label>
                           <input type="text" id="CreateCourseBioId" placeholder='Kursbeschreibung' name="NewBio" onChange={this.onInputchange} />
                           <br />
-                          <label htmlFor="CreateCourseKeyId">Einschreibeschlüssel:</label>
+                          <label for="CreateCourseKeyId">Einschreibeschlüssel:</label>
                           <input type="text" id="CreateCourseKeyId" placeholder='Einschreibeschlüssel' name="NewKey" onChange={this.onInputchange} />
                         </DialogContentText>
                       </DialogContent>
@@ -143,12 +145,12 @@ export class Kursuebersicht extends Component {
           </Container>
         </div>
       </div>
-    );
+    )
   }
 }
 
 function ShowCourse(props) {
-  const link = '/kursansicht/' + props.id;
+  let link = "/kursansicht/" + props.id;
   return (
     <div className="Course">
       <Link to={link}>
@@ -159,8 +161,9 @@ function ShowCourse(props) {
       <p className='CourseCreatedAt'>erstellt am:{props.created_at}</p>
 
     </div>
-  );
+  )
 }
 
 
-export default Kursuebersicht;
+
+export default Kursuebersicht
