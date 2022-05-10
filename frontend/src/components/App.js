@@ -2,6 +2,8 @@ import Logo from '../images/Logo.png';
 import React from 'react';
 import {Link} from "react-router-dom"
 import { Container, Row, Col } from 'react-bootstrap'
+
+import '../css/Overlay.css';
 import '../css/App.css';
 
 
@@ -11,7 +13,7 @@ function App() {
       <ShowHeader />
       <div className="Body">
         <Container className="Container" fluid>
-          <Row className="Row" fluid>
+          <Row className="Content" fluid>
             <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
             <Col xs={10} className="ColContent" fluid><h1>Home</h1></Col>
           </Row>
@@ -48,9 +50,9 @@ function ShowHeader() {
     <div className="Header">
       <Container>
         <Row>
-          <Col md={2}><img src={Logo} width="100px" height="100px" alt="Logo"></img></Col>
+          <Col md={2}><img src={Logo} width="100px" height="100px" alt="Logo" className="Logo"></img></Col>
           <Col md={8}><input type="text" id="tfSearchbar"></input>
-            <button id="btnSearchbar">Suche</button></Col>
+            <button id="btnSearchbar">Suchen</button></Col>
           <Col md={2}><Link to="/profil" id="lnkProfile">Profil</Link></Col>
         </Row>
       </Container>

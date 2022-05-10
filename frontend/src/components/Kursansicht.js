@@ -3,8 +3,9 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { ShowHeader, ShowNavbar } from './App'
 import { useParams } from 'react-router-dom';
 
+import '../css/Overlay.css';
+import '../css/Kursansicht.css';
 
-import '../css/App.css';
 import { getCourse, getUsersInCourse, updateCourse } from '../api';
 
 export class Kursansicht extends Component {
@@ -258,7 +259,7 @@ export class Kursansicht extends Component {
         <ShowHeader />
         <div className="Body">
           <Container className="Container" fluid>
-            <Row className="Row" fluid>
+            <Row className="Content" fluid>
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" fluid>
                 {Generallist}

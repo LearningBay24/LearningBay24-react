@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { ShowHeader, ShowNavbar } from './App'
 
-
-import '../css/App.css';
+import '../css/Overlay.css';
+import '../css/Institution.css';
 
 export class Institution extends Component {
   render() {
@@ -12,7 +12,7 @@ export class Institution extends Component {
       <ShowHeader />
       <div className="Body">
         <Container className="Container" fluid>
-          <Row className="Row" fluid>
+          <Row className="Content" fluid>
             <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
             <Col xs={10} className="ColContent" fluid>
               <h1>Institution</h1>

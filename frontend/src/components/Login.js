@@ -3,8 +3,8 @@ import {Link} from "react-router-dom"
 import { Container, Row, Col } from 'react-bootstrap'
 import Logo from '../images/Logo.png';
 
-
-import '../css/App.css';
+import '../css/Overlay.css';
+import '../css/Login.css';
 
 export class Login extends Component {
   render() {

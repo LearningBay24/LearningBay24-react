@@ -12,7 +12,7 @@ import { Link } from "react-router-dom"
 
 import { enrollUser, getMyCourses, postNewCourse } from '../api';
 
-import '../css/App.css';
+import '../css/Overlay.css';
 import '../css/Kursübersicht.css'
 
 
@@ -97,7 +97,7 @@ export class Kursuebersicht extends Component {
         <ShowHeader />
         <div className="Body">
           <Container className="Container" fluid>
-            <Row className="Row" fluid>
+            <Row className="Content" fluid>
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" fluid>
                 <Row className="Section">
