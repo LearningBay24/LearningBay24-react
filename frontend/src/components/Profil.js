@@ -50,7 +50,7 @@ export class Profil extends Component {
   }
 
   ChangeBio = () => {
-    this.state.bio = document.getElementById("bio").value;
+    this.setState({bio: document.getElementById("bio").value});
     alert(this.state.bio);
   };
 

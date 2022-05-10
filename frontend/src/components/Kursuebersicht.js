@@ -9,8 +9,9 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import {Link} from "react-router-dom";
+import PropTypes from "prop-types";
 
-import {enrollUser, getMyCourses, postNewCourse} from "../api";
+import {getMyCourses, postNewCourse} from "../api";
 
 import "../css/Overlay.css";
 import "../css/Kursübersicht.css";
@@ -43,8 +44,8 @@ export class Kursuebersicht extends Component {
 
       createCourse: false,
 
-      // this object will be filled by the createCourse 
-      //Dialog and will be sent to the server
+      // this object will be filled by the createCourse
+      // Dialog and will be sent to the server
       NewCourse: {name: "", user_id: "", description: "", enroll_key: ""},
 
     };
@@ -116,26 +117,39 @@ export class Kursuebersicht extends Component {
                     <h1>Meine Kurse</h1>
                     {MyCourseslist}
 
-                    <button className="primary" onClick={this.toggleCreateCourse}> Kurs erstellen </button>
-                    <Dialog open={this.state.createCourse} onClose={this.toggleCreateCourse}>
+                    <button className="primary"
+                      onClick={this.toggleCreateCourse}>
+                      Kurs erstellen </button>
+                    <Dialog open={this.state.createCourse}
+                      onClose={this.toggleCreateCourse}>
                       <DialogTitle>Kurs erstellen</DialogTitle>
                       <DialogContent>
                         <DialogContentText>
                           Hier können Sie einen Kurs erstellen.
                           <br />
                           <label htmlFor="CreateCourseName">Kursname:</label>
-                          <input type="text" id="CreateCourseNameId" placeholder='Kursname' name="NewName" onChange={this.onInputchange} />
+                          <input type="text" id="CreateCourseNameId"
+                            placeholder='Kursname'
+                            name="NewName" onChange={this.onInputchange} />
                           <br />
-                          <label htmlFor="CreateCourseBioId">Kursbeschreibung:</label>
-                          <input type="text" id="CreateCourseBioId" placeholder='Kursbeschreibung' name="NewBio" onChange={this.onInputchange} />
+                          <label htmlFor="CreateCourseBioId">
+                            Kursbeschreibung:</label>
+                          <input type="text" id="CreateCourseBioId"
+                            placeholder='Kursbeschreibung'
+                            name="NewBio" onChange={this.onInputchange} />
                           <br />
-                          <label htmlFor="CreateCourseKeyId">Einschreibeschlüssel:</label>
-                          <input type="text" id="CreateCourseKeyId" placeholder='Einschreibeschlüssel' name="NewKey" onChange={this.onInputchange} />
+                          <label htmlFor="CreateCourseKeyId">
+                            Einschreibeschlüssel:</label>
+                          <input type="text" id="CreateCourseKeyId"
+                            placeholder='Einschreibeschlüssel'
+                            name="NewKey" onChange={this.onInputchange} />
                         </DialogContentText>
                       </DialogContent>
                       <DialogActions>
-                        <button onClick={this.onCreateCourse}>Kurs erstellen</button>
-                        <button onClick={this.toggleCreateCourse}>abbrechen</button>
+                        <button onClick={this.onCreateCourse}>
+                          Kurs erstellen</button>
+                        <button onClick={this.toggleCreateCourse}>
+                          abbrechen</button>
                       </DialogActions>
                     </Dialog>
                   </Row>
@@ -173,6 +187,13 @@ function ShowCourse(props) {
     </div>
   );
 }
+ShowCourse.propTypes = {
+  name: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  description: PropTypes.string.isRequired,
+  created_at: PropTypes.string.isRequired,
+  owner: PropTypes.string.isRequired,
+};
 
 
 export default Kursuebersicht;
