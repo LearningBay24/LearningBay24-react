@@ -1,24 +1,28 @@
-import React, { Component } from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
-import { ShowHeader, ShowNavbar } from './App'
-import { useParams } from 'react-router-dom';
+import React, {Component} from "react";
+import {Col, Container, Row} from "react-bootstrap";
+import {ShowHeader, ShowNavbar} from "./App";
+import {useParams} from "react-router-dom";
 
-import '../css/Overlay.css';
-import '../css/Kursansicht.css';
+import "../css/Overlay.css";
+import "../css/Kursansicht.css";
 
-import { getCourse, getUsersInCourse, updateCourse } from '../api';
+import {getCourse, updateCourse} from "../api";
+import PropTypes from "prop-types";
 
 export class Kursansicht extends Component {
+  static PropTypes = {
+    id: PropTypes.number.isRequired,
+  };
+
   constructor(props) {
-    super(props)
-
+    super(props);
     this.state = {
-      id: parseInt(props.id),
+      id: parseInt(PropTypes.id),
 
 
-      // ____________________________________________________________________________________________________________________________________
+      // ______________________________________________________________________
       // this is temporary example data
-      // ____________________________________________________________________________________________________________________________________
+      // ______________________________________________________________________
 
       CourseAdmin: true, // true if active user has adminrights
       CourseEdit: false, // true if admin is editing course
@@ -26,36 +30,50 @@ export class Kursansicht extends Component {
 
         name: "Beispielkurs",
 
-        CourseOwner: { LastName: "Mustermann", FirstName: "Max", id: "" },
-        CourseParticipants: [{ FirstName: "", LastName: "", Role: "", id: "" }],
-        CourseTutors: [{ FirstName: "", LastName: "", Role: "", id: "" }],
+        CourseOwner: {LastName: "Mustermann", FirstName: "Max", id: ""},
+        CourseParticipants: [{FirstName: "", LastName: "", Role: "", id: ""}],
+        CourseTutors: [{FirstName: "", LastName: "", Role: "", id: ""}],
 
 
-        CourseAppointments: [{ Day: "Montag", Time: "11:00", Duration: "1:30h", Content: "Vorlesung", Location: "Raum A123", id: "1" },
-        { Day: "Freitag", Time: "8:00", Duration: "1:30h", Content: "Praktikum", Location: "Raum A123", id: "2" }],
+        CourseAppointments: [
+          {
+            Day: "Montag", Time: "11:00", Duration: "1:30h",
+            Content: "Vorlesung", Location: "Raum A123", id: "1",
+          },
+          {
+            Day: "Freitag", Time: "8:00", Duration: "1:30h",
+            Content: "Praktikum", Location: "Raum A123", id: "2",
+          }],
 
         CourseBio: "Das ist ein Beispielkurs",
         CourseCreatedAt: "17.04.2022",
         CourseForum: "",
 
 
-        CourseMaterial: [{ Name: "mat1", Content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", id: "" }],
+        CourseMaterial: [
+          {Name: "mat1", Content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", id: ""}],
         CourseAssignments: [{
           Name: "Abgabe1", Content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-          Date: "17.04.2022", Deadline: "25.04.2022 0:00", id: ""
+          Date: "17.04.2022", Deadline: "25.04.2022 0:00", id: "",
         }],
 
-        CourseSurveys: [{ Name: "Umfrage1", Content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", id: "" }],
-        CourseExams: [{ Name: "Klausur1", Date: "30.4.2022", Duration: "1:30h", Location: "Raum A123", id: "" }]
+        CourseSurveys: [
+          {Name: "Umfrage1", Content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", id: ""}],
+        CourseExams: [
+          {
+            Name: "Klausur1", Date: "30.4.2022", Duration: "1:30h",
+            Location: "Raum A123", id: "",
+          }],
       },
-      // ____________________________________________________________________________________________________________________________________
+      // ______________________________________________________________________
 
-      //variables for editing course
+      // variables for editing course
       ChangeAppointmentId: "-1",
 
-      // ____________________________________________________________________________________________________________________________________
-      // actual structs from DB these get filled by the api call and should be updated and send back to the server if a user made changes
-      // ____________________________________________________________________________________________________________________________________
+      // _______________________________________________________________________
+      // actual structs from DB these get filled by the api call and should be
+      // updated and send back to the server if a user made changes
+      // _______________________________________________________________________
       CurrentCourse: {
         id: 0,
         name: "",
@@ -63,7 +81,7 @@ export class Kursansicht extends Component {
         enroll_key: "",
         forum_id: 0,
         created_at: "",
-        updated_at: ""
+        updated_at: "",
       },
 
       Users: [{
@@ -83,7 +101,7 @@ export class Kursansicht extends Component {
         preferred_language_id: "",
         created_at: "",
         updated_at: "",
-        deleted_at: ""
+        deleted_at: "",
       }],
 
       Appointments: [{
@@ -94,7 +112,7 @@ export class Kursansicht extends Component {
         course_id: "",
         created_at: "",
         updated_at: "",
-        deleted_at: ""
+        deleted_at: "",
       }],
 
       Submission: [{
@@ -107,8 +125,8 @@ export class Kursansicht extends Component {
         created_at: "",
         updated_at: "",
         graded_at: "",
-        deleted_at: ""
-      }]
+        deleted_at: "",
+      }],
 
     };
 
@@ -121,14 +139,15 @@ export class Kursansicht extends Component {
 
   componentDidMount() {
     getCourse(this, this.state.id);
-    //getUsersInCourse(this, this.state.id);
+    // getUsersInCourse(this, this.state.id);
   }
 
 
-  // save inputs to extravariables in state until user commits them to Course object by clicking save button 
+  // save inputs to extravariables in state until user
+  // commits them to Course object by clicking save button
   onInputChange(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   }
 
@@ -141,24 +160,23 @@ export class Kursansicht extends Component {
         enroll_key: this.state.CurrentCourse.enroll_key,
         forum_id: this.state.CurrentCourse.forum_id,
         created_at: this.state.CurrentCourse.created_at,
-        updated_at: this.state.CurrentCourse.updated_at
-      }
-    })
-    updateCourse(this, this.state.CurrentCourse,this.state.id);
+        updated_at: this.state.CurrentCourse.updated_at,
+      },
+    });
+    updateCourse(this, this.state.CurrentCourse, this.state.id);
   }
 
   onSaveAppointmentChange() {
-
     if (this.state.ChangeAppointmentId === "-1") {
-      console.log(this.state.ChangeAppointmentId)
+      console.log(this.state.ChangeAppointmentId);
       this.state.Course.CourseAppointments.push({
 
         Day: this.state.NewWeekDay,
         Time: this.state.NewCourseTime,
         Duration: this.state.NewCourseDuration,
         Content: this.state.NewCourseContent,
-        Location: this.state.NewCourseLocation
-      })
+        Location: this.state.NewCourseLocation,
+      });
     } else {
       for (const Appointment of this.state.Course.CourseAppointments) {
         if (Appointment.id === this.state.ChangeAppointmentId) {
@@ -168,91 +186,109 @@ export class Kursansicht extends Component {
               Time: this.state.NewCourseTime,
               Duration: this.state.NewCourseDuration,
               Content: this.state.NewCourseContent,
-              Location: this.state.NewCourseLocation
-            }
-          })
+              Location: this.state.NewCourseLocation,
+            },
+          });
         }
       }
     }
-    console.log(this.state.Course.CourseAppointments)
+    console.log(this.state.Course.CourseAppointments);
   }
 
 
-
-
   render() {
-    // ____________________________________________________________________________________________________________________________________
+    // ________________________________________________________________________
     // Lists for general view
-    // ____________________________________________________________________________________________________________________________________
+    // ________________________________________________________________________
 
-    var Generallist = [<h1>{this.state.CurrentCourse.name}</h1>,
-    <button hidden={!this.state.CourseAdmin} onClick={() => this.setState({ CourseEdit: !this.state.CourseEdit })}>
-      Kurs bearbeiten</button>]
+    const Generallist = [
+      <h1 key="0">{this.state.CurrentCourse.name}</h1>,
+      <button hidden={!this.state.CourseAdmin} key="1"
+        onClick={() => this.setState({CourseEdit: !this.state.CourseEdit})}>
+        Kurs bearbeiten
+      </button>,
+    ];
 
-    //Generallist.push(<p hidden={this.state.CourseEdit}> {this.state.Course.CourseOwner.FirstName} {this.state.Course.CourseOwner.LastName}</p>)
+    // Generallist.push(<p hidden={this.state.CourseEdit}>
+    // {this.state.Course.CourseOwner.FirstName}
+    // {this.state.Course.CourseOwner.LastName}</p>)
     for (const Appointment of this.state.Course.CourseAppointments) {
-      Generallist.push(<h3 hidden={this.state.CourseEdit}>{Appointment.Day} {Appointment.Time} {Appointment.Duration} {Appointment.Content}
-        {Appointment.Location}</h3>)
+      Generallist.push(<h3 hidden={this.state.CourseEdit}>
+        {Appointment.Day} {Appointment.Time} {Appointment.Duration}
+        {Appointment.Content} {Appointment.Location}</h3>);
     }
-    Generallist.push(<p hidden={this.state.CourseEdit}>{this.state.CurrentCourse.description}</p>)
+    Generallist.push(<p hidden={this.state.CourseEdit}>
+      {this.state.CurrentCourse.description}</p>);
 
-    var Materiallist = []
+    const Materiallist = [];
     for (const Mat of this.state.Course.CourseMaterial) {
-      Materiallist.push(<ShowMaterial Name={Mat.Name} Content={Mat.Content} />)
+      Materiallist.push(<ShowMaterial Name={Mat.Name} Content={Mat.Content} />);
     }
 
-    var Assignmentlist = []
+    const Assignmentlist = [];
     for (const Assignment of this.state.Course.CourseAssignments) {
-      Assignmentlist.push(<ShowAssignment Name={Assignment.Name} Content={Assignment.Content} Date={Assignment.Date}
-        Deadline={Assignment.Deadline} />)
+      Assignmentlist.push(<ShowAssignment Name={Assignment.Name}
+        Content={Assignment.Content} Date={Assignment.Date}
+        Deadline={Assignment.Deadline} />);
     }
 
-    var Surveylist = []
+    const Surveylist = [];
     for (const Survey of this.state.Course.CourseSurveys) {
-      Surveylist.push(<ShowSurvey Name={Survey.Name} Content={Survey.Content} />)
+      Surveylist.push(<ShowSurvey Name={Survey.Name}
+        Content={Survey.Content} />);
     }
 
-    var Examlist = []
+    const Examlist = [];
     for (const Exam of this.state.Course.CourseExams) {
-      Examlist.push(<ShowExam Name={Exam.Name} Content={Exam.Content} Date={Exam.Date} Duration={Exam.Duration}
-        Location={Exam.Location} />)
+      Examlist.push(<ShowExam Name={Exam.Name} Content={Exam.Content}
+        Date={Exam.Date} Duration={Exam.Duration}
+        Location={Exam.Location} />);
     }
 
 
-    // ____________________________________________________________________________________________________________________________________
+    // ________________________________________________________________________
     // lists for edit course view
-    // ____________________________________________________________________________________________________________________________________
-    var EditAppointments = [<option value={-1}>Veranstaltung hinzufügen</option>]
+    // ________________________________________________________________________
+    const EditAppointments = [];
+    EditAppointments.push(<option value="-1">Neuer Termin</option>);
     for (const Appointment of this.state.Course.CourseAppointments) {
-      EditAppointments.push(<option value={Appointment.id}>{Appointment.Day} {Appointment.Time} {Appointment.Content} {Appointment.Location}</option>)
+      EditAppointments.push(<option value={Appointment.id}>{Appointment.Day}
+        {Appointment.Time} {Appointment.Content} {Appointment.Location}
+      </option>);
     }
 
-    var EditParticipants = []
+    const EditParticipants = [];
     for (const User of this.state.Users) {
-      EditParticipants.push(<option value={User.id}>{User.first_name} {User.last_name} {User.role_id}</option>)
+      EditParticipants.push(<option value={User.id}>{User.first_name}
+        {User.last_name} {User.role_id}</option>);
     }
 
-    var EditMaterial = [<option value={-1}>Material hinzufügen</option>]
+    const EditMaterial = [];
+    EditMaterial.push(<option value="-1">Material hinzufügen</option>);
     for (const Mat of this.state.Course.CourseMaterial) {
-      EditMaterial.push(<option value={Mat.id}>{Mat.Name}</option>)
+      EditMaterial.push(<option value={Mat.id}>{Mat.Name}</option>);
     }
 
-    var EditAssignment = [<option value={-1}>Abgabe hinzufügen</option>]
+    const EditAssignment = [];
+    EditAssignment.push(<option value="-1">Neue Aufgabe</option>);
     for (const Assignment of this.state.Course.CourseAssignments) {
-      EditAssignment.push(<option value={Assignment.id}>{Assignment.Name} {Assignment.Date}</option>)
+      EditAssignment.push(<option value={Assignment.id}>
+        {Assignment.Name} {Assignment.Date}</option>);
     }
 
-    var EditSurvey = [<option value={-1}>Umfrage hinzufügen</option>]
+    const EditSurvey = [];
+    EditSurvey.push(<option value="-1">Neue Umfrage</option>);
     for (const Survey of this.state.Course.CourseSurveys) {
-      EditSurvey.push(<option value={Survey.id}>{Survey.Name}</option>)
+      EditSurvey.push(<option value={Survey.id}>{Survey.Name}</option>);
     }
 
-    var EditExam = [<option value={-1}>Klausur hinzufügen</option>]
+    const EditExam = [];
+    EditExam.push(<option value="-1">Neue Prüfung</option>);
     for (const Exam of this.state.Course.CourseExams) {
-      EditExam.push(<option value={Exam.id}>{Exam.Name} {Exam.Date}</option>)
+      EditExam.push(<option value={Exam.id}>{Exam.Name} {Exam.Date}</option>);
     }
 
-    // ____________________________________________________________________________________________________________________________________
+    // ________________________________________________________________________
 
     return (
       <div className="Kursansicht">
@@ -264,28 +300,46 @@ export class Kursansicht extends Component {
               <Col xs={10} className="ColContent" fluid>
                 {Generallist}
 
-                <div className="editSection Section" hidden={!this.state.CourseEdit}>
+                <div className="editSection Section"
+                  hidden={!this.state.CourseEdit}>
                   <h2>Kurs Bearbeiten</h2>
                   <div className="Section">
-                    <input type="text" id="EditCourseBioId" name="description" placeholder={this.state.CurrentCourse.description} onChange={this.onInputChange} />
-                    <button onClick={this.onSaveDescriptionChange}>Beschreibung speichern</button>
+                    <input type="text" id="EditCourseBioId" name="description"
+                      placeholder={this.state.CurrentCourse.description}
+                      onChange={this.onInputChange} />
+                    <button onClick={this.onSaveDescriptionChange}>
+                      Beschreibung speichern</button>
                   </div>
                   <br />
                   <div className="Section">
-                    <select name="ChangeAppointmentId" onChange={this.onInputChange}>{EditAppointments}</select>
+                    <select name="ChangeAppointmentId"
+                      onChange={this.onInputChange}>
+                      {EditAppointments}</select>
                     <label htmlFor="EditCourseWeekday" >Wochentag:</label>
-                    <input type="Text" id="EditCourseWeekday" name="NewWeekDay" placeholder="Wochentag" onChange={this.onInputChange}></input>
+                    <input type="Text" id="EditCourseWeekday" name="NewWeekDay"
+                      placeholder="Wochentag"
+                      onChange={this.onInputChange}></input>
                     <label htmlFor="EditCourseTime">Uhrzeit:</label>
-                    <input type="Time" id="EditCourseTime" name="NewCourseTime" onChange={this.onInputChange}></input>
+                    <input type="Time" id="EditCourseTime" name="NewCourseTime"
+                      onChange={this.onInputChange}></input>
                     <label htmlFor="EditCourseDuration">Dauer:</label>
-                    <input type="Text" id="EditCourseduration" name="NewCourseDuration" placeholder="Dauer" onChange={this.onInputChange}></input>
+                    <input type="Text" id="EditCourseduration"
+                      name="NewCourseDuration"
+                      placeholder="Dauer" onChange={this.onInputChange}></input>
                     <label htmlFor="EditCourseContent">Veranstaltung:</label>
-                    <input type="Text" id="EditCourseContent" name="NewCourseContent" placeholder="Veranstaltung" onChange={this.onInputChange}></input>
+                    <input type="Text" id="EditCourseContent"
+                      name="NewCourseContent"
+                      placeholder="Veranstaltung"
+                      onChange={this.onInputChange}></input>
                     <label htmlFor="EditCourseLocation">Raum:</label>
-                    <input type="Text" id="EditLocation" name="NewCourseLocation" placeholder="Raum" onChange={this.onInputChange}></input>
+                    <input type="Text" id="EditLocation"
+                      name="NewCourseLocation"
+                      placeholder="Raum" onChange={this.onInputChange}></input>
                     <br />
                     <button>Löschen</button>
-                    <button onClick={this.onSaveAppointmentChange}>Speichern</button>
+                    <button onClick={this.onSaveAppointmentChange}>
+                      Speichern
+                    </button>
                   </div>
                   <br />
                   <div className="Section">
@@ -298,7 +352,8 @@ export class Kursansicht extends Component {
                   <div className="Section">
                     <select>{EditMaterial}</select>
                     <label htmlFor="EditMaterialName">Name:</label>
-                    <input type="Text" id="EditMaterialName" placeholder="Materialname"></input>
+                    <input type="Text" id="EditMaterialName"
+                      placeholder="Materialname"></input>
                     {
                       // TODO add material
                     }
@@ -310,7 +365,8 @@ export class Kursansicht extends Component {
                   <div className="Section">
                     <select>{EditAssignment}</select>
                     <label htmlFor="EditAssignmentName">Name:</label>
-                    <input type="Text" id="EditAssignmentName" placeholder="Abgabename"></input>
+                    <input type="Text" id="EditAssignmentName"
+                      placeholder="Abgabename"></input>
                     <label htmlFor="EditAssignmentDate">Datum:</label>
                     <input type="Date" id="EditAssignmentDate" ></input>
                     <label htmlFor="EditAssignmentTime">Uhrzeit:</label>
@@ -326,9 +382,11 @@ export class Kursansicht extends Component {
                   <div className="Section">
                     <select>{EditSurvey}</select>
                     <label htmlFor="EditSurveyName">Name:</label>
-                    <input type="Text" id="EditSurveyName" placeholder="Umfragename"></input>
+                    <input type="Text" id="EditSurveyName"
+                      placeholder="Umfragename"></input>
                     <label htmlFor="EditSurveyLink">Link:</label>
-                    <input type="Text" id="EditSurveyLink" placeholder="Umfragelink"></input>
+                    <input type="Text" id="EditSurveyLink"
+                      placeholder="Umfragelink"></input>
                     <br />
                     <button>Löschen</button>
                     <button>Speichern</button>
@@ -337,13 +395,15 @@ export class Kursansicht extends Component {
                   <div className="Section">
                     <select>{EditExam}</select>
                     <label htmlFor="EditExamName">Name:</label>
-                    <input type="Text" id="EditExamName" placeholder="Klausurname"></input>
+                    <input type="Text" id="EditExamName"
+                      placeholder="Klausurname"></input>
                     <label htmlFor="EditExamDate">Datum:</label>
                     <input type="Date" id="EditExamDate"></input>
                     <label htmlFor="EditExamTime">Uhrzeit:</label>
                     <input type="Time" id="EditExamTime"></input>
                     <label htmlFor="EditExamDuration">Dauer:</label>
-                    <input type="Text" id="EditExamDuration" placeholder="Dauer"></input>
+                    <input type="Text" id="EditExamDuration"
+                      placeholder="Dauer"></input>
 
                     {
                       // TODO add material
@@ -356,22 +416,26 @@ export class Kursansicht extends Component {
 
                 </div>
 
-                <div className="MaterialSection Section" hidden={this.state.CourseEdit}>
+                <div className="MaterialSection Section"
+                  hidden={this.state.CourseEdit}>
                   <h2>Material</h2>
                   {Materiallist}
                 </div>
 
-                <div className="AssignmentSection Section" hidden={this.state.CourseEdit}>
+                <div className="AssignmentSection Section"
+                  hidden={this.state.CourseEdit}>
                   <h2>Abgaben</h2>
                   {Assignmentlist}
                 </div>
 
-                <div className="SurveySection Section" hidden={this.state.CourseEdit}>
+                <div className="SurveySection Section"
+                  hidden={this.state.CourseEdit}>
                   <h2>Umfragen</h2>
                   {Surveylist}
                 </div>
 
-                <div className="ExamSection Section" hidden={this.state.CourseEdit}>
+                <div className="ExamSection Section"
+                  hidden={this.state.CourseEdit}>
                   <h2>Klausuren</h2>
                   {Examlist}
                 </div>
@@ -381,7 +445,7 @@ export class Kursansicht extends Component {
           </Container>
         </div>
       </div>
-    )
+    );
   }
 }
 
@@ -390,48 +454,72 @@ function ShowMaterial(props) {
   return (
     <div className='MaterialContainer'>
       <h6>{props.Name}</h6>
-      <a href={props.Content} target='_blank' rel='noopener noreferrer'>{props.content}</a>
-    </div>)
+      <a href={props.Content} target='_blank'
+        rel='noopener noreferrer'>{props.Content}</a>
+    </div>);
 }
+ShowMaterial.propTypes = {
+  Name: PropTypes.string.isRequired,
+  Content: PropTypes.string.isRequired,
+};
 
 function ShowAssignment(props) {
   return (
     <div className='AssignmentContainer'>
       <h6>{props.Name}</h6>
-      <a href={props.Content} target='_blank' rel='noopener noreferrer'>{props.Content}</a>
+      <a href={props.Content} target='_blank'
+        rel='noopener noreferrer'>{props.Content}</a>
       <p className='AssignmentDate'>{props.Date}</p>
       <p className='AssignmentDeadline'>{props.Deadline}</p>
       <br />
       <input type="submit" value="Datei abgeben" />
-    </div>)
+    </div>);
 }
+ShowAssignment.propTypes = {
+  Name: PropTypes.string.isRequired,
+  Content: PropTypes.string.isRequired,
+  Date: PropTypes.instanceOf(Date).isRequired,
+  Deadline: PropTypes.instanceOf(Date).isRequired,
+};
 
 function ShowExam(props) {
   return (
     <div className='ExamContainer'>
       <h6>{props.Name}</h6>
-      <a href={props.Content} target='_blank' rel='noopener noreferrer'>{props.Content}</a>
+      <a href={props.Content} target='_blank'
+        rel='noopener noreferrer'>{props.Content}</a>
       <p>Zeit: {props.Duration}</p>
       <p>Datum: {props.Date}</p>
       <p>Ort: {props.Location}</p>
       <br />
       <input type="submit" value="zur Prüfung anmelden" />
-    </div>)
+    </div>);
 }
+ShowExam.propTypes = {
+  Name: PropTypes.string.isRequired,
+  Content: PropTypes.string.isRequired,
+  Date: PropTypes.instanceOf(Date).isRequired,
+  Duration: PropTypes.number.isRequired,
+  Location: PropTypes.string.isRequired,
+};
 
 function ShowSurvey(props) {
   return (
     <div className='SurveyContainer'>
       <h6>{props.Name}</h6>
-      <a href={props.Content} target='_blank' rel='noopener noreferrer'>{props.Content}</a>
-    </div>)
+      <a href={props.Content} target='_blank'
+        rel='noopener noreferrer'>{props.Content}</a>
+    </div>);
 }
+ShowSurvey.propTypes = {
+  Name: PropTypes.string.isRequired,
+  Content: PropTypes.string.isRequired,
+};
 
 function Wrapper(props) {
   const params = useParams();
-  return <Kursansicht id={params.id} />
+  return <Kursansicht id={params.id} />;
 }
 
 
-
-export default Wrapper
+export default Wrapper;

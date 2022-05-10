@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
-import {Link} from "react-router-dom"
-import { Container, Row, Col } from 'react-bootstrap'
-import Logo from '../images/Logo.png';
+import React, {Component} from "react";
+import {Link} from "react-router-dom";
+import {Container, Row, Col} from "react-bootstrap";
+import Logo from "../images/Logo.png";
 
-import '../css/Overlay.css';
-import '../css/Login.css';
+import "../css/Overlay.css";
+import "../css/Login.css";
 
 export class Login extends Component {
   render() {
@@ -12,11 +12,11 @@ export class Login extends Component {
       <div>
         <ShowLoginHeader />
         <h1>Login</h1>
-        <label for="user">Username</label>
+        <label htmlFor="user">Username</label>
         <br />
         <input id="user" type="text"></input>
         <br />
-        <label for="password">Passwort</label>
+        <label htmlFor="password">Passwort</label>
         <br />
         <input id="password" type="password"></input>
         <br />
@@ -26,7 +26,7 @@ export class Login extends Component {
         <br />
         <Link to="/">Home</Link>
       </div>
-    )
+    );
   }
 }
 
@@ -35,13 +35,15 @@ function ShowLoginHeader() {
     <div className="Header">
       <Container>
         <Row>
-          <Col md={2}><img src={Logo} width="100px" height="100px" alt="Logo"></img></Col>
+          <Col md={2}><img src={Logo} width="100px" height="100px" alt="Logo">
+          </img></Col>
           <Col md={8}><h1>LEARNINGBAY24</h1></Col>
-          <Col md={2}><img src={Logo} width="100px" height="100px" alt="Logo"></img></Col>
+          <Col md={2}><img src={Logo} width="100px" height="100px" alt="Logo">
+          </img></Col>
         </Row>
       </Container>
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;
