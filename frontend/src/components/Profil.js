@@ -1,27 +1,27 @@
-import React, { Component } from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
-import { ShowHeader, ShowNavbar } from './App'
+import React, {Component} from 'react';
+import {Col, Container, Row} from 'react-bootstrap';
+import {ShowHeader, ShowNavbar} from './App';
 
 import '../css/Overlay.css';
 import '../css/Profil.css';
 
 export class Profil extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      name: "Max",
-      surname: "Mustermann",
-      title: "",
-      email: "max.musterman@web.de",
-      graduation: "Abitur",
-      job: "Student",
-      location: "Offenburg",
-      institutionlocation: "Offenburg",
-      bio: "abc",
-      courses: ["Prog1", "Projekt1", "Mathe1"]
+      name: 'Max',
+      surname: 'Mustermann',
+      title: '',
+      email: 'max.musterman@web.de',
+      graduation: 'Abitur',
+      job: 'Student',
+      location: 'Offenburg',
+      institutionlocation: 'Offenburg',
+      bio: 'abc',
+      courses: ['Prog1', 'Projekt1', 'Mathe1'],
 
-    }
+    };
   }
   render() {
     return (
@@ -44,23 +44,21 @@ export class Profil extends Component {
           </Container>
         </div>
       </div>
-    )
+    );
   }
 
   ChangeBio = () => {
-    this.state.bio = document.getElementById("bio").value
-    alert(this.state.bio)
-  }
+    this.state.bio = document.getElementById('bio').value;
+    alert(this.state.bio);
+  };
 
   FillCourses = () => {
-    let t = ""
-    for (let course of this.state.courses) {
-      t += course + ","
+    let t = '';
+    for (const course of this.state.courses) {
+      t += course + ',';
     }
-    return <p>{t}</p>
-  }
+    return <p>{t}</p>;
+  };
 }
 
-
-
-export default Profil
+export default Profil;
