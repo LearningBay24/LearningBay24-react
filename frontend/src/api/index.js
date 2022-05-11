@@ -10,10 +10,22 @@
  * @param {any} caller The component that calls the api function
  * @return {void} returns nothing.
  */
-export function getMyCourses(caller) {
-  console.log("(getMyCourses): " + "https://learningbay24.de/api/v1/courses/:4");
 
-  fetch("https://learningbay24.de/api/v1/users/4/courses", {method: "GET"})
+const Testlocal = 0;
+
+const Serveradress = "https://learningbay24.de/api/v1/";
+const Localadress = "http://localhost:8080/";
+let Actualadress;
+if (Testlocal) {
+  Actualadress = Localadress;
+} else {
+  Actualadress = Serveradress;
+}
+
+export function getMyCourses(caller) {
+  console.log("(getMyCourses): " + Actualadress + "courses/:4");
+
+  fetch(Actualadress + "users/4/courses", {method: "GET"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -29,9 +41,9 @@ export function getMyCourses(caller) {
  * @return {void} returns nothing.
  */
 export function getCourse(caller, id) {
-  console.log("(getCourse): " + `https://learningbay24.de/api/v1/courses/${id}`);
+  console.log("(getCourse): " + Actualadress + "courses/${id}");
 
-  fetch(`https://learningbay24.de/api/v1/courses/${id}`, {method: "GET"})
+  fetch(Actualadress + "courses/${id}", {method: "GET"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -47,9 +59,9 @@ export function getCourse(caller, id) {
  * @return {void} returns nothing.
  */
 export function getUsersInCourse(caller, id) {
-  console.log("(getUsersInCourse): " + `https://learningbay24.de/api/v1/courses/${id}/users`);
+  console.log("(getUsersInCourse): " + Actualadress + "courses/${id}/users");
 
-  fetch(`https://learningbay24.de/api/v1/courses/${id}/users`, {method: "GET"})
+  fetch(Actualadress + "courses/${id}/users", {method: "GET"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -65,14 +77,14 @@ export function getUsersInCourse(caller, id) {
  * @return {void} returns nothing.
  */
 export function postNewCourse(caller, object) {
-  console.log("(postNewCourse): " + "https://learningbay24.de/api/v1/courses");
+  console.log("(postNewCourse): " + Actualadress + "courses");
 
   const requestOptions = {
     method: "POST",
     body: JSON.stringify(object),
   };
 
-  fetch("https://learningbay24.de/api/v1/courses", requestOptions)
+  fetch(Actualadress + "courses", requestOptions)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -89,14 +101,14 @@ export function postNewCourse(caller, object) {
  * @return {void} returns nothing.
  */
 export function updateCourse(caller, object, id) {
-  console.log("(updateCourse): " + `https://learningbay24.de/api/v1/courses/${id}`);
+  console.log("(updateCourse): " + Actualadress + "courses/${id}");
 
   const requestOptions = {
     method: "PATCH",
     body: JSON.stringify(object),
   };
 
-  fetch(`https://learningbay24.de/api/v1/courses/${id}`, requestOptions)
+  fetch(Actualadress + "courses/${id}", requestOptions)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -134,9 +146,9 @@ export function enrollUser(caller, user_id,id)
  * @return {void} returns nothing.
  */
 export function deleteCourse(caller, id) {
-  console.log("(deleteCourse): " + `https://learningbay24.de/api/v1/courses/${id}`);
+  console.log("(deleteCourse): " + Actualadress + "courses/${id}");
 
-  fetch(`https://learningbay24.de/api/v1/courses/${id}`, {method: "DELETE"})
+  fetch(Actualadress + "courses/${id}", {method: "DELETE"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
