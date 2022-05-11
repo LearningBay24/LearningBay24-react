@@ -1,7 +1,8 @@
 /*
  * Info:
  * (caller): the component that calls the api function has to give a reference
- * to itself so that the function can save the return data in the components state
+ * to itself so that the function can save the return
+ * data in the components state
  */
 
 /**
@@ -75,7 +76,7 @@ export function postNewCourse(caller, object) {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        this.setState({ /* TODO: Return wert in state speichern */ });
+        caller.setState({ /* TODO: Return wert in state speichern */ });
       })
       .catch((error) => console.error(error));
 }
