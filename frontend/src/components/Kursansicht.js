@@ -10,15 +10,10 @@ import {getCourse, updateCourse} from "../api";
 import PropTypes from "prop-types";
 
 export class Kursansicht extends Component {
-  static PropTypes = {
-    id: PropTypes.number.isRequired,
-  };
-
   constructor(props) {
     super(props);
     this.state = {
-      id: parseInt(PropTypes.id),
-
+      id: parseInt(props.id),
 
       // ______________________________________________________________________
       // this is temporary example data
@@ -138,6 +133,7 @@ export class Kursansicht extends Component {
 
 
   componentDidMount() {
+    // console.log("this.state.id" + this.state.id);
     getCourse(this, this.state.id);
     // getUsersInCourse(this, this.state.id);
   }
@@ -448,6 +444,12 @@ export class Kursansicht extends Component {
     );
   }
 }
+Kursansicht.propTypes = {
+  id: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+};
 
 
 function ShowMaterial(props) {
@@ -478,8 +480,8 @@ function ShowAssignment(props) {
 ShowAssignment.propTypes = {
   Name: PropTypes.string.isRequired,
   Content: PropTypes.string.isRequired,
-  Date: PropTypes.instanceOf(Date).isRequired,
-  Deadline: PropTypes.instanceOf(Date).isRequired,
+  Date: PropTypes.string.isRequired,
+  Deadline: PropTypes.string.isRequired,
 };
 
 function ShowExam(props) {
@@ -498,8 +500,8 @@ function ShowExam(props) {
 ShowExam.propTypes = {
   Name: PropTypes.string.isRequired,
   Content: PropTypes.string.isRequired,
-  Date: PropTypes.instanceOf(Date).isRequired,
-  Duration: PropTypes.number.isRequired,
+  Date: PropTypes.string.isRequired,
+  Duration: PropTypes.string.isRequired,
   Location: PropTypes.string.isRequired,
 };
 

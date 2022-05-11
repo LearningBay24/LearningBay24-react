@@ -180,7 +180,6 @@ function ShowCourse(props) {
       <Link to={link}>
         <h4 className='CourseName'>{props.name}</h4>
       </Link>
-      <p className='CourseOwner'>Kursbesitzer: {props.owner}</p>
       <p className='CourseDescription'>{props.description}</p>
       <p className='CourseCreatedAt'>erstellt am:{props.created_at}</p>
 
@@ -189,10 +188,13 @@ function ShowCourse(props) {
 }
 ShowCourse.propTypes = {
   name: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
+  id: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   description: PropTypes.string.isRequired,
   created_at: PropTypes.string.isRequired,
-  owner: PropTypes.string.isRequired,
+  // owner: PropTypes.string.isRequired,
 };
 
 
