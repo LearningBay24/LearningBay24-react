@@ -26,12 +26,15 @@ ReactDOM.render(
     <Router>
       <Routes>
         <Route exact path="/" element={<App />} />
-        <Route exact path="/abgabenuebersicht" element={<Abgabenuebersicht />} />
+        <Route exact path="/abgabenuebersicht"
+          element={<Abgabenuebersicht />} />
         <Route exact path="/anlegen" element={<Anlegen />} />
-        <Route exact path="/benachrichtigungen" element={<Benachrichtigungen />} />
+        <Route exact path="/benachrichtigungen"
+          element={<Benachrichtigungen />} />
         <Route exact path="/dashboard" element={<Dashboard />} />
         <Route exact path="/institution" element={<Institution />} />
-        <Route exact path="/klausurenuebersicht" element={<Klausurenuebersicht />} />
+        <Route exact path="/klausurenuebersicht"
+          element={<Klausurenuebersicht />} />
         <Route exact path="/kursansicht/:id" element={<Wrapper />} />
         <Route exact path="/kursuebersicht" element={<Kursuebersicht />} />
         <Route exact path="/login" element={<Login />} />
