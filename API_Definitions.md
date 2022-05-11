@@ -111,4 +111,20 @@ State name:
 Url:"/courses/:id/delete/user/:user_id"
 Needed Params:id (from course) , user_id 
 
+Method: POST
+Description: Log In with given email and password
+Return:logged in user with jwt token in header
+Frontend endpoint: 
+State name: 
+Url:"/login"
+Needed Params:email , password 
+
+Method: POST
+Description: Registers given user
+Return:
+Frontend endpoint: 
+State name: 
+Url:"/register"
+Needed Params: Atleast all requierd user fields (requierd: firstname,surename,email,password,role_id,preferred_language_id)
+
 
