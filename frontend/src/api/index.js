@@ -174,7 +174,6 @@ export function login(caller, data) {
       .then((data) => {
         console.log(data);
         userid = data.id;
-        // caller.setState({CurrentCourse: data});
       })
       .catch((error) => console.error(error));
 }

@@ -35,8 +35,6 @@ export class Login extends Component {
           onChange={this.onInputChange}></input>
         <br />
         <input type="submit" value="log in" onClick={this.UserLogin}></input>
-        <input type="submit" value="register"
-          onClick={this.UserRegister}></input>
         <br />
         <br />
         <br />
