@@ -83,12 +83,13 @@ export function postNewCourse(caller, object) {
     method: "POST",
     body: JSON.stringify(object),
   };
+  console.log(requestOptions.body);
 
   fetch(Actualadress + "courses", requestOptions)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        caller.setState({ /* TODO: Return wert in state speichern */ });
+        caller.setState({ /* TODO: Return wert in state speichern */});
       })
       .catch((error) => console.error(error));
 }
@@ -112,7 +113,7 @@ export function updateCourse(caller, object, id) {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        // TODO
+      // TODO
       })
       .catch((error) => console.error(error));
 }
@@ -152,6 +153,46 @@ export function deleteCourse(caller, id) {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+      })
+      .catch((error) => console.error(error));
+}
+
+export function login(caller, data) {
+  console.log("(login): " + Actualadress + "login");
+
+  const requestOptions = {
+    method: "POST",
+    body: JSON.stringify(data),
+  };
+
+  fetch(Actualadress + "login", requestOptions)
+      .then((response) => {
+        // response.json();
+        response.headers.forEach(console.log);
+      })
+      .then((data) => {
+        console.log("data"+data);
+        caller.setState({ /* TODO: Return wert in state speichern */});
+      })
+      .catch((error) => console.error(error));
+}
+
+export function register(caller, data) {
+  console.log("(register): " + Actualadress + "register");
+  const requestOptions = {
+    method: "POST",
+    body: JSON.stringify(data),
+  };
+  console.log(requestOptions.body);
+
+  fetch(Actualadress + "register", requestOptions)
+      .then((response) => {
+        response.json();
+        console.log(response);
+      })
+      .then((data) => {
+        console.log(data);
+        caller.setState({ /* TODO: Return wert in state speichern */});
       })
       .catch((error) => console.error(error));
 }

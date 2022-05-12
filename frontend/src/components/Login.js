@@ -3,24 +3,40 @@ import {Link} from "react-router-dom";
 import {Container, Row, Col} from "react-bootstrap";
 import Logo from "../images/Logo.png";
 
+import {login} from "../api";
+
 import "../css/Overlay.css";
 import "../css/Login.css";
 
 export class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      Email: "",
+      Password: "",
+    };
+  }
   render() {
+    this.onInputChange = this.onInputChange.bind(this);
+    this.UserLogin = this.UserLogin.bind(this);
+
     return (
       <div>
         <ShowLoginHeader />
         <h1>Login</h1>
-        <label htmlFor="user">Username</label>
+        <label htmlFor="user">E-mail</label>
         <br />
-        <input id="user" type="text"></input>
+        <input id="user" type="text" name="Email"
+          onChange={this.onInputChange}></input>
         <br />
         <label htmlFor="password">Passwort</label>
         <br />
-        <input id="password" type="password"></input>
+        <input id="password" type="password" name="Password"
+          onChange={this.onInputChange}></input>
         <br />
-        <input type="submit" value="log in"></input>
+        <input type="submit" value="log in" onClick={this.UserLogin}></input>
+        <input type="submit" value="register"
+          onClick={this.UserRegister}></input>
         <br />
         <br />
         <br />
@@ -28,7 +44,24 @@ export class Login extends Component {
       </div>
     );
   }
+
+
+  onInputChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  }
+
+
+  UserLogin() {
+    const data = {
+      Email: this.state.Email,
+      Password: this.state.Password,
+    };
+    login(this, data);
+  }
 }
+
 
 function ShowLoginHeader() {
   return (
