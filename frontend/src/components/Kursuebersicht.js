@@ -71,23 +71,23 @@ export class Kursuebersicht extends Component {
   render() {
     var MyCourseslist = []
     for (const Course of this.state.MyCourses) {
-      MyCourseslist.push(<Col xs={4} fluid><ShowCourse name={Course.name}
+      MyCourseslist.push(<div className="Course"><ShowCourse name={Course.name}
         owner={Course.CourseOwner} description={Course.description}
-        created_at={Course.created_at} id={Course.id} /></Col>)
+        created_at={Course.created_at} id={Course.id} /></div>)
     }
 
     var CoursesTakenlist = []
     for (const Course of this.state.CoursesTaken) {
-      CoursesTakenlist.push(<Col xs={4} fluid><ShowCourse name={Course.name}
+      CoursesTakenlist.push(<div className="Course"><ShowCourse name={Course.name}
         owner={Course.CourseOwner} description={Course.description}
-        created_at={Course.created_at} id={Course.id} /></Col>)
+        created_at={Course.created_at} id={Course.id} /></div>)
     }
 
     var CoursesSuggestedlist = []
     for (const Course of this.state.CoursesSuggested) {
-      CoursesSuggestedlist.push(<Col xs={4} fluid><ShowCourse name={Course.name}
+      CoursesSuggestedlist.push(<div className="Course"><ShowCourse name={Course.name}
         owner={Course.CourseOwner} description={Course.description}
-        created_at={Course.created_at} id={Course.id} /></Col>)
+        created_at={Course.created_at} id={Course.id} /></div>)
     }
 
 
@@ -100,7 +100,7 @@ export class Kursuebersicht extends Component {
             <Row className="Content" fluid>
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" fluid>
-                <Row className="Section">
+                <Row className="SectionContainer">
                   <h1>Kursübersicht</h1>
                   <Row className="Section" hidden={!this.state.UserRights}>
                     <h1>Meine Kurse</h1>
@@ -136,9 +136,7 @@ export class Kursuebersicht extends Component {
                   <Row className="Section">
                     <h1>Vorgeschlagene Kurse</h1>
                     {CoursesSuggestedlist}
-
                   </Row>
-
                 </Row>
               </Col>
             </Row>
@@ -152,7 +150,7 @@ export class Kursuebersicht extends Component {
 function ShowCourse(props) {
   let link = "/kursansicht/" + props.id;
   return (
-    <div className="Course">
+    <div>
       <Link to={link}>
         <h4 className='CourseName'>{props.name}</h4>
       </Link>

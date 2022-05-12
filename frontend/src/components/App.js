@@ -17,6 +17,13 @@ function App() {
             <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
             <Col xs={10} className="ColContent" fluid><h1>Home</h1></Col>
           </Row>
+          <Row className="FooterRow" fluid>
+            <Col xs={12} className="Footer" fluid>
+              <p>Impressum</p>
+              <p>Datenschutz</p>
+              <p>Kontakt</p>
+            </Col>
+          </Row>
         </Container>
       </div>
     </div>

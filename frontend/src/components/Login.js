@@ -9,21 +9,23 @@ import '../css/Login.css';
 export class Login extends Component {
   render() {
     return (
-      <div>
+      <div className="LoginContainer">
         <ShowLoginHeader />
-        <h1>Login</h1>
-        <label for="user">Username</label>
-        <br />
-        <input id="user" type="text"></input>
-        <br />
-        <label for="password">Passwort</label>
-        <br />
-        <input id="password" type="password"></input>
-        <br />
-        <input type="submit" value="log in"></input>
-        <br />
-        <br />
-        <br />
+        <div className="Login">
+            <h1>Login</h1>
+            <label id="namelabel" for="user">Username</label>
+            <br />
+            <input id="user" type="text"></input>
+            <br />
+            <label id="pswdlabel" for="password">Passwort</label>
+            <br />
+            <input id="password" type="password"></input>
+            <br />
+            <input id="loginbutton" type="submit" value="log in"></input>
+            <br />
+            <br />
+            <br />
+        </div>
         <Link to="/">Home</Link>
       </div>
     )

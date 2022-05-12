@@ -1,16 +1,41 @@
-.Course {
-    margin-bottom: 7px;
-    padding: 0px;
-    border: solid 1px lightblue;
+.SectionContainer {
+    background-color: var(--white);
 }
 
 .Section {
-    border-bottom: solid 3px lightgrey;
-    margin: 0px;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-flow: row wrap;
+    border-bottom: solid 2px var(--mid);
 }
 
-label,
-input {
+
+.Course {
+    margin: 1rem;
+    padding: 1rem;
+    width: clamp(14rem, 60%, 20rem);
+    border: solid 2px var(--mid);
+    border-radius: 1rem;
+}
+
+.Course a {
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.Course a h4 {
+    font-size: 1.2rem;
+    border-bottom: solid 2px var(--mid);
+}
+
+.Course:hover {
+    background-color: var(--grey);
+    border: solid 2px var(--mid);
+}
+
+label, input {
     display: flex;
     flex-direction: column;
 }
@@ -19,3 +44,12 @@ input {
 .Header input {
     display: inline;
 }
+
+button {
+    margin: 1rem;
+
+    background-color: white;
+    border: solid 2px var(--dark);
+    border-radius: var(--rad);
+}
+
