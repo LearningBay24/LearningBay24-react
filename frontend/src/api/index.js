@@ -11,7 +11,7 @@
  * @return {void} returns nothing.
  */
 
-const Testlocal = 0;
+const Testlocal = 1;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
 const Localadress = "http://localhost:8080/";
@@ -41,9 +41,9 @@ export function getMyCourses(caller) {
  * @return {void} returns nothing.
  */
 export function getCourse(caller, id) {
-  console.log("(getCourse): " + Actualadress + "courses/${id}");
+  console.log("(getCourse): " + Actualadress + `courses/${id}`);
 
-  fetch(Actualadress + "courses/${id}", {method: "GET"})
+  fetch(Actualadress + `courses/${id}`, {method: "GET"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -59,9 +59,9 @@ export function getCourse(caller, id) {
  * @return {void} returns nothing.
  */
 export function getUsersInCourse(caller, id) {
-  console.log("(getUsersInCourse): " + Actualadress + "courses/${id}/users");
+  console.log("(getUsersInCourse): " + Actualadress + `courses/${id}/users`);
 
-  fetch(Actualadress + "courses/${id}/users", {method: "GET"})
+  fetch(Actualadress + `courses/${id}/users`, {method: "GET"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -101,14 +101,14 @@ export function postNewCourse(caller, object) {
  * @return {void} returns nothing.
  */
 export function updateCourse(caller, object, id) {
-  console.log("(updateCourse): " + Actualadress + "courses/${id}");
+  console.log("(updateCourse): " + Actualadress + `courses/${id}`);
 
   const requestOptions = {
     method: "PATCH",
     body: JSON.stringify(object),
   };
 
-  fetch(Actualadress + "courses/${id}", requestOptions)
+  fetch(Actualadress + `courses/${id}`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -146,9 +146,9 @@ export function enrollUser(caller, user_id,id)
  * @return {void} returns nothing.
  */
 export function deleteCourse(caller, id) {
-  console.log("(deleteCourse): " + Actualadress + "courses/${id}");
+  console.log("(deleteCourse): " + Actualadress + `courses/${id}`);
 
-  fetch(Actualadress + "courses/${id}", {method: "DELETE"})
+  fetch(Actualadress + `courses/${id}`, {method: "DELETE"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
