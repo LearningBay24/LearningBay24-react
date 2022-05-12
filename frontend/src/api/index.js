@@ -11,7 +11,7 @@
  * @return {void} returns nothing.
  */
 
-const Testlocal = 0;
+const Testlocal = 1;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
 const Localadress = "http://localhost:8080/";
@@ -22,10 +22,13 @@ if (Testlocal) {
   Actualadress = Serveradress;
 }
 
-export function getMyCourses(caller) {
-  console.log("(getMyCourses): " + Actualadress + "courses/:4");
+let userid = 4;
 
-  fetch(Actualadress + "users/4/courses", {method: "GET"})
+
+export function getMyCourses(caller) {
+  console.log("(getMyCourses): " + Actualadress + `users/${userid}/courses`);
+
+  fetch(Actualadress + `users/${userid}/courses`, {method: "GET"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -78,6 +81,7 @@ export function getUsersInCourse(caller, id) {
  */
 export function postNewCourse(caller, object) {
   console.log("(postNewCourse): " + Actualadress + "courses");
+  object.user_id = userid;
 
   const requestOptions = {
     method: "POST",
@@ -166,13 +170,11 @@ export function login(caller, data) {
   };
 
   fetch(Actualadress + "login", requestOptions)
-      .then((response) => {
-        // response.json();
-        response.headers.forEach(console.log);
-      })
+      .then((response) => response.json())
       .then((data) => {
-        console.log("data"+data);
-        caller.setState({ /* TODO: Return wert in state speichern */});
+        console.log(data);
+        userid = data.id;
+        // caller.setState({CurrentCourse: data});
       })
       .catch((error) => console.error(error));
 }

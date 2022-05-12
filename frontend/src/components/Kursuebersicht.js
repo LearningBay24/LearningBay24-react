@@ -72,6 +72,7 @@ export class Kursuebersicht extends Component {
     };
     postNewCourse(this, NewCourse);
     this.toggleCreateCourse();
+    this.getMyCourses(this);
     this.componentDidMount();
   }
 
@@ -82,10 +83,12 @@ export class Kursuebersicht extends Component {
 
   render() {
     const MyCourseslist = [];
-    for (const Course of this.state.MyCourses) {
-      MyCourseslist.push(<Col xs={4} fluid><ShowCourse name={Course.name}
-        owner={Course.CourseOwner} description={Course.description}
-        created_at={Course.created_at} id={Course.id} /></Col>);
+    if (this.state.MyCourses != null) {
+      for (const Course of this.state.MyCourses) {
+        MyCourseslist.push(<Col xs={4} fluid><ShowCourse name={Course.name}
+          owner={Course.CourseOwner} description={Course.description}
+          created_at={Course.created_at} id={Course.id} /></Col>);
+      }
     }
 
     const CoursesTakenlist = [];
