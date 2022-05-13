@@ -21,23 +21,26 @@ export class Login extends Component {
     this.UserLogin = this.UserLogin.bind(this);
 
     return (
-      <div>
+      <div className="LoginContainer">
         <ShowLoginHeader />
-        <h1>Login</h1>
-        <label htmlFor="user">E-mail</label>
-        <br />
-        <input id="user" type="text" name="Email"
-          onChange={this.onInputChange}></input>
-        <br />
-        <label htmlFor="password">Passwort</label>
-        <br />
-        <input id="password" type="password" name="Password"
-          onChange={this.onInputChange}></input>
-        <br />
-        <input type="submit" value="log in" onClick={this.UserLogin}></input>
-        <br />
-        <br />
-        <br />
+        <div className="Login">
+            <h1>Login</h1>
+            <label id="emaillabel" for="email">E-mail</label>
+            <br />
+            <input id="email" type="text" name="Email"
+              onChange={this.onInputChange}></input>
+            <br />
+            <label id="pswdlabel" for="password">Passwort</label>
+            <br />
+            <input id="password" type="password" name="Password"
+              onChange={this.onInputChange}></input>
+            <br />
+            <input id="loginbutton" type="submit" value="Login"
+              onClick={this.UserLogin}></input>
+            <br />
+            <br />
+            <br />
+        </div>
         <Link to="/">Home</Link>
       </div>
     );
