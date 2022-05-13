@@ -112,11 +112,12 @@ export function updateCourse(caller, object, id) {
     method: "PATCH",
     body: JSON.stringify(object),
   };
+  console.log(requestOptions.body);
 
   fetch(Actualadress + `courses/${id}`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+      //  console.log(data);
       // TODO
       })
       .catch((error) => console.error(error));

@@ -41,7 +41,6 @@ export class Login extends Component {
           <br />
           <br />
         </div>
-        <Link to="/">Home</Link>
       </div>
     );
   }
@@ -69,11 +68,13 @@ function ShowLoginHeader() {
     <div className="Header">
       <Container>
         <Row>
-          <Col md={2}><img src={Logo} width="100px" height="100px" alt="Logo">
-          </img></Col>
+          <Col md={2}><Link to="/kursuebersicht">
+            <img src={Logo} width="100px" height="100px"
+              alt="Logo" className="Logo"></img></Link></Col>
           <Col md={8}><h1>LEARNINGBAY24</h1></Col>
-          <Col md={2}><img src={Logo} width="100px" height="100px" alt="Logo">
-          </img></Col>
+          <Col md={2}><Link to="/kursuebersicht">
+            <img src={Logo} width="100px" height="100px"
+              alt="Logo" className="Logo"></img></Link></Col>
         </Row>
       </Container>
     </div>

@@ -33,13 +33,13 @@ export class Kursuebersicht extends Component {
 
       CoursesTaken: [{
         name: "test2", owner: "Hans", description: "das ist ein anderer Kurs",
-        created_at: "19.04.2022", id: "2",
+        created_at: "4-19-2022", id: "2",
       }],
 
       CoursesSuggested: [{
         name: "test3", owner: "Klaus",
         description: "Dieser Kurs könnte ihnen gefallen",
-        created_at: "19.04.2022", id: "3",
+        created_at: "4-19-2022", id: "3",
       }],
 
       createCourse: false,
@@ -185,7 +185,8 @@ function ShowCourse(props) {
         <h4 className='CourseName'>{props.name}</h4>
       </Link>
       <p className='CourseDescription'>{props.description}</p>
-      <p className='CourseCreatedAt'>erstellt am:{props.created_at}</p>
+      <p className='CourseCreatedAt'>erstellt am:
+        {new Date(props.created_at).toLocaleDateString()}</p>
 
     </div>
   );
