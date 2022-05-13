@@ -1,0 +1,34 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "google",
+        "eslint:recommended"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "no-duplicate-imports": "error",
+        "no-self-compare": "error",
+        "no-unreachable-loop": "error",
+        "no-unused-private-class-members": "error",
+        "require-jsdoc": "off",
+        "quotes": ["error","double"]
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    }
+}

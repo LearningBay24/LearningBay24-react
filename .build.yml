@@ -10,6 +10,10 @@ tasks:
   - setup: |
       cd LearningBay24-react/frontend/
       npm install
+  - lint: |
+      cd LearningBay24-react/frontend/
+      npm install --save-dev eslint eslint-config-google
+      npx eslint src/**/*.js
   - build: |
       cd LearningBay24-react/frontend/
       npm run build
