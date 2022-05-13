@@ -93,16 +93,18 @@ export class Kursuebersicht extends Component {
 
     const CoursesTakenlist = [];
     for (const Course of this.state.CoursesTaken) {
-      CoursesTakenlist.push(<div className="Course"><ShowCourse name={Course.name}
-        owner={Course.CourseOwner} description={Course.description}
-        created_at={Course.created_at} id={Course.id} /></div>)
+      CoursesTakenlist.push(<div className="Course">
+        <ShowCourse name={Course.name}
+          owner={Course.CourseOwner} description={Course.description}
+          created_at={Course.created_at} id={Course.id} /></div>);
     }
 
     const CoursesSuggestedlist = [];
     for (const Course of this.state.CoursesSuggested) {
-      CoursesSuggestedlist.push(<div className="Course"><ShowCourse name={Course.name}
-        owner={Course.CourseOwner} description={Course.description}
-        created_at={Course.created_at} id={Course.id} /></div>)
+      CoursesSuggestedlist.push(<div className="Course">
+        <ShowCourse name={Course.name}
+          owner={Course.CourseOwner} description={Course.description}
+          created_at={Course.created_at} id={Course.id} /></div>);
     }
 
 
