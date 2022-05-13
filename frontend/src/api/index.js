@@ -173,10 +173,18 @@ export function login(caller, data) {
   fetch(Actualadress + "login", requestOptions)
       .then((response) => response.json())
       .then((data) => {
+        if (data != null) {
+          userid = data.id;
+          alert("Login erfolgreich: id = " + data.id);
+        } else {
+          alert("Login fehlgeschlagen");
+        }
         console.log(data);
-        userid = data.id;
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error(error);
+        alert("Login fehlgeschlagen");
+      });
 }
 
 export function register(caller, data) {
