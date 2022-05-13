@@ -36,9 +36,9 @@ export class Login extends Component {
         <br />
         <input type="submit" value="log in" onClick={this.UserLogin}></input>
         <br />
-        <br />
-        <br />
-        <Link to="/">Home</Link>
+        <Link to="/anlegen">Registrieren</Link>
+        <br/>
+        <Link to="/kursuebersicht">Kursübersicht</Link>
       </div>
     );
   }
