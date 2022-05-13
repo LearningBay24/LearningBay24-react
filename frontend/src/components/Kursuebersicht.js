@@ -85,9 +85,10 @@ export class Kursuebersicht extends Component {
     const MyCourseslist = [];
     if (this.state.MyCourses != null) {
       for (const Course of this.state.MyCourses) {
-        MyCourseslist.push(<div xs={4} fluid><ShowCourse name={Course.name}
-          owner={Course.CourseOwner} description={Course.description}
-          created_at={Course.created_at} id={Course.id} /></div>);
+        MyCourseslist.push(<div className="Course">
+          <ShowCourse name={Course.name}
+            owner={Course.CourseOwner} description={Course.description}
+            created_at={Course.created_at} id={Course.id} /></div>);
       }
     }
 
