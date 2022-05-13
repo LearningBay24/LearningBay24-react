@@ -183,7 +183,9 @@ export function login(caller, data) {
       })
       .catch((error) => {
         console.error(error);
-        alert("Login fehlgeschlagen");
+        if (error.status != 200) {
+          alert("Login fehlgeschlagen");
+        }
       });
 }
 
