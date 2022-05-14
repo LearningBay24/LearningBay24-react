@@ -8,7 +8,7 @@ Route,
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./css/index.css";
-import App from "./components/App";
+// import App from "./components/App";
 import Abgabenuebersicht from "./components/Abgabenuebersicht";
 import Anlegen from "./components/Anlegen";
 import Benachrichtigungen from "./components/Benachrichtigungen";
@@ -27,20 +27,22 @@ ReactDOM.render(
       <Router>
         <Routes>
           <Route exact path="/" element={<Kursuebersicht />} />
-          <Route exact path="/abgabenuebersicht" element={<Abgabenuebersicht />} />
+          <Route exact path="/abgabenuebersicht" 
+            element={<Abgabenuebersicht />} />
           <Route exact path="/anlegen" element={<Anlegen />} />
-          <Route exact path="/benachrichtigungen" element={<Benachrichtigungen />} />
+          <Route exact path="/benachrichtigungen" 
+            element={<Benachrichtigungen />} />
           <Route exact path="/dashboard" element={<Dashboard />} />
           <Route exact path="/institution" element={<Institution />} />
-          <Route exact path="/klausurenuebersicht" element={<Klausurenuebersicht />} />
-          <Route exact path="/kursansicht" element={<Kursansicht />} />
+          <Route exact path="/klausurenuebersicht" 
+            element={<Klausurenuebersicht />} />
+          <Route exact path="/kursansicht" element={<Wrapper />} />
           <Route exact path="/kursuebersicht" element={<Kursuebersicht />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/profil" element={<Profil />} />
           <Route exact path="/stundenplan" element={<Stundenplan />} />
-          
         </Routes>
       </Router>
     </Provider>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
