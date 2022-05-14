@@ -218,27 +218,28 @@ export class Kursansicht extends Component {
 
     const Materiallist = [];
     for (const Mat of this.state.Course.CourseMaterial) {
-      Materiallist.push(<ShowMaterial Name={Mat.Name} Content={Mat.Content} />);
+      Materiallist.push(<ShowMaterial Name={Mat.Name} Content={Mat.Content}
+        className="Material"/>);
     }
 
     const Assignmentlist = [];
     for (const Assignment of this.state.Course.CourseAssignments) {
       Assignmentlist.push(<ShowAssignment Name={Assignment.Name}
         Content={Assignment.Content} Date={Assignment.Date}
-        Deadline={Assignment.Deadline} />);
+        Deadline={Assignment.Deadline} className="Assignment"/>);
     }
 
     const Surveylist = [];
     for (const Survey of this.state.Course.CourseSurveys) {
       Surveylist.push(<ShowSurvey Name={Survey.Name}
-        Content={Survey.Content} />);
+        Content={Survey.Content} className="Survey"/>);
     }
 
     const Examlist = [];
     for (const Exam of this.state.Course.CourseExams) {
       Examlist.push(<ShowExam Name={Exam.Name} Content={Exam.Content}
         Date={Exam.Date} Duration={Exam.Duration}
-        Location={Exam.Location} />);
+        Location={Exam.Location} className="Exam"/>);
     }
 
 
@@ -412,25 +413,25 @@ export class Kursansicht extends Component {
 
                 </div>
 
-                <div className="MaterialSection Section"
+                <div className="MaterialSection"
                   hidden={this.state.CourseEdit}>
                   <h2>Material</h2>
                   {Materiallist}
                 </div>
 
-                <div className="AssignmentSection Section"
+                <div className="AssignmentSection"
                   hidden={this.state.CourseEdit}>
                   <h2>Abgaben</h2>
                   {Assignmentlist}
                 </div>
 
-                <div className="SurveySection Section"
+                <div className="SurveySection"
                   hidden={this.state.CourseEdit}>
                   <h2>Umfragen</h2>
                   {Surveylist}
                 </div>
 
-                <div className="ExamSection Section"
+                <div className="ExamSection"
                   hidden={this.state.CourseEdit}>
                   <h2>Klausuren</h2>
                   {Examlist}
@@ -474,7 +475,7 @@ function ShowAssignment(props) {
       <p className='AssignmentDate'>{props.Date}</p>
       <p className='AssignmentDeadline'>{props.Deadline}</p>
       <br />
-      <input type="submit" value="Datei abgeben" />
+      <input type="submit" value="Datei abgeben" className="SubmitButton"/>
     </div>);
 }
 ShowAssignment.propTypes = {
@@ -494,7 +495,8 @@ function ShowExam(props) {
       <p>Datum: {props.Date}</p>
       <p>Ort: {props.Location}</p>
       <br />
-      <input type="submit" value="zur Prüfung anmelden" />
+      <input type="submit" value="zur Prüfung anmelden"
+        className="SubmitButton"/>
     </div>);
 }
 ShowExam.propTypes = {
