@@ -35,7 +35,7 @@ ReactDOM.render(
         <Route exact path="/institution" element={<Institution />} />
         <Route exact path="/klausurenuebersicht"
           element={<Klausurenuebersicht />} />
-        <Route exact path="/kursansicht" element={<Wrapper />} />
+        <Route exact path="/kursansicht/:id" element={<Wrapper />} />
         <Route exact path="/kursuebersicht" element={<Kursuebersicht />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/profil" element={<Profil />} />
