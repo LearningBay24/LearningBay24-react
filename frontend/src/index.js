@@ -42,5 +42,5 @@ ReactDOM.render(
         <Route exact path="/stundenplan" element={<Stundenplan />} />
       </Routes>
     </Router>,
-  document.getElementById("root")
+    document.getElementById("root"),
 );
