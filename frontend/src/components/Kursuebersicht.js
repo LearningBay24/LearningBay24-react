@@ -33,13 +33,13 @@ export class Kursuebersicht extends Component {
 
       CoursesTaken: [{
         name: "test2", owner: "Hans", description: "das ist ein anderer Kurs",
-        created_at: "19.04.2022", id: "2",
+        created_at: "4-19-2022", id: "2",
       }],
 
       CoursesSuggested: [{
         name: "test3", owner: "Klaus",
         description: "Dieser Kurs könnte ihnen gefallen",
-        created_at: "19.04.2022", id: "3",
+        created_at: "4-19-2022", id: "3",
       }],
 
       createCourse: false,
@@ -85,9 +85,10 @@ export class Kursuebersicht extends Component {
     const MyCourseslist = [];
     if (this.state.MyCourses != null) {
       for (const Course of this.state.MyCourses) {
-        MyCourseslist.push(<div xs={4} fluid><ShowCourse name={Course.name}
-          owner={Course.CourseOwner} description={Course.description}
-          created_at={Course.created_at} id={Course.id} /></div>);
+        MyCourseslist.push(<div className="Course">
+          <ShowCourse name={Course.name}
+            owner={Course.CourseOwner} description={Course.description}
+            created_at={Course.created_at} id={Course.id} /></div>);
       }
     }
 
@@ -184,7 +185,8 @@ function ShowCourse(props) {
         <h4 className='CourseName'>{props.name}</h4>
       </Link>
       <p className='CourseDescription'>{props.description}</p>
-      <p className='CourseCreatedAt'>erstellt am:{props.created_at}</p>
+      <p className='CourseCreatedAt'>erstellt am:
+        {new Date(props.created_at).toLocaleDateString()}</p>
 
     </div>
   );

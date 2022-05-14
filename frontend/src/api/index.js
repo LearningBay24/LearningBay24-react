@@ -22,7 +22,7 @@ if (Testlocal) {
   Actualadress = Serveradress;
 }
 
-let userid = 4;
+let userid = -1;
 
 
 export function getMyCourses(caller) {
@@ -112,11 +112,12 @@ export function updateCourse(caller, object, id) {
     method: "PATCH",
     body: JSON.stringify(object),
   };
+  console.log(requestOptions.body);
 
   fetch(Actualadress + `courses/${id}`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+      //  console.log(data);
       // TODO
       })
       .catch((error) => console.error(error));
@@ -172,10 +173,26 @@ export function login(caller, data) {
   fetch(Actualadress + "login", requestOptions)
       .then((response) => response.json())
       .then((data) => {
+        if (data != null && data.id != null) {
+          userid = data.id;
+          alert("Login erfolgreich: id = " + data.id);
+        } else {
+          userid = -1;
+          alert("Login fehlgeschlagen");
+        }
         console.log(data);
-        userid = data.id;
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error(error);
+        if (error.status != 200) {
+          alert("Login fehlgeschlagen");
+        }
+      });
+}
+
+export function logout() {
+  userid = -1;
+  alert("erfolgreich ausgelogged");
 }
 
 export function register(caller, data) {
