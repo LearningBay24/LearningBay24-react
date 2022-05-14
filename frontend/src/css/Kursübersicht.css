@@ -47,9 +47,13 @@ label, input {
 
 button {
     margin: 1rem;
-
     background-color: white;
     border: solid 2px var(--dark);
     border-radius: var(--rad);
+}
+
+.primary {
+    height: 3rem;
+    border: solid 2px var(--mid);
 }
 
