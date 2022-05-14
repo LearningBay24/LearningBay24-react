@@ -1,32 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 import {BrowserRouter as
-  Router,
-  Routes,
-  Route
-} from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+Router,
+Routes,
+Route,
+} from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-import './css/index.css';
-import App from './components/App';
-import Abgabenuebersicht from './components/Abgabenuebersicht';
-import Anlegen from './components/Anlegen';
-import Benachrichtigungen from './components/Benachrichtigungen';
-import Institution from './components/Institution';
-import Klausurenuebersicht from './components/Klausurenuebersicht';
-import Kursansicht from './components/Kursansicht';
-import Kursuebersicht from './components/Kursuebersicht';
-import Login from './components/Login';
-import Dashboard from './components/Dashboard';
-import Profil from './components/Profil';
-import Stundenplan from './components/Stundenplan';
+import "./css/index.css";
+import App from "./components/App";
+import Abgabenuebersicht from "./components/Abgabenuebersicht";
+import Anlegen from "./components/Anlegen";
+import Benachrichtigungen from "./components/Benachrichtigungen";
+import Institution from "./components/Institution";
+import Klausurenuebersicht from "./components/Klausurenuebersicht";
+import Wrapper from "./components/Kursansicht";
+import Kursuebersicht from "./components/Kursuebersicht";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
+import Profil from "./components/Profil";
+import Stundenplan from "./components/Stundenplan";
 
-// Redux
-import {createStore} from 'redux';
-import allReducers from './reducers/reducerCollection';
-import {Provider} from 'react-redux';
-
-const store = createStore(allReducers);
 
 ReactDOM.render(
     <Provider store={store}>

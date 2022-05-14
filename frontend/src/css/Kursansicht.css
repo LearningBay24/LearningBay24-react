@@ -1,0 +1,48 @@
+.Kursansicht {
+    height: 100%;
+}
+
+.ColContent {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.MaterialSection, .SurveySection, .ExamSection, .AssignmentSection {
+    padding: 1rem;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: left;
+    border-bottom: solid 2px var(--grey);
+}
+
+button {
+    margin: 1rem;
+    margin-top: 0;
+    background-color: white;
+    border: solid 2px var(--dark);
+    border-radius: var(--rad);
+}
+
+.SubmitButton {
+    margin: 1rem;
+    padding: 0.2rem;
+    width: 12rem;
+    background-color: white;
+    border: solid 2px var(--dark);
+    border-radius: var(--rad);
+    text-align: center;
+}
+
+h3 {
+    margin: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.MaterialContainer, .AssignmentContainer, .SurveyContainer, .ExamContainer {
+    padding: 1rem;
+    margin: 1rem;
+    border: solid 2px var(--grey);
+    border-radius: 0.5rem;
+}
