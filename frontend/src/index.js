@@ -32,7 +32,7 @@ ReactDOM.render(
     <Provider store={store}>
       <Router>
         <Routes>
-          <Route exact path="/" element={<App />} />
+          <Route exact path="/" element={<Kursuebersicht />} />
           <Route exact path="/abgabenuebersicht" element={<Abgabenuebersicht />} />
           <Route exact path="/anlegen" element={<Anlegen />} />
           <Route exact path="/benachrichtigungen" element={<Benachrichtigungen />} />
