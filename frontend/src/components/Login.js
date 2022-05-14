@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import {Container, Row, Col} from "react-bootstrap";
 import Logo from "../images/Logo.png";
 
-import {login} from "../api";
+import {login, logout} from "../api";
 
 import "../css/Overlay.css";
 import "../css/Login.css";
@@ -37,6 +37,8 @@ export class Login extends Component {
           <br />
           <input id="loginbutton" type="submit" value="Login"
             onClick={this.UserLogin}></input>
+          <input id="logoutbutton" type="submit" value="Logout"
+            onClick={logout}></input>
           <br />
           <br />
           <br />

@@ -49,7 +49,7 @@ input {
 
 }
 
-#loginbutton {
+#loginbutton, #logoutbutton {
     margin: 1rem;
     padding: 1px;
     position: relative;
