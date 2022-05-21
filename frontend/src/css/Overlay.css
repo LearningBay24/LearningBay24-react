@@ -1,8 +1,8 @@
 :root {
-    --white: #F4EEFF;
-    --grey: #DCD6F7;
-    --mid: #A6B1E1;
-    --dark: #424874;
+    --white: #F4F4F2;
+    --grey: #BBBFCA;
+    --mid: #BBBFCA;
+    --dark: #495464;
     --font-fam: 'Lato', sans-serif;
     --rad: 0.5rem;
     --pad-top: 2rem;
@@ -33,13 +33,17 @@ html {
 
 .Header {
     padding: 1rem;
-    background-color: var(--dark);
+    background-color: var(--mid);
+    position: relative;
+
     text-align: center;
     align-items: center;
     width: 100%;
     height: 4rem;
     display: flex;
+    /*box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px;*/
 }
+
 
 .Header div {
     display: flex;
@@ -84,7 +88,6 @@ html {
     padding: 0.8rem 0;
     display: block;
     text-transform: uppercase;
-    transition: 0.2s;
     text-decoration: none;
     color: var(--white);
     font-weight: 600;
@@ -100,7 +103,7 @@ html {
     height: 120vh;
     align-items: left;
     display:flex;
-    background-color: var(--mid);
+    background-color: var(--white);
 }
 
 
@@ -112,7 +115,6 @@ html {
 }
 
 .Content {
-    margin-top: 2rem;
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
@@ -125,12 +127,9 @@ html {
 
 .ColNav {
     padding:0;
-    width: clamp(8rem, 50%, 16rem);
+    width: clamp(8rem, 50%, 20rem);
+    height: 110vh;
     background-color: var(--grey);
-    border-top: solid 1rem var(--grey);
-    border-top-left-radius: var(--rad-contentbox);
-    border-bottom-left-radius: var(--rad-contentbox);
-    border-bottom: 2px solid var(--dark);
 }
 
 
@@ -151,11 +150,14 @@ html {
 }
 
 .Navbar li {
+    padding-left: 1rem;
     width: 100%;
+    scale: 110%;
+    font-size: 1rem;
 }
 
 .Navbar li:hover {
-    background-color: var(--mid);
+    background-color: var(--dark);
     color: var(--white);
 }
 
@@ -179,6 +181,11 @@ html {
     color: var(--dark);
 }
 
+.darkBar {
+    width: 2vw;
+    background-color: var(--dark);
+}
+
 
 
 /* --- Content Body --- */
@@ -189,9 +196,7 @@ html {
     background-color: var(--white);
     width: clamp(50rem, 70%, 80rem);
     border-top: 1rem solid var(--white);
-    border-top-right-radius: var(--rad-contentbox);
-    border-bottom-right-radius: var(--rad-contentbox);
-    border-bottom: 2px solid var(--dark);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
 .ColContent h1 {
