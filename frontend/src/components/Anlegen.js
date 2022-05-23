@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowHeader, ShowNavbar} from "./App";
+import {ShowFooter} from "./Footer";
 
 import {register} from "../api";
 
@@ -63,6 +64,7 @@ export class Anlegen extends Component {
             </Row>
           </Container>
         </div>
+        <ShowFooter/>
       </div>
     );
   }

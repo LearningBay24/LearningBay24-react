@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowHeader, ShowNavbar} from "./App";
+import {ShowFooter} from "./Footer";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -172,6 +173,7 @@ export class Kursuebersicht extends Component {
             </Row>
           </Container>
         </div>
+        <ShowFooter />
       </div>
     );
   }

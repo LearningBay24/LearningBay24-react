@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowHeader, ShowNavbar} from "./App";
+import {ShowFooter} from "./Footer";
 
 import "../css/Overlay.css";
 import "../css/Benachrichtigungen.css";
@@ -20,6 +21,7 @@ export class Benachrichtigungen extends Component {
             </Row>
           </Container>
         </div>
+        <ShowFooter />
       </div>
     );
   }

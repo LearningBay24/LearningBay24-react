@@ -1,6 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import {Container, Row, Col} from "react-bootstrap";
+import {ShowFooter} from "./Footer";
 
 import "../css/Overlay.css";
 import "../css/App.css";
@@ -20,15 +21,9 @@ function App() {
             </div><ShowNavbar /></Col>
             <Col xs={10} className="ColContent" fluid><h1>Home</h1></Col>
           </Row>
-          <Row className="FooterRow" fluid>
-            <div className="Footer">
-              <p>Impressum</p>
-              <p>Datenschutz</p>
-              <p>Kontakt</p>
-            </div>
-          </Row>
         </Container>
       </div>
+      <ShowFooter />
     </div>
 
   );
