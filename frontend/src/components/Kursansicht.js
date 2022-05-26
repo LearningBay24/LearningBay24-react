@@ -475,7 +475,7 @@ Kursansicht.propTypes = {
 function ShowMaterial(props) {
   return (
     <div className='MaterialContainer'>
-      <h6 onClick={() => getFileByID(props.id)}>{props.name}</h6>
+      <h6 onClick={() => getFileByID(props.id, props.name)}>{props.name}</h6>
       <a href={props.uri} download>{props.uri}</a>
     </div>);
 }
