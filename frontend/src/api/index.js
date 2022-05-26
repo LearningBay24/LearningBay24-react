@@ -237,11 +237,41 @@ export function uploadFile(caller, file, id) {
       .catch((error) => console.error(error));
 }
 
+export function uploadLink(caller, link, name, id) {
+  console.log("(uploadLink): " + Actualadress + `courses/${id}/files`);
+  const object = {uri: link, name: name};
+
+  const requestOptions = {
+    method: "POST",
+    body: object,
+  };
+
+  fetch(Actualadress + `courses/${id}/files`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({ /* TODO: Return wert in state speichern */});
+      })
+      .catch((error) => console.error(error));
+}
+
 
 export function getFiles(caller, id) {
   console.log("(getFiles): " + Actualadress + `courses/${id}/files`);
 
   fetch(Actualadress + `courses/${id}/files`, {method: "GET"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({Material: data});
+      })
+      .catch((error) => console.error(error));
+}
+
+export function getFileByID(caller, id) {
+  console.log("(getFileByID): " + Actualadress + `files/${id}`);
+
+  fetch(Actualadress + `files/${id}`, {method: "GET"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

@@ -6,7 +6,9 @@ import {useParams} from "react-router-dom";
 import "../css/Overlay.css";
 import "../css/Kursansicht.css";
 
-import {getCourse, getFiles, updateCourse, uploadFile} from "../api";
+import {getCourse, getFiles, updateCourse,
+  uploadFile, getFileByID, uploadLink} from "../api";
+
 import PropTypes from "prop-types";
 
 export class Kursansicht extends Component {
@@ -225,7 +227,7 @@ export class Kursansicht extends Component {
     const Materiallist = [];
     for (const Mat of this.state.Material) {
       Materiallist.push(<ShowMaterial name={Mat.name} uri={Mat.uri}
-        className="Material" />);
+        id={Mat.id} className="Material" />);
     }
 
     const Assignmentlist = [];
@@ -354,15 +356,26 @@ export class Kursansicht extends Component {
                   <br />
                   <div className="Section">
                     <select>{EditMaterial}</select>
-                    <label htmlFor="EditMaterialName">Name:</label>
-                    <label>Select file to upload</label>
+                    <label>Datei auswählen</label>
                     <input type="file" onChange={this.onFileChange}/>
                     <br />
                     <button type="submit"
-                      onClick={uploadFile(this, this.state.newFile,
+                      onClick={() =>uploadFile(this, this.state.newFile,
                           this.state.CurrentCourse.id)}>
-                      Speichern</button>
+                      File Speichern</button>
                     <button>Löschen</button>
+
+                    <label>Link Name</label>
+                    <input type="text" onChange={this.onInputChange}
+                      name="uriName"/>
+
+                    <label>Link einfügen</label>
+                    <input type="text" onChange={this.onInputChange}
+                      name="uri"/>
+                    <button type="submit"
+                      onClick={() => uploadLink(this, this.state.uri,
+                          this.state.uriName, this.state.CurrentCourse.id)}>
+                      Link Speichern</button>
                   </div>
                   <br />
                   <div className="Section">
@@ -462,13 +475,14 @@ Kursansicht.propTypes = {
 function ShowMaterial(props) {
   return (
     <div className='MaterialContainer'>
-      <h6>{props.name}</h6>
-      <a href={props.uri}>{props.uri}</a>
+      <h6 onClick={() => getFileByID(props.id)}>{props.name}</h6>
+      <a href={props.uri} download>{props.uri}</a>
     </div>);
 }
 ShowMaterial.propTypes = {
   name: PropTypes.string.isRequired,
   uri: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 function ShowAssignment(props) {
