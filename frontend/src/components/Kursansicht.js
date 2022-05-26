@@ -224,7 +224,7 @@ export class Kursansicht extends Component {
 
     const Materiallist = [];
     for (const Mat of this.state.Material) {
-      Materiallist.push(<ShowMaterial Name={Mat.Name}
+      Materiallist.push(<ShowMaterial name={Mat.name} uri={Mat.uri}
         className="Material" />);
     }
 
@@ -462,11 +462,13 @@ Kursansicht.propTypes = {
 function ShowMaterial(props) {
   return (
     <div className='MaterialContainer'>
-      <h6>{props.Name}</h6>
+      <h6>{props.name}</h6>
+      <a href={props.uri}>{props.uri}</a>
     </div>);
 }
 ShowMaterial.propTypes = {
-  Name: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  uri: PropTypes.string.isRequired,
 };
 
 function ShowAssignment(props) {
