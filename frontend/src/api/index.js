@@ -243,7 +243,7 @@ export function uploadLink(caller, link, name, id) {
 
   const requestOptions = {
     method: "POST",
-    body: object,
+    body: JSON.stringify(object),
   };
 
   fetch(Actualadress + `courses/${id}/files`, requestOptions)
