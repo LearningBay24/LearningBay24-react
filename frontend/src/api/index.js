@@ -11,7 +11,7 @@
  * @return {void} returns nothing.
  */
 
-const Testlocal = 0;
+const Testlocal = 1;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
 const Localadress = "http://localhost:8080/";
@@ -168,6 +168,7 @@ export function login(caller, data) {
   const requestOptions = {
     method: "POST",
     body: JSON.stringify(data),
+    credentials: "include",
   };
 
   fetch(Actualadress + "login", requestOptions)
@@ -211,6 +212,83 @@ export function register(caller, data) {
       .then((data) => {
         console.log(data);
         caller.setState({ /* TODO: Return wert in state speichern */});
+      })
+      .catch((error) => console.error(error));
+}
+
+export function uploadFile(caller, file, id) {
+  console.log("(uploadFile): " + Actualadress + `courses/${id}/files`);
+  console.log(file);
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const requestOptions = {
+    method: "POST",
+    body: formData,
+  };
+
+  fetch(Actualadress + `courses/${id}/files`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({ /* TODO: Return wert in state speichern */});
+      })
+      .catch((error) => console.error(error));
+}
+
+export function uploadLink(caller, link, name, id) {
+  console.log("(uploadLink): " + Actualadress + `courses/${id}/files`);
+  const object = {uri: link, name: name};
+
+  const requestOptions = {
+    method: "POST",
+    body: JSON.stringify(object),
+  };
+
+  fetch(Actualadress + `courses/${id}/files`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({ /* TODO: Return wert in state speichern */});
+      })
+      .catch((error) => console.error(error));
+}
+
+
+export function getFiles(caller, id) {
+  console.log("(getFiles): " + Actualadress + `courses/${id}/files`);
+
+  fetch(Actualadress + `courses/${id}/files`, {method: "GET"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({Material: data});
+      })
+      .catch((error) => console.error(error));
+}
+
+export function getFileByID(caller, courseID, fileId, filename) {
+  console.log("(getFileByID): " + Actualadress +
+  `courses/${courseID}/files/${fileId}`);
+
+  fetch(Actualadress + `courses/${courseID}/files/${fileId}`, {method: "GET"})
+      .then((result) => {
+        if (result.status != 200) {
+          throw new Error("Bad server response");
+        }
+        return result.blob();
+      })
+      .then((data) => {
+        console.log(data);
+        const url = window.URL.createObjectURL(data);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = filename;
+        anchor.click();
+
+        window.URL.revokeObjectURL(url);
+        document.removeChild(anchor);
       })
       .catch((error) => console.error(error));
 }

@@ -7,7 +7,9 @@ import {ShowFooter} from "./Footer";
 import "../css/Overlay.css";
 import "../css/Kursansicht.css";
 
-import {getCourse, updateCourse} from "../api";
+import {getCourse, getFiles, updateCourse,
+  uploadFile, getFileByID, uploadLink} from "../api";
+
 import PropTypes from "prop-types";
 
 export class Kursansicht extends Component {
@@ -124,19 +126,22 @@ export class Kursansicht extends Component {
         deleted_at: "",
       }],
 
+      Material: [{
+      }],
+
     };
 
 
     this.onInputChange = this.onInputChange.bind(this);
+    this.onFileChange = this.onFileChange.bind(this);
     this.onSaveDescriptionChange = this.onSaveDescriptionChange.bind(this);
     this.onSaveAppointmentChange = this.onSaveAppointmentChange.bind(this);
   }
 
 
   componentDidMount() {
-    // console.log("this.state.id" + this.state.id);
     getCourse(this, this.state.id);
-    // getUsersInCourse(this, this.state.id);
+    getFiles(this, this.state.id);
   }
 
 
@@ -145,6 +150,12 @@ export class Kursansicht extends Component {
   onInputChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
+    });
+  }
+
+  onFileChange(event) {
+    this.setState({
+      newFile: event.target.files[0],
     });
   }
 
@@ -206,9 +217,6 @@ export class Kursansicht extends Component {
       </button>,
     ];
 
-    // Generallist.push(<p hidden={this.state.CourseEdit}>
-    // {this.state.Course.CourseOwner.FirstName}
-    // {this.state.Course.CourseOwner.LastName}</p>)
     for (const Appointment of this.state.Course.CourseAppointments) {
       Generallist.push(<h3 hidden={this.state.CourseEdit}>
         {Appointment.Day} {Appointment.Time} {Appointment.Duration}
@@ -218,29 +226,30 @@ export class Kursansicht extends Component {
       {this.state.CurrentCourse.description}</p>);
 
     const Materiallist = [];
-    for (const Mat of this.state.Course.CourseMaterial) {
-      Materiallist.push(<ShowMaterial Name={Mat.Name} Content={Mat.Content}
-        className="Material"/>);
+    for (const Mat of this.state.Material) {
+      Materiallist.push(<ShowMaterial name={Mat.name} uri={Mat.uri}
+        fileid={Mat.id} courseid={this.state.CurrentCourse.id}
+        className="Material" />);
     }
 
     const Assignmentlist = [];
     for (const Assignment of this.state.Course.CourseAssignments) {
       Assignmentlist.push(<ShowAssignment Name={Assignment.Name}
         Content={Assignment.Content} Date={Assignment.Date}
-        Deadline={Assignment.Deadline} className="Assignment"/>);
+        Deadline={Assignment.Deadline} className="Assignment" />);
     }
 
     const Surveylist = [];
     for (const Survey of this.state.Course.CourseSurveys) {
       Surveylist.push(<ShowSurvey Name={Survey.Name}
-        Content={Survey.Content} className="Survey"/>);
+        Content={Survey.Content} className="Survey" />);
     }
 
     const Examlist = [];
     for (const Exam of this.state.Course.CourseExams) {
       Examlist.push(<ShowExam Name={Exam.Name} Content={Exam.Content}
         Date={Exam.Date} Duration={Exam.Duration}
-        Location={Exam.Location} className="Exam"/>);
+        Location={Exam.Location} className="Exam" />);
     }
 
 
@@ -349,15 +358,26 @@ export class Kursansicht extends Component {
                   <br />
                   <div className="Section">
                     <select>{EditMaterial}</select>
-                    <label htmlFor="EditMaterialName">Name:</label>
-                    <input type="Text" id="EditMaterialName"
-                      placeholder="Materialname"></input>
-                    {
-                      // TODO add material
-                    }
+                    <label>Datei auswählen</label>
+                    <input type="file" onChange={this.onFileChange}/>
                     <br />
+                    <button type="submit"
+                      onClick={() =>uploadFile(this, this.state.newFile,
+                          this.state.CurrentCourse.id)}>
+                      File Speichern</button>
                     <button>Löschen</button>
-                    <button>Speichern</button>
+
+                    <label>Link Name</label>
+                    <input type="text" onChange={this.onInputChange}
+                      name="uriName"/>
+
+                    <label>Link einfügen</label>
+                    <input type="text" onChange={this.onInputChange}
+                      name="uri"/>
+                    <button type="submit"
+                      onClick={() => uploadLink(this, this.state.uri,
+                          this.state.uriName, this.state.CurrentCourse.id)}>
+                      Link Speichern</button>
                   </div>
                   <br />
                   <div className="Section">
@@ -458,14 +478,17 @@ Kursansicht.propTypes = {
 function ShowMaterial(props) {
   return (
     <div className='MaterialContainer'>
-      <h6>{props.Name}</h6>
-      <a href={props.Content} target='_blank'
-        rel='noopener noreferrer'>{props.Content}</a>
+      <h6 onClick={() => getFileByID(this, props.courseid,
+          props.fileid, props.name)}>
+        {props.name}</h6>
+      <a href={props.uri} download>{props.uri}</a>
     </div>);
 }
 ShowMaterial.propTypes = {
-  Name: PropTypes.string.isRequired,
-  Content: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  uri: PropTypes.string.isRequired,
+  fileid: PropTypes.string.isRequired,
+  courseid: PropTypes.string.isRequired,
 };
 
 function ShowAssignment(props) {
@@ -477,7 +500,7 @@ function ShowAssignment(props) {
       <p className='AssignmentDate'>{props.Date}</p>
       <p className='AssignmentDeadline'>{props.Deadline}</p>
       <br />
-      <input type="submit" value="Datei abgeben" className="SubmitButton"/>
+      <input type="submit" value="Datei abgeben" className="SubmitButton" />
     </div>);
 }
 ShowAssignment.propTypes = {
@@ -498,7 +521,7 @@ function ShowExam(props) {
       <p>Ort: {props.Location}</p>
       <br />
       <input type="submit" value="zur Prüfung anmelden"
-        className="SubmitButton"/>
+        className="SubmitButton" />
     </div>);
 }
 ShowExam.propTypes = {

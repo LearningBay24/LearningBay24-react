@@ -73,7 +73,7 @@ export class Kursuebersicht extends Component {
     };
     postNewCourse(this, NewCourse);
     this.toggleCreateCourse();
-    this.getMyCourses(this);
+    getMyCourses(this);
     this.componentDidMount();
   }
 
