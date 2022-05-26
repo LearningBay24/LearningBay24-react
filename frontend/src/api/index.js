@@ -220,9 +220,12 @@ export function uploadFile(caller, file, id) {
   console.log("(uploadFile): " + Actualadress + `courses/${id}/files`);
   console.log(file);
 
+  const formData = new FormData();
+  formData.append("file", file);
+
   const requestOptions = {
     method: "POST",
-    body: file,
+    body: formData,
   };
 
   fetch(Actualadress + `courses/${id}/files`, requestOptions)
