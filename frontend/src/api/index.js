@@ -236,3 +236,16 @@ export function uploadFile(caller, file, id) {
       })
       .catch((error) => console.error(error));
 }
+
+
+export function getFiles(caller, id) {
+  console.log("(getFiles): " + Actualadress + `courses/${id}/files`);
+
+  fetch(Actualadress + `courses/${id}/files`, {method: "GET"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({Material: data});
+      })
+      .catch((error) => console.error(error));
+}

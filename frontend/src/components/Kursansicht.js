@@ -6,7 +6,7 @@ import {useParams} from "react-router-dom";
 import "../css/Overlay.css";
 import "../css/Kursansicht.css";
 
-import {getCourse, updateCourse, uploadFile} from "../api";
+import {getCourse, getFiles, updateCourse, uploadFile} from "../api";
 import PropTypes from "prop-types";
 
 export class Kursansicht extends Component {
@@ -123,6 +123,9 @@ export class Kursansicht extends Component {
         deleted_at: "",
       }],
 
+      Material: [{
+      }],
+
     };
 
 
@@ -135,6 +138,7 @@ export class Kursansicht extends Component {
 
   componentDidMount() {
     getCourse(this, this.state.id);
+    getFiles(this, this.state.id);
   }
 
 
@@ -219,8 +223,8 @@ export class Kursansicht extends Component {
       {this.state.CurrentCourse.description}</p>);
 
     const Materiallist = [];
-    for (const Mat of this.state.Course.CourseMaterial) {
-      Materiallist.push(<ShowMaterial Name={Mat.Name} Content={Mat.Content}
+    for (const Mat of this.state.Material) {
+      Materiallist.push(<ShowMaterial Name={Mat.Name}
         className="Material" />);
     }
 
@@ -459,13 +463,10 @@ function ShowMaterial(props) {
   return (
     <div className='MaterialContainer'>
       <h6>{props.Name}</h6>
-      <a href={props.Content} target='_blank'
-        rel='noopener noreferrer'>{props.Content}</a>
     </div>);
 }
 ShowMaterial.propTypes = {
   Name: PropTypes.string.isRequired,
-  Content: PropTypes.string.isRequired,
 };
 
 function ShowAssignment(props) {
