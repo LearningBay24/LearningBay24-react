@@ -269,27 +269,24 @@ export function getFiles(caller, id) {
 }
 
 export function getFileByID(caller, courseID, fileId, filename) {
-  console.log("(getFileByID): " + Actualadress + `files/${fileId}`);
+  console.log("(getFileByID): " + Actualadress +
+  `courses/${courseID}/files/${fileId}`);
 
-  fetch(Actualadress + `course/${courseID}/files/${fileId}`, {method: "GET"})
+  fetch(Actualadress + `courses/${courseID}/files/${fileId}`, {method: "GET"})
       .then((result) => {
         if (result.status != 200) {
           throw new Error("Bad server response");
         }
         return result.blob();
       })
-      // (C) BLOB DATA
       .then((data) => {
-        // (C1) FILE DATA IS "READY FOR USE"
         console.log(data);
-        // (C2) TO "FORCE DOWNLOAD"
         const url = window.URL.createObjectURL(data);
         const anchor = document.createElement("a");
         anchor.href = url;
         anchor.download = filename;
         anchor.click();
 
-        // (C3) CLEAN UP
         window.URL.revokeObjectURL(url);
         document.removeChild(anchor);
       })
