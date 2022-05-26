@@ -16,11 +16,12 @@
     margin: 1rem;
     padding: 1rem;
     width: clamp(14rem, 60%, 20rem);
-    border: solid 2px var(--mid);
-    border-radius: 1rem;
+    box-shadow: var(--box-shadow);
+    border-radius: 3px;
 }
 
 .Course a {
+    color: var(--dark);
     text-decoration: none;
     text-transform: uppercase;
 }
@@ -31,8 +32,8 @@
 }
 
 .Course:hover {
-    background-color: var(--grey);
-    border: solid 2px var(--mid);
+    background-color: var(--dark);
+    color: var(--white);
 }
 
 label, input {

@@ -1,0 +1,16 @@
+.Exam {
+    margin: 1rem;
+    padding: 1rem;
+
+    border-radius: 3px;
+
+    color: var(--dark);
+    font-weight: 600;
+
+    box-shadow: var(--box-shadow);
+}
+
+.Exam:hover {
+    background-color: var(--dark);
+    color: var(--white);
+}

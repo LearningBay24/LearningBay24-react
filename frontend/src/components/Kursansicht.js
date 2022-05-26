@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowHeader, ShowNavbar} from "./App";
 import {useParams} from "react-router-dom";
+import {ShowFooter} from "./Footer";
 
 import "../css/Overlay.css";
 import "../css/Kursansicht.css";
@@ -441,6 +442,7 @@ export class Kursansicht extends Component {
             </Row>
           </Container>
         </div>
+        <ShowFooter />
       </div>
     );
   }

@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {ShowHeader, ShowNavbar} from "./App";
+import {ShowFooter} from "./Footer";
 
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
@@ -35,6 +36,7 @@ export class Stundenplan extends Component {
             </Row>
           </Container>
         </div>
+        <ShowFooter />
       </div>
     );
   }

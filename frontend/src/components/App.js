@@ -1,10 +1,13 @@
-import Logo from "../images/Logo.png";
 import React from "react";
 import {Link} from "react-router-dom";
 import {Container, Row, Col} from "react-bootstrap";
+import {ShowFooter} from "./Footer";
 
 import "../css/Overlay.css";
 import "../css/App.css";
+import "../css/SvgStyling.css";
+
+import {ReactComponent as HomeSvg} from "../icons/home.svg";
 
 
 function App() {
@@ -14,18 +17,13 @@ function App() {
       <div className="Body">
         <Container className="Container" fluid>
           <Row className="Content" fluid>
-            <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
+            <Col xs={2} className="ColNav" fluid><div className="darkBar">
+            </div><ShowNavbar /></Col>
             <Col xs={10} className="ColContent" fluid><h1>Home</h1></Col>
-          </Row>
-          <Row className="FooterRow" fluid>
-            <Col xs={12} className="Footer" fluid>
-              <p>Impressum</p>
-              <p>Datenschutz</p>
-              <p>Kontakt</p>
-            </Col>
           </Row>
         </Container>
       </div>
+      <ShowFooter />
     </div>
 
   );
@@ -58,8 +56,8 @@ function ShowHeader() {
       <Container>
         <Row>
           <Col md={2}><Link to="/kursuebersicht">
-            <img src={Logo} width="100px" height="100px"
-              alt="Logo" className="Logo"></img></Link></Col>
+            <HomeSvg className="homeSvg"/>
+          </Link></Col>
           <Col md={8}><input type="text" id="tfSearchbar"></input>
             <button id="btnSearchbar">Suchen</button></Col>
           <Col md={2}><Link to="/profil" id="lnkProfile">Profil</Link></Col>

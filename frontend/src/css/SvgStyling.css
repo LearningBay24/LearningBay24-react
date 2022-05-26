@@ -1,0 +1,15 @@
+.homeSvg {
+    margin: 1rem;
+    position: relative;
+    left: 1vw;
+    color: var(--dark);
+}
+
+.homeSvg:hover {
+    transition: 0.3s;
+    scale: 110%;
+}
+
+.homeSvg:focus {
+    color: var(--white);
+}
