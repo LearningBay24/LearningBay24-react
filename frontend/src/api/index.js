@@ -11,7 +11,7 @@
  * @return {void} returns nothing.
  */
 
-const Testlocal = 0;
+const Testlocal = 1;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
 const Localadress = "http://localhost:8080/";
@@ -168,6 +168,7 @@ export function login(caller, data) {
   const requestOptions = {
     method: "POST",
     body: JSON.stringify(data),
+    credentials: "include",
   };
 
   fetch(Actualadress + "login", requestOptions)
@@ -208,6 +209,24 @@ export function register(caller, data) {
         response.json();
         console.log(response);
       })
+      .then((data) => {
+        console.log(data);
+        caller.setState({ /* TODO: Return wert in state speichern */});
+      })
+      .catch((error) => console.error(error));
+}
+
+export function uploadFile(caller, file, id) {
+  console.log("(uploadFile): " + Actualadress + `courses/${id}/files`);
+  console.log(file);
+
+  const requestOptions = {
+    method: "POST",
+    body: file,
+  };
+
+  fetch(Actualadress + `courses/${id}/files`, requestOptions)
+      .then((response) => response.json())
       .then((data) => {
         console.log(data);
         caller.setState({ /* TODO: Return wert in state speichern */});
