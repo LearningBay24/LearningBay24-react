@@ -11,7 +11,7 @@
  * @return {void} returns nothing.
  */
 
-const Testlocal = 1;
+const Testlocal = 0;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
 const Localadress = "http://localhost:8080/";
