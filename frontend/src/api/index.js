@@ -268,10 +268,10 @@ export function getFiles(caller, id) {
       .catch((error) => console.error(error));
 }
 
-export function getFileByID(caller, id, filename) {
-  console.log("(getFileByID): " + Actualadress + `files/${id}`);
+export function getFileByID(caller, courseID, fileId, filename) {
+  console.log("(getFileByID): " + Actualadress + `files/${fileId}`);
 
-  fetch(Actualadress + `files/${id}`, {method: "GET"})
+  fetch(Actualadress + `course/${courseID}/files/${fileId}`, {method: "GET"})
       .then((result) => {
         if (result.status != 200) {
           throw new Error("Bad server response");

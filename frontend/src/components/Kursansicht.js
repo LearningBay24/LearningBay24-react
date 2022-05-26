@@ -227,7 +227,8 @@ export class Kursansicht extends Component {
     const Materiallist = [];
     for (const Mat of this.state.Material) {
       Materiallist.push(<ShowMaterial name={Mat.name} uri={Mat.uri}
-        id={Mat.id} className="Material" />);
+        fileid={Mat.id} courseid={this.state.CurrentCourse.id}
+        className="Material" />);
     }
 
     const Assignmentlist = [];
@@ -475,7 +476,7 @@ Kursansicht.propTypes = {
 function ShowMaterial(props) {
   return (
     <div className='MaterialContainer'>
-      <h6 onClick={() => getFileByID(this, props.id, props.name)}>
+      <h6 onClick={() => getFileByID(this, props.fileid, props.name)}>
         {props.name}</h6>
       <a href={props.uri} download>{props.uri}</a>
     </div>);
@@ -483,7 +484,8 @@ function ShowMaterial(props) {
 ShowMaterial.propTypes = {
   name: PropTypes.string.isRequired,
   uri: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  fileid: PropTypes.string.isRequired,
+  courseid: PropTypes.string.isRequired,
 };
 
 function ShowAssignment(props) {
