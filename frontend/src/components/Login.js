@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Container, Row, Col} from "react-bootstrap";
 
 import {login} from "../api";
+import {Link} from "react-router-dom";
 import {ShowFooter} from "./Footer";
 
 import "../css/Overlay.css";
@@ -21,7 +22,9 @@ export class Login extends Component {
 
     return (
       <div className="LoginContainer">
-        <ShowLoginHeader />
+        <Link to="/kursuebersicht">
+          <ShowLoginHeader />
+        </Link>
         <div className="Login">
           <h1>Login</h1>
           <label id="emaillabel" htmlFor="email">E-mail</label>
