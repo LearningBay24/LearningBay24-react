@@ -7,8 +7,10 @@ import {ShowFooter} from "./Footer";
 import "../css/Overlay.css";
 import "../css/Kursansicht.css";
 
-import {getCourse, getFiles, updateCourse,
-  uploadFile, getFileByID, uploadLink} from "../api";
+import {
+  getCourse, getFiles, updateCourse,
+  uploadFile, getFileByID, uploadLink,
+} from "../api";
 
 import PropTypes from "prop-types";
 
@@ -226,10 +228,12 @@ export class Kursansicht extends Component {
       {this.state.CurrentCourse.description}</p>);
 
     const Materiallist = [];
-    for (const Mat of this.state.Material) {
-      Materiallist.push(<ShowMaterial name={Mat.name} uri={Mat.uri}
-        fileid={Mat.id} courseid={this.state.CurrentCourse.id}
-        className="Material" />);
+    if (this.state.Material != null) {
+      for (const Mat of this.state.Material) {
+        Materiallist.push(<ShowMaterial name={Mat.name} uri={Mat.uri}
+          fileid={Mat.id} courseid={this.state.CurrentCourse.id}
+          className="Material" />);
+      }
     }
 
     const Assignmentlist = [];
@@ -359,21 +363,21 @@ export class Kursansicht extends Component {
                   <div className="Section">
                     <select>{EditMaterial}</select>
                     <label>Datei auswählen</label>
-                    <input type="file" onChange={this.onFileChange}/>
+                    <input type="file" onChange={this.onFileChange} />
                     <br />
                     <button type="submit"
-                      onClick={() =>uploadFile(this, this.state.newFile,
+                      onClick={() => uploadFile(this, this.state.newFile,
                           this.state.CurrentCourse.id)}>
                       File Speichern</button>
                     <button>Löschen</button>
 
                     <label>Link Name</label>
                     <input type="text" onChange={this.onInputChange}
-                      name="uriName"/>
+                      name="uriName" />
 
                     <label>Link einfügen</label>
                     <input type="text" onChange={this.onInputChange}
-                      name="uri"/>
+                      name="uri" />
                     <button type="submit"
                       onClick={() => uploadLink(this, this.state.uri,
                           this.state.uriName, this.state.CurrentCourse.id)}>
