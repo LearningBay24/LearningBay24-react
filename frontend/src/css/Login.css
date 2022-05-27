@@ -1,37 +1,37 @@
 .LoginContainer {
-    height: 100%;
-    background-color: var(--mid);
+    height: 100vh;
+    background-color: var(--dark);
+    position: relative;
 }
 
 .Login {
     margin: 0 auto;
-    margin-top: 10rem;
+    margin-top: 20vh;
     margin-bottom: 10rem;
     padding: 1rem;
     width: clamp(20rem, 50%, 26rem);
+    height: 30rem;
     left: 25%;
-    background-color: var(--grey);
-    display: flex;
+
     flex-direction: column;
-    align-items: center;
+    align-items: left;
 
+    background-color: var(--white);
+    display: flex;
+    color: var(--dark);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 
-    /* details */
-    border-bottom: 2px solid var(--dark); 
-    border-radius: 1rem;
 }
 
 .Login h1 {
     margin-bottom: 3rem;
     text-transform: uppercase;
     scale: var(--header-scale);
-}
-
-
-#userlabel {
-    margin-bottom: -2rem;
     position: relative;
+    left: 24%;
 }
+
+
 
 
 
@@ -39,28 +39,32 @@ input {
     margin-bottom: 3rem;
     padding: 1rem;
     height: 2rem;
-    border-radius: var(--rad);
-    outline: 0px;
-    border: 0px;
-    border-bottom: 2px solid var(--mid);
+    border: solid 1px var(--mid);
 }
 
-#pswdlabel {
 
-}
 
-#loginbutton, #logoutbutton {
+#loginbutton {
     margin: 1rem;
     padding: 1px;
-    position: relative;
-    top: var(--pos-top); 
     width: 5rem;
     height: 2rem;
-    border-radius: var(--rad);
+    position: relative;
+    left: 34%;
+
     outline: 0px;
     border: 0px;
     text-transform: uppercase;
-    background-color: white;
-    border-bottom: 2px solid var(--mid);
+    color: var(--dark);
 }
 
+.LB24Header {
+    margin-top: 10vh; 
+    text-align: center;
+    color: var(--white);
+}
+
+.Footer {
+    position: absolute;
+    bottom: 0px;
+}

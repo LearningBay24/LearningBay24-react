@@ -8,7 +8,8 @@
     flex-direction: row;
     justify-content: space-between;
     flex-flow: row wrap;
-    border-bottom: solid 2px var(--mid);
+    border-bottom: solid 1px var(--mid);
+    min-height: 20rem;
 }
 
 
@@ -16,8 +17,7 @@
     margin: 1rem;
     padding: 1rem;
     width: clamp(14rem, 60%, 20rem);
-    box-shadow: var(--box-shadow);
-    border-radius: 3px;
+    border: solid 1px var(--mid);
 }
 
 .Course a {
@@ -28,7 +28,7 @@
 
 .Course a h4 {
     font-size: 1.2rem;
-    border-bottom: solid 2px var(--mid);
+    border-bottom: solid 1px var(--mid);
 }
 
 .Course:hover {
@@ -48,13 +48,10 @@ label, input {
 
 button {
     margin: 1rem;
-    background-color: white;
-    border: solid 2px var(--dark);
-    border-radius: var(--rad);
+    border: solid 1px var(--mid);
 }
 
 .primary {
-    height: 3rem;
-    border: solid 2px var(--mid);
+    height: 2rem;
 }
 
