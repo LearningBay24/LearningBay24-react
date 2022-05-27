@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import {Link} from "react-router-dom";
 import {Container, Row, Col} from "react-bootstrap";
-import Logo from "../images/Logo.png";
 
-import {login, logout} from "../api";
+import {login} from "../api";
+import {Link} from "react-router-dom";
+import {ShowFooter} from "./Footer";
 
 import "../css/Overlay.css";
 import "../css/Login.css";
@@ -22,7 +22,9 @@ export class Login extends Component {
 
     return (
       <div className="LoginContainer">
-        <ShowLoginHeader />
+        <Link to="/kursuebersicht">
+          <ShowLoginHeader />
+        </Link>
         <div className="Login">
           <h1>Login</h1>
           <label id="emaillabel" htmlFor="email">E-mail</label>
@@ -37,12 +39,11 @@ export class Login extends Component {
           <br />
           <input id="loginbutton" type="submit" value="Login"
             onClick={this.UserLogin}></input>
-          <input id="logoutbutton" type="submit" value="Logout"
-            onClick={logout}></input>
           <br />
           <br />
           <br />
         </div>
+        <ShowFooter />
       </div>
     );
   }
@@ -70,13 +71,7 @@ function ShowLoginHeader() {
     <div className="Header">
       <Container>
         <Row>
-          <Col md={2}><Link to="/kursuebersicht">
-            <img src={Logo} width="100px" height="100px"
-              alt="Logo" className="Logo"></img></Link></Col>
-          <Col md={8}><h1>LEARNINGBAY24</h1></Col>
-          <Col md={2}><Link to="/kursuebersicht">
-            <img src={Logo} width="100px" height="100px"
-              alt="Logo" className="Logo"></img></Link></Col>
+          <Col md={8}><h1 className="LB24Header">LEARNINGBAY24</h1></Col>
         </Row>
       </Container>
     </div>
