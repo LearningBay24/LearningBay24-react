@@ -162,18 +162,16 @@ export class Kursansicht extends Component {
   }
 
   onSaveDescriptionChange() {
-    this.setState({
-      CurrentCourse: {
-        id: this.state.CurrentCourse.id,
-        name: this.state.CurrentCourse.name,
-        description: this.state.description,
-        enroll_key: this.state.CurrentCourse.enroll_key,
-        forum_id: this.state.CurrentCourse.forum_id,
-        created_at: this.state.CurrentCourse.created_at,
-        updated_at: this.state.CurrentCourse.updated_at,
-      },
-    });
-    updateCourse(this, this.state.CurrentCourse, this.state.id);
+    const newCourse = {
+      id: this.state.CurrentCourse.id,
+      name: this.state.CurrentCourse.name,
+      description: this.state.description,
+      enroll_key: this.state.CurrentCourse.enroll_key,
+      forum_id: this.state.CurrentCourse.forum_id,
+      created_at: this.state.CurrentCourse.created_at,
+      updated_at: this.state.CurrentCourse.updated_at,
+    };
+    updateCourse(this, newCourse, this.state.id);
   }
 
   onSaveAppointmentChange() {
