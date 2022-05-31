@@ -14,7 +14,7 @@
 const Testlocal = 0;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
-const Localadress = "http://localhost:8080/";
+const Localadress = "http://learningbay24.local:8080/";
 let Actualadress;
 if (Testlocal) {
   Actualadress = Localadress;
@@ -28,7 +28,8 @@ let userid = -1;
 export function getMyCourses(caller) {
   console.log("(getMyCourses): " + Actualadress + `users/${userid}/courses`);
 
-  fetch(Actualadress + `users/${userid}/courses`, {method: "GET"})
+  fetch(Actualadress + `users/${userid}/courses`, {method: "GET",
+    credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -46,7 +47,8 @@ export function getMyCourses(caller) {
 export function getCourse(caller, id) {
   console.log("(getCourse): " + Actualadress + `courses/${id}`);
 
-  fetch(Actualadress + `courses/${id}`, {method: "GET"})
+  fetch(Actualadress + `courses/${id}`, {method: "GET",
+    credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -64,7 +66,8 @@ export function getCourse(caller, id) {
 export function getUsersInCourse(caller, id) {
   console.log("(getUsersInCourse): " + Actualadress + `courses/${id}/users`);
 
-  fetch(Actualadress + `courses/${id}/users`, {method: "GET"})
+  fetch(Actualadress + `courses/${id}/users`, {method: "GET",
+    credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -86,6 +89,7 @@ export function postNewCourse(caller, object) {
   const requestOptions = {
     method: "POST",
     body: JSON.stringify(object),
+    credentials: "include",
   };
   console.log(requestOptions.body);
 
@@ -111,6 +115,7 @@ export function updateCourse(caller, object, id) {
   const requestOptions = {
     method: "PATCH",
     body: JSON.stringify(object),
+    credentials: "include",
   };
   console.log(requestOptions.body);
 
@@ -154,7 +159,8 @@ export function enrollUser(caller, user_id,id)
 export function deleteCourse(caller, id) {
   console.log("(deleteCourse): " + Actualadress + `courses/${id}`);
 
-  fetch(Actualadress + `courses/${id}`, {method: "DELETE"})
+  fetch(Actualadress + `courses/${id}`, {method: "DELETE",
+    credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -167,6 +173,7 @@ export function login(caller, data) {
 
   const requestOptions = {
     method: "POST",
+    credentials: "include",
     body: JSON.stringify(data),
   };
 
@@ -200,6 +207,7 @@ export function register(caller, data) {
   const requestOptions = {
     method: "POST",
     body: JSON.stringify(data),
+    credentials: "include",
   };
   console.log(requestOptions.body);
 
