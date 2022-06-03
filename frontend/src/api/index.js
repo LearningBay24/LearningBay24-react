@@ -14,7 +14,7 @@
 const Testlocal = 0;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
-const Localadress = "http://localhost:8080/";
+const Localadress = "http://learningbay24.local:8080/";
 let Actualadress;
 if (Testlocal) {
   Actualadress = Localadress;
@@ -22,13 +22,12 @@ if (Testlocal) {
   Actualadress = Serveradress;
 }
 
-let userid = -1;
-
 
 export function getMyCourses(caller) {
-  console.log("(getMyCourses): " + Actualadress + `users/${userid}/courses`);
+  console.log("(getMyCourses): " + Actualadress + "users/courses");
 
-  fetch(Actualadress + `users/${userid}/courses`, {method: "GET"})
+  fetch(Actualadress + "users/courses", {method: "GET",
+    credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -46,7 +45,8 @@ export function getMyCourses(caller) {
 export function getCourse(caller, id) {
   console.log("(getCourse): " + Actualadress + `courses/${id}`);
 
-  fetch(Actualadress + `courses/${id}`, {method: "GET"})
+  fetch(Actualadress + `courses/${id}`, {method: "GET",
+    credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -64,7 +64,8 @@ export function getCourse(caller, id) {
 export function getUsersInCourse(caller, id) {
   console.log("(getUsersInCourse): " + Actualadress + `courses/${id}/users`);
 
-  fetch(Actualadress + `courses/${id}/users`, {method: "GET"})
+  fetch(Actualadress + `courses/${id}/users`, {method: "GET",
+    credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -81,11 +82,11 @@ export function getUsersInCourse(caller, id) {
  */
 export function postNewCourse(caller, object) {
   console.log("(postNewCourse): " + Actualadress + "courses");
-  object.user_id = userid;
 
   const requestOptions = {
     method: "POST",
     body: JSON.stringify(object),
+    credentials: "include",
   };
   console.log(requestOptions.body);
 
@@ -111,6 +112,7 @@ export function updateCourse(caller, object, id) {
   const requestOptions = {
     method: "PATCH",
     body: JSON.stringify(object),
+    credentials: "include",
   };
   console.log(requestOptions.body);
 
@@ -154,7 +156,8 @@ export function enrollUser(caller, user_id,id)
 export function deleteCourse(caller, id) {
   console.log("(deleteCourse): " + Actualadress + `courses/${id}`);
 
-  fetch(Actualadress + `courses/${id}`, {method: "DELETE"})
+  fetch(Actualadress + `courses/${id}`, {method: "DELETE",
+    credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -167,33 +170,22 @@ export function login(caller, data) {
 
   const requestOptions = {
     method: "POST",
+    credentials: "include",
     body: JSON.stringify(data),
     credentials: "include",
   };
 
   fetch(Actualadress + "login", requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data != null && data.id != null) {
-          userid = data.id;
-          alert("Login erfolgreich: id = " + data.id);
+      .then((response) => {
+        if (response.ok) {
+          alert("Login erfolgreich");
         } else {
-          userid = -1;
           alert("Login fehlgeschlagen");
         }
-        console.log(data);
       })
       .catch((error) => {
         console.error(error);
-        if (error.status != 200) {
-          alert("Login fehlgeschlagen");
-        }
       });
-}
-
-export function logout() {
-  userid = -1;
-  alert("erfolgreich ausgelogged");
 }
 
 export function register(caller, data) {
@@ -201,6 +193,7 @@ export function register(caller, data) {
   const requestOptions = {
     method: "POST",
     body: JSON.stringify(data),
+    credentials: "include",
   };
   console.log(requestOptions.body);
 

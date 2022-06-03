@@ -69,7 +69,6 @@ export class Kursuebersicht extends Component {
       name: this.state.NewName,
       description: this.state.NewBio,
       enroll_key: this.state.NewKey,
-      user_id: 4,
     };
     postNewCourse(this, NewCourse);
     this.toggleCreateCourse();
