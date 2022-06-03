@@ -172,7 +172,6 @@ export function login(caller, data) {
     method: "POST",
     credentials: "include",
     body: JSON.stringify(data),
-    credentials: "include",
   };
 
   fetch(Actualadress + "login", requestOptions)
