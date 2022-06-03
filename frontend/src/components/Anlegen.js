@@ -29,7 +29,7 @@ export class Anlegen extends Component {
             <Row className="Content" fluid>
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" fluid>
-                <h1>Anlegen</h1>
+                <h1>Nutzer Anlegen</h1>
                 <label>E-Mail</label>
                 <br />
                 <input type="text" name="Email"
