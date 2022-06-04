@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowHeader, ShowNavbar} from "./App";
 import {ShowFooter} from "./Footer";
+import {getUser} from "../api";
 
 import "../css/Overlay.css";
 import "../css/Profil.css";
@@ -11,19 +12,25 @@ export class Profil extends Component {
     super(props);
 
     this.state = {
-      name: "Max",
-      surname: "Mustermann",
-      title: "",
-      email: "max.musterman@web.de",
-      graduation: "Abitur",
-      job: "Student",
-      location: "Offenburg",
-      institutionlocation: "Offenburg",
-      bio: "abc",
-      courses: ["Prog1", "Projekt1", "Mathe1"],
+      firstname: null,
+      surname: null,
+      title: null,
+      email: null,
+      graduation: null,
+      job: null,
+      location: null,
+      institutionlocation: null,
+      bio: null,
+      // courses: ["Prog1", "Projekt1", "Mathe1"],
 
     };
   }
+
+  componentDidMount() {
+    getUser(this);
+    this.render();
+  }
+
   render() {
     return (
       <div className="Profil">
@@ -34,7 +41,7 @@ export class Profil extends Component {
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" fluid><h1>Profil</h1>
                 <p>{this.state.title} {this.state.surname},
-                  {this.state.name}</p>
+                  {this.state.firstname}</p>
                 <p>{this.state.email}</p>
                 <p>{this.state.graduation}</p>
                 <p>{this.state.job}</p>
@@ -42,7 +49,7 @@ export class Profil extends Component {
                 <p>{this.state.institutionlocation}</p>
                 <input type="text" id="bio" defaultValue={this.state.bio}
                   onInput={this.ChangeBio} ></input>
-                <this.FillCourses /></Col>
+              </Col>
             </Row>
           </Container>
         </div>

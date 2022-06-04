@@ -11,7 +11,7 @@
  * @return {void} returns nothing.
  */
 
-const Testlocal = 0;
+const Testlocal = 1;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
 const Localadress = "http://learningbay24.local:8080/";
@@ -281,6 +281,19 @@ export function getFileByID(caller, courseID, fileId, filename) {
 
         window.URL.revokeObjectURL(url);
         document.removeChild(anchor);
+      })
+      .catch((error) => console.error(error));
+}
+
+export function getUser(caller) {
+  console.log("(getUser): " + Actualadress + "users");
+
+  fetch(Actualadress + "users/10002", {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState(data);
       })
       .catch((error) => console.error(error));
 }
