@@ -288,7 +288,7 @@ export function getFileByID(caller, courseID, fileId, filename) {
 export function getUser(caller) {
   console.log("(getUser): " + Actualadress + "users");
 
-  fetch(Actualadress + "users/10002", {method: "GET",
+  fetch(Actualadress + "users", {method: "GET",
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
