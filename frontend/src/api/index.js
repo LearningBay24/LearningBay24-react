@@ -284,3 +284,16 @@ export function getFileByID(caller, courseID, fileId, filename) {
       })
       .catch((error) => console.error(error));
 }
+
+export function getUser(caller) {
+  console.log("(getUser): " + Actualadress + "users");
+
+  fetch(Actualadress + "users", {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState(data);
+      })
+      .catch((error) => console.error(error));
+}
