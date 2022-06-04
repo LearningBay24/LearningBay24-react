@@ -17,9 +17,8 @@ export class Profil extends Component {
       title: null,
       email: null,
       graduation: null,
-      job: null,
+      role_id: null,
       location: null,
-      institutionlocation: null,
       bio: null,
       // courses: ["Prog1", "Projekt1", "Mathe1"],
 
@@ -40,13 +39,12 @@ export class Profil extends Component {
             <Row className="Content" fluid>
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" fluid><h1>Profil</h1>
-                <p>{this.state.title} {this.state.surname},
+                <p>Name :{this.state.title} {this.state.surname},
                   {this.state.firstname}</p>
-                <p>{this.state.email}</p>
-                <p>{this.state.graduation}</p>
-                <p>{this.state.job}</p>
-                <p>{this.state.location}</p>
-                <p>{this.state.institutionlocation}</p>
+                <p>Email: {this.state.email}</p>
+                <p>Abschluss: {this.state.graduation}</p>
+                <p>Rolle: {this.state.role_id}</p>
+                <p>Ort: {this.state.location}</p>
                 <input type="text" id="bio" defaultValue={this.state.bio}
                   onInput={this.ChangeBio} ></input>
               </Col>
