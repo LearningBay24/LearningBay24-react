@@ -119,13 +119,17 @@ export class Kursuebersicht extends Component {
               <Col xs={10} className="ColContent" fluid>
                 <Row className="SectionContainer">
                   <h1>Kursübersicht</h1>
+                  <div className="AdminArea">
+                    <button className="btnCreateCourse"
+                      onClick={this.toggleCreateCourse}>
+                      Kurs erstellen
+                    </button>
+                  </div>
                   <Row className="Section" hidden={!this.state.UserRights}>
                     <h1>Meine Kurse</h1>
-                    {MyCourseslist}
-
-                    <button className="primary"
-                      onClick={this.toggleCreateCourse}>
-                      Kurs erstellen </button>
+                    <div className="CourseList">
+                      {MyCourseslist}
+                    </div>
                     <Dialog open={this.state.createCourse}
                       onClose={this.toggleCreateCourse}>
                       <DialogTitle>Kurs erstellen</DialogTitle>
@@ -161,11 +165,15 @@ export class Kursuebersicht extends Component {
                   </Row>
                   <Row className="Section">
                     <h1>Belegte Kurse</h1>
-                    {CoursesTakenlist}
+                    <div className="CourseList">
+                      {CoursesTakenlist}
+                    </div>
                   </Row>
                   <Row className="Section">
                     <h1>Vorgeschlagene Kurse</h1>
-                    {CoursesSuggestedlist}
+                    <div className="CourseList">
+                      {CoursesSuggestedlist}
+                    </div>
                   </Row>
                 </Row>
               </Col>

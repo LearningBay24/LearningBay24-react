@@ -5,19 +5,27 @@
 .Section {
     margin-bottom: 2rem;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex-flow: row wrap;
-    border-bottom: solid 1px var(--mid);
+    justify-content: space-evenly;
+    flex-flow: column nowrap;
+    border-bottom: solid 2px var(--mid);
     min-height: 20rem;
+    color: var(--dark);
 }
 
+.CourseList {
+    padding: 0;
+
+    display: flex;
+    justify-content: left;
+    flex-flow: row wrap;
+}
 
 .Course {
     margin: 1rem;
     padding: 1rem;
-    width: clamp(14rem, 60%, 20rem);
-    border: solid 1px var(--mid);
+    width: calc(50% - 2rem);
+    border: var(--border);
+    border-radius: var(--rad);
 }
 
 .Course a {
@@ -26,15 +34,23 @@
     text-transform: uppercase;
 }
 
+.Course p {
+    margin: 0;
+}
+
 .Course a h4 {
     font-size: 1.2rem;
-    border-bottom: solid 1px var(--mid);
+    border-bottom: solid 2px var(--mid);
 }
 
 .Course:hover {
-    background-color: var(--dark);
-    color: var(--white);
+    background-color: var(--bg-hover);
 }
+
+.CourseName {
+    margin-bottom: 0.5rem;
+}
+
 
 label, input {
     display: flex;
@@ -46,12 +62,56 @@ label, input {
     display: inline;
 }
 
-button {
-    margin: 1rem;
-    border: solid 1px var(--mid);
+.btnCreateCourse {
+    width: auto;
+    height: 2rem;
+    margin: 0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+
+    color: var(--dark);
+}
+
+.btnCreateCourse:hover {
+    background-color: var(--mid);
 }
 
 .primary {
     height: 2rem;
 }
+
+.AdminArea {
+    display: flex;
+    flex-flow: row nowrap;
+    background-color: var(--dark);
+}
+
+
+/* --- Formular --- */
+
+.MuiPaper-root {
+    width: 60%;
+    height: 60%;
+    color: var(--dark);
+}
+
+#mui-1 {
+    margin-bottom: 2rem;
+    background-color: var(--dark);
+    color: var(--white);
+}
+
+.MuiDialogActions-root {
+    height: 3rem;    
+
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    align-content: center;
+    background-color: var(--dark);
+}
+
+
+
+
 

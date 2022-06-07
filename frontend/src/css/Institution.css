@@ -1,1 +1,39 @@
+.UserArea {
+    margin-bottom: 1rem;
+    min-height: 8rem;
+    border-bottom: solid 2px var(--mid);
+    color: var(--dark);
+}
 
+.InstitutionType {
+    margin-bottom: 1rem;
+    color: var(--dark);
+}
+
+.AdminuserArea, .EnduserArea {
+    margin: 1rem;
+    margin-bottom: 0;
+    margin-top: 0;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.EnduserArea {
+    margin-bottom: 1rem;
+}
+
+.AdminuserArea p, .EnduserArea p {
+    margin: 0;
+    margin-right: 1rem;
+}
+
+.SubjectArea, .DegreeArea {
+    margin-bottom: 1rem;
+    min-height: 8rem;
+    color: var(--dark);
+    border-bottom: solid 2px var(--mid);
+}
+
+.SubjectArea * {
+    margin-left: 1rem;
+}

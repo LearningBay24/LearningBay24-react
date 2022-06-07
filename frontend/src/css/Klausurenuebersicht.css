@@ -1,21 +1,72 @@
+.Section {
+    padding: 1rem;
+    max-height: 80rem;
+
+    flex: 1 0 auto;
+    display: flex;
+    justify-content: center;
+
+    border-bottom: solid 1px var(--mid);
+}
+
+.ExamWrapper {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
 .Exam {
     margin: 1rem;
-    padding: 1rem;
+    padding: 0.5rem;
+
+    height: auto;
+    width: clamp(40rem, 70%, 50rem);
 
     color: var(--dark);
     font-weight: 600;
 
-    border: solid 1px var(--mid);
+    border: var(--border);
+    border-radius: var(--rad);
 }
 
 .Exam:hover {
-    background-color: var(--dark);
-    color: var(--white);
+    background-color: var(--bg-hover);
 }
 
-.Section {
-    padding: 1rem;
-    min-height: 20rem;
+.Exam p {
+    margin-bottom: 0;
+}
+
+.ExamHeader {
+    margin-bottom: 0.4rem;
+    height: 1.5rem;
     display: flex;
-    border-bottom: solid 1px var(--mid);
+    flex-flow: row nowrap;
+    justify-content: left;
+    border-bottom: solid 2px var(--mid);
+}
+
+.ExamBody {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.ExamInfo {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    width: 50%;
+}
+
+.ExamCourseInfo {
+    width: 50%;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+}
+
+.ExamName {
+    font-weight: 800;
 }
