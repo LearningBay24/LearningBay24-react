@@ -34,14 +34,14 @@
 - state name: `CurrentCourse`
 - needed parameters: `course_id`
 
-## `?`
+## `/courses/search`
 
 - HTTP-Method: `GET`
 - description: get courses that match query
 - returns: ^
 - frontend function: `getCoursesByQuery(caller, query)`
 - state name:
-- needed parameters: `?`
+- needed parameters: `query-string inside json`
 
 # User
 
