@@ -187,6 +187,28 @@ export function login(caller, data) {
       });
 }
 
+export function logout(caller) {
+  console.log("(logout): " + Actualadress + "logout");
+
+  const requestOptions = {
+    method: "POST",
+    credentials: "include",
+  };
+
+  fetch(Actualadress + "logout", requestOptions)
+      .then((response) => {
+        if (response.ok) {
+          alert("Logout erfolgreich");
+        } else {
+          alert("Logout fehlgeschlagen");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+}
+
+
 export function register(caller, data) {
   console.log("(register): " + Actualadress + "register");
   const requestOptions = {
