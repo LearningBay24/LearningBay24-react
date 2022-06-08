@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowHeader, ShowNavbar} from "./App";
 import {ShowFooter} from "./Footer";
-import {getUser} from "../api";
+import {getUser, logout} from "../api";
 
 import "../css/Overlay.css";
 import "../css/Profil.css";
@@ -47,6 +47,10 @@ export class Profil extends Component {
                 <p>Ort: {this.state.location}</p>
                 <input type="text" id="bio" defaultValue={this.state.bio}
                   onInput={this.ChangeBio} ></input>
+                <button onClick={() => {
+                  logout();
+                  this.componentDidMount();
+                }}>Log Out</button>
               </Col>
             </Row>
           </Container>
