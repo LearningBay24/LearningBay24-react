@@ -30,7 +30,7 @@ export class Anlegen extends Component {
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" fluid>
                 <div className="AddUserContainer">
-                  <h1>Anlegen</h1>
+                  <h1>Nutzer Anlegen</h1>
                   <div className="AddUserSection">
                     <label className="AddUserLabel">E-Mail</label>
                     <br />

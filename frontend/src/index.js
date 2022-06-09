@@ -8,7 +8,7 @@ Route,
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./css/index.css";
-import App from "./components/App";
+// import App from "./components/App";
 import Abgabenuebersicht from "./components/Abgabenuebersicht";
 import Anlegen from "./components/Anlegen";
 import Benachrichtigungen from "./components/Benachrichtigungen";
@@ -25,7 +25,7 @@ import Stundenplan from "./components/Stundenplan";
 ReactDOM.render(
     <Router>
       <Routes>
-        <Route exact path="/" element={<App />} />
+        <Route exact path="/" element={<Kursuebersicht />} />
         <Route exact path="/abgabenuebersicht"
           element={<Abgabenuebersicht />} />
         <Route exact path="/anlegen" element={<Anlegen />} />
@@ -40,7 +40,6 @@ ReactDOM.render(
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/profil" element={<Profil />} />
         <Route exact path="/stundenplan" element={<Stundenplan />} />
-
       </Routes>
     </Router>,
     document.getElementById("root"),
