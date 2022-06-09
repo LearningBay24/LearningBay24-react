@@ -1,0 +1,74 @@
+.AssignmentWrapper {
+    margin: 1rem;
+
+    display: flex;
+    justify-content: center;
+}
+
+.Assignment {
+    padding: 0.5rem;
+    height: auto;
+    width: clamp(40rem, 100%, 50rem);
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: left;
+
+    border: var(--border);
+    border-radius: var(--rad);
+
+    color: var(--dark);
+    font-weight: 600;
+}
+
+.Assignment:hover {
+    background-color: var(--mid);
+}
+
+.Assignment p {
+    margin-bottom: 0;
+}
+
+.Assignment input {
+    margin-bottom: 0;
+    padding: 5px;
+    height: auto;
+}
+
+.AssignmentCourseInfo {
+    margin-right: 3rem;
+    padding-left: 1rem;
+
+    width: 10rem;
+
+    flex-shrink: 0;
+}
+
+.AssignmentInfo {
+    padding: 0.5rem;
+    flex-grow: 1;
+
+    display: flex;
+    flex-flow: column nowrap;
+
+    border: solid 2px var(--dark);
+    background-color: var(--white);
+
+    border-top-right-radius: var(--rad);
+    border-bottom-right-radius: var(--rad);
+}
+
+.AssignmentInfoTop {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.AssignmentComment {
+    width: 100%;
+    height: 100%;
+}
+
+.AssignmentName {
+    font-weight: 800;
+}
+

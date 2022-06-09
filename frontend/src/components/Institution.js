@@ -17,9 +17,32 @@ export class Institution extends Component {
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" fluid>
                 <h1>Institution</h1>
-                <p> Anzahl der Nutzer:</p><p>xy</p>
-                <p> Anzahl der Endnutzer:</p><p>xy</p>
-                <p> Angebotene Fachrichtungen:</p>
+                <div className="AdminArea">
+                  <button className="btnCreateCourse"
+                    onClick={this.toggleCreateCourse}>
+                    Bearbeiten
+                  </button>
+                  <button className="btnCreateCourse"
+                    onClick={this.toggleCreateCourse}>
+                    Abschluss hinzufügen
+                  </button>
+                </div>
+                <h3 className="InstitutionType">Art der Institution</h3>
+
+                <div className="UserArea">
+                  <div className="AdminuserArea">
+                    <p> Anzahl der Nutzer:</p><p>xy</p>
+                  </div>
+                  <div className="EnduserArea">
+                    <p> Anzahl der Endnutzer:</p><p>xy</p>
+                  </div>
+                </div>
+                <div className="SubjectArea">
+                  <h3> Angebotene Fachrichtungen:</h3>
+                </div>
+                <div className="DegreeArea">
+                  <h3> Abschlüsse:</h3>
+                </div>
               </Col>
             </Row>
           </Container>

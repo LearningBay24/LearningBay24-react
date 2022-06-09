@@ -32,17 +32,21 @@ export class Profil extends Component {
           <Container className="Container" fluid>
             <Row className="Content" fluid>
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" fluid><h1>Profil</h1>
-                <p>{this.state.title} {this.state.surname},
-                  {this.state.name}</p>
-                <p>{this.state.email}</p>
-                <p>{this.state.graduation}</p>
-                <p>{this.state.job}</p>
-                <p>{this.state.location}</p>
-                <p>{this.state.institutionlocation}</p>
-                <input type="text" id="bio" defaultValue={this.state.bio}
-                  onInput={this.ChangeBio} ></input>
-                <this.FillCourses /></Col>
+              <Col xs={10} className="ColContent" fluid>
+                <h1>Profil</h1>
+                <div className="ProfileContainer">
+                  <p>{this.state.title} {this.state.surname},
+                    {this.state.name}</p>
+                  <p>{this.state.email}</p>
+                  <p>{this.state.graduation}</p>
+                  <p>{this.state.job}</p>
+                  <p>{this.state.location}</p>
+                  <p>{this.state.institutionlocation}</p>
+                  <input type="text" id="bio" defaultValue={this.state.bio}
+                    onInput={this.ChangeBio} ></input>
+                  <this.FillCourses />
+                </div>
+              </Col>
             </Row>
           </Container>
         </div>

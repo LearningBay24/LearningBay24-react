@@ -29,37 +29,47 @@ export class Anlegen extends Component {
             <Row className="Content" fluid>
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" fluid>
-                <h1>Nutzer Anlegen</h1>
-                <label>E-Mail</label>
-                <br />
-                <input type="text" name="Email"
-                  onChange={this.onInputChange}></input>
-                <br />
-                <label>Vorname</label>
-                <br />
-                <input type="text" name="firstname"
-                  onChange={this.onInputChange}></input>
-                <br />
-                <label>Nachname</label>
-                <br />
-                <input type="text" name="surname"
-                  onChange={this.onInputChange}></input>
-                <br />
-                <label>Passwort</label>
-                <br />
-                <input type="password" name="password"
-                  onChange={this.onInputChange}></input>
-                <br />
-                <label>Rolle</label>
-                <select name="role_id">
-                  <option value={2}>Dozent</option>
-                </select>
-                <label>Sprache</label>
-                <select name="preferred_language_id">
-                  <option value={2}>Deutsch</option>
-                </select>
-                <input type="submit" onClick={this.UserRegister}
-                  value="Neuen Nutzer anlegen" />
+                <div className="AddUserContainer">
+                  <h1>Nutzer Anlegen</h1>
+                  <div className="AddUserSection">
+                    <label className="AddUserLabel">E-Mail</label>
+                    <br />
+                    <input className="AddUserInput" type="text" name="Email"
+                      onChange={this.onInputChange}></input>
+                    <br />
+                    <label className="AddUserLabel">Vorname</label>
+                    <br />
+                    <input className="AddUserInput" type="text"
+                      name="firstname"
+                      onChange={this.onInputChange}></input>
+                    <br />
+                    <label className="AddUserLabel">Nachname</label>
+                    <br />
+                    <input className="AddUserInput" type="text" name="surname"
+                      onChange={this.onInputChange}></input>
+                    <br />
+                    <label className="AddUserLabel">Passwort</label>
+                    <br />
+                    <input className="AddUserInput" type="password"
+                      name="password"
+                      onChange={this.onInputChange}></input>
+                    <br />
+                    <label className="AddUserLabel">Rolle</label>
+                    <select className="AddUserSelect" name="role_id">
+                      <option value={2}>Dozent</option>
+                    </select>
+                    <label className="AddUserLabel">Sprache</label>
+                    <select className="AddUserSelect"
+                      name="preferred_language_id">
+                      <option value={2}>Deutsch</option>
+                    </select>
+                  </div>
+                  <div className="ButtonArea">
+                    <input className="AddUserSubmitButton" type="submit"
+                      onClick={this.UserRegister}
+                      value="Neuen Nutzer anlegen" />
+                  </div>
+                </div>
               </Col>
             </Row>
           </Container>

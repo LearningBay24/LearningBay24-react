@@ -1,46 +1,74 @@
 .LoginContainer {
     height: 100vh;
-    background-color: var(--dark);
-    position: relative;
+    background-color: var(--white);
 }
+
+
+/* --- Login --- */
 
 .Login {
     margin: 0 auto;
     margin-top: 20vh;
     margin-bottom: 10rem;
-    padding: 1rem;
     width: clamp(20rem, 50%, 26rem);
     height: 30rem;
     left: 25%;
 
+    display: flex;
     flex-direction: column;
     align-items: left;
+    justify-content: left;
+
+    border: var(--border);
+    border-radius: var(--rad);
 
     background-color: var(--white);
     display: flex;
     color: var(--dark);
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
-
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
 }
 
-.Login h1 {
-    margin-bottom: 3rem;
+.LoginHeader {
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--dark);
+}
+
+.LoginBody {
+    height: calc(100% - 12rem);
+    margin: 2rem;
+}
+
+.LoginFooter {
+    height: 4rem;
+    background-color: var(--dark);
+}
+
+
+.LoginH1 {
+    margin: 0;
     text-transform: uppercase;
-    scale: var(--header-scale);
-    position: relative;
-    left: 24%;
+    color: var(--white);
+    font-size: 1.5rem;
 }
 
 
 
 
 
-input {
-    margin-bottom: 3rem;
-    padding: 1rem;
-    height: 2rem;
-    border: solid 1px var(--mid);
+
+
+#email, #password {
+    padding-left: 0.5rem;
+    width: 100%;
 }
+
+.EmptySpace {
+    height: 3rem;
+}
+
 
 
 
@@ -54,14 +82,20 @@ input {
 
     outline: 0px;
     border: 0px;
+    border-radius: var(--rad);
     text-transform: uppercase;
     color: var(--dark);
+
+    background-color: var(--white);
+}
+
+#loginbutton:hover {
+    background-color: var(--mid);
 }
 
 .LB24Header {
     margin-top: 10vh; 
-    text-align: center;
-    color: var(--white);
+    color: var(--dark);
 }
 
 .Footer {

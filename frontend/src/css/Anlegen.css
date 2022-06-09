@@ -1,1 +1,40 @@
+.AddUserLabel {
+    margin-top: 1rem;
+    color: var(--dark);
+}
+
+.AddUserContainer {
+    display: flex;
+    align-content: center;
+    flex-flow: column nowrap;
+}
+
+.AddUserSection {
+    width: 40rem;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.AddUserInput {
+    padding-left: 0.5rem;
+    color: var(--dark);
+    font-weight: 600;
+}
+
+.AddUserSelect {
+    height: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+}
+
+.ButtonArea {
+    margin-top: 2rem;
+    padding: 0.5rem;
+    width: 100%;
+    background-color: var(--dark);
+}
+
+.AddUserSubmitButton {
+    color: var(--dark);
+}
 

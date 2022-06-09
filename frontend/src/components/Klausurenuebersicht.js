@@ -16,26 +16,37 @@ export class Klausurenuebersicht extends Component {
             <Row className="Content" fluid>
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" fluid>
+                <h1>Klausurenübersicht</h1>
+                <div className="AdminArea">
+                  <button className="btnCreateCourse"
+                    onClick={this.toggleCreateCourse}>
+                    Kurs erstellen
+                  </button>
+                  <button className="btnCreateCourse"
+                    onClick={this.toggleCreateCourse}>
+                    Benoten
+                  </button>
+                </div>
                 <Row className="Section">
-                  <h1>Angemeldete Klausuren</h1>
-                  <Col xs={4} fluid> <ShowExam /></Col>
-                  <Col xs={4} fluid> <ShowExam /></Col>
-                  <Col xs={4} fluid> <ShowExam /></Col>
-                  <Col xs={4} fluid> <ShowExam /></Col>
+                  <h2>Angemeldete Klausuren</h2>
+                  <div className="ExamWrapper"> <ShowExam /></div>
+                  <div className="ExamWrapper"> <ShowExam /></div>
+                  <div className="ExamWrapper"> <ShowExam /></div>
+                  <div className="ExamWrapper"> <ShowExam /></div>
                 </Row>
                 <Row className="Section">
-                  <h1>Anmelden</h1>
-                  <Col xs={4} fluid> <ShowExam /></Col>
-                  <Col xs={4} fluid> <ShowExam /></Col>
-                  <Col xs={4} fluid> <ShowExam /></Col>
-                  <Col xs={4} fluid> <ShowExam /></Col>
+                  <h2>Anmelden</h2>
+                  <div className="ExamWrapper"> <ShowExam /></div>
+                  <div className="ExamWrapper"> <ShowExam /></div>
+                  <div className="ExamWrapper"> <ShowExam /></div>
+                  <div className="ExamWrapper"> <ShowExam /></div>
                 </Row>
                 <Row className="Section">
-                  <h1>Vergangene Klausuren</h1>
-                  <Col xs={4} fluid> <ShowExam /></Col>
-                  <Col xs={4} fluid> <ShowExam /></Col>
-                  <Col xs={4} fluid> <ShowExam /></Col>
-                  <Col xs={4} fluid> <ShowExam /></Col>
+                  <h2>Vergangene Klausuren</h2>
+                  <div className="ExamWrapper"> <ShowExam /></div>
+                  <div className="ExamWrapper"> <ShowExam /></div>
+                  <div className="ExamWrapper"> <ShowExam /></div>
+                  <div className="ExamWrapper"> <ShowExam /></div>
                 </Row>
               </Col>
             </Row>
@@ -50,24 +61,22 @@ export class Klausurenuebersicht extends Component {
 function ShowExam() {
   return (
     <div className="Exam">
-      <table>
-        <tr>
-          <td>
-            <p className="ExamName">Klausurname</p>
-            <p className="ExamCourse">Kursname</p>
-            <p className="ExamOwner">Klausurersteller</p>
-            <p className="ExamDegree">Studiengang</p>
-            <p> </p>
-          </td>
-          <td>
-            <p className="ExamDate">Datum</p>
-            <p className="ExamTime">Uhrzeit</p>
-            <p className="ExamRoom">Raum</p>
-            <p className="Examduration">Dauer</p>
-          </td>
-        </tr>
-      </table>
-
+      <div className="ExamHeader">
+        <p className="ExamName">Klausurname</p>
+      </div>
+      <div className="ExamBody">
+        <div className="ExamCourseInfo">
+          <p className="ExamCourse">Kursname</p>
+          <p className="ExamDegree">Studiengang</p>
+          <p className="ExamOwner">Klausurersteller</p>
+        </div>
+        <div className="ExamInfo">
+          <p className="ExamDate">Datum</p>
+          <p className="ExamTime">Uhrzeit</p>
+          <p className="ExamDuration">Dauer</p>
+          <p className="ExamRoom">Raum</p>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,1 +1,52 @@
+.fc {
+    height: 100%;
+}
 
+#fc-dom-16 {
+    color: var(--dark);
+    font-size: 1.3rem;
+}
+
+
+
+.fc-col-header {
+    width: 10%;
+}
+
+.fc-scroller-harness {
+    border-bottom: var(--border);
+}
+
+
+.fc-timegrid-axis {
+    border: var(--border);
+}
+
+.fc-col-header-cell-cushion {
+    text-decoration: none;
+    color: var(--dark);
+}
+
+.fc-timegrid-slot-label-cushion {
+    color: var(--dark);
+}
+
+.fc-timegrid-axis-cushion {
+    color: var(--dark);
+}
+
+.fc-daygrid-day {
+    height: 4rem;
+}
+
+.fc-timegrid-slot-label-frame {
+    margin: 6px;
+}
+
+.fc .fc-timegrid-slot-minor {
+    border: 0;
+}
+
+.fc-theme-standard td, .fc-theme-standard th {
+    border: 0;
+}
