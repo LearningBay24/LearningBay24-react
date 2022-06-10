@@ -27,7 +27,6 @@ export class Profil extends Component {
 
   componentDidMount() {
     getUser(this);
-    this.render();
   }
 
   render() {
