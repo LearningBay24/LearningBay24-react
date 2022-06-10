@@ -42,13 +42,13 @@ export class Stundenplan extends Component {
   componentDidMount() {
     this.setState({events: []});
     getAppointments(this, this.AppointmentsCallback);
-    this.setState({render: 1});
   }
 
   AppointmentsCallback(caller) {
     console.log("AppointmentsCallback");
     if (caller.state.Apointments[0] != null) {
-      for (let i = 0; i < caller.state.Apointments[0].length; i++) {
+      console.log("test");
+      for (let i = 0; i < caller.state.Apointments.length; i++) {
         this.state.events.push({
           title: caller.state.Apointments[i][0].id,
           start: new Date(Date.parse(

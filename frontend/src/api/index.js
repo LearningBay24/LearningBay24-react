@@ -351,10 +351,10 @@ export function getAppointments(caller, callback) {
   fetch(Actualadress + "appointments", requestOptions)
       .then((response) => response.json())
       .then((data) => {
+        console.log("data");
         console.log(data);
         caller.setState({Apointments: data}, ()=> {
           console.log("callback");
-          console.log(caller.state.Apointments[0][0].id);
           callback(caller);
         });
       })
