@@ -1,6 +1,7 @@
 import React, {Component} from "react";
-import {ShowHeader, ShowNavbar} from "./App";
+import {ShowNavbar} from "./App";
 import {ShowFooter} from "./Footer";
+import {ShowHeader} from "./Kopfzeile";
 
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!

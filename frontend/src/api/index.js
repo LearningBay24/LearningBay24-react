@@ -5,12 +5,6 @@
  * data in the components state
  */
 
-/**
- * get subscribed courses
- * @param {any} caller The component that calls the api function
- * @return {void} returns nothing.
- */
-
 const Testlocal = 0;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
@@ -23,10 +17,16 @@ if (Testlocal) {
 }
 
 
+/**
+ * get subscribed courses
+ * @param {any} caller The component that calls the api function
+ * @return {void} returns nothing.
+ */
 export function getMyCourses(caller) {
   console.log("(getMyCourses): " + Actualadress + "users/courses");
 
   fetch(Actualadress + "users/courses", {method: "GET",
+    mode: "no-cors",
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
@@ -46,6 +46,7 @@ export function getCourse(caller, id) {
   console.log("(getCourse): " + Actualadress + `courses/${id}`);
 
   fetch(Actualadress + `courses/${id}`, {method: "GET",
+    mode: "no-cors",
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
@@ -62,7 +63,7 @@ export function getCourse(caller, id) {
  * @return {void} returns nothing.
  */
 export function getUsersInCourse(caller, id) {
-  console.log("(getUsersInCourse): " + Actualadress + `courses/${id}/users`);
+  console.log("(getUsersInCourse): "+ Actualadress + `courses/${id}/users`);
 
   fetch(Actualadress + `courses/${id}/users`, {method: "GET",
     credentials: "include"})
@@ -125,27 +126,23 @@ export function updateCourse(caller, object, id) {
       .catch((error) => console.error(error));
 }
 
-/*
-export function enrollUser(caller, user_id,id)
-{
-    // NOTE: backend is not implemented correctly, do not use this function yet
 
-    console.log("(enrollUser): " + `https://learningbay24.de/api/v1/courses/${id}/enroll/user/${user_id}`)
+export function enrollUserIntoCourse(caller, userID, courseID, enrollKey) {
+  const requestOptions = {
+    method: "POST",
+    body: JSON.stringify(enrollKey),
+  };
 
-    const requestOptions = {
-        method: 'POST',
-        body: JSON.stringify(user_id)
-    };
-
-    fetch(`https://learningbay24.de/api/v1/courses/${id}`, requestOptions)
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            // TODO
-        })
-        .catch((error) => console.error(error));
+  fetch(Actualadress + courseID.toString() +
+    "/users/" + userID.toString(), requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        // TODO
+      })
+      .catch((error) => console.error(error));
 }
-*/
+
 
 /**
  * deletes a course with id=id
@@ -165,26 +162,32 @@ export function deleteCourse(caller, id) {
       .catch((error) => console.error(error));
 }
 
-export function login(caller, data) {
+export function login(data) {
+  let successful = false;
+
   console.log("(login): " + Actualadress + "login");
 
   const requestOptions = {
     method: "POST",
     credentials: "include",
+    mode: "no-cors",
     body: JSON.stringify(data),
   };
 
   fetch(Actualadress + "login", requestOptions)
       .then((response) => {
+        console.log(response);
         if (response.ok) {
-          alert("Login erfolgreich");
+          successful = true;
         } else {
           alert("Login fehlgeschlagen");
+          successful = false;
         }
       })
       .catch((error) => {
         console.error(error);
       });
+  return successful;
 }
 
 export function register(caller, data) {
@@ -207,3 +210,29 @@ export function register(caller, data) {
       })
       .catch((error) => console.error(error));
 }
+
+/**
+ * gets courses by search-query
+ * @param {any} caller The component that calls the api function
+ * @param {any} query the search string
+ * @return {void} returns nothing.
+ */
+export function getCoursesByQuery(caller, query) {
+  console.log("(getCoursesByQuery) query: " + query);
+
+  const requestOptions = {
+    method: "GET",
+    mode: "no-cors",
+    credentials: "include",
+  };
+
+  fetch(Actualadress + "courses/search?" +
+      "searchterm=" + query, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => console.error(error));
+}
+
+

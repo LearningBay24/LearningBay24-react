@@ -20,6 +20,7 @@ import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import Profil from "./components/Profil";
 import Stundenplan from "./components/Stundenplan";
+import Suchergebnis from "./components/Suchergebnis";
 
 
 ReactDOM.render(
@@ -40,7 +41,7 @@ ReactDOM.render(
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/profil" element={<Profil />} />
         <Route exact path="/stundenplan" element={<Stundenplan />} />
-
+        <Route exact path="/suchergebnis" element={<Suchergebnis />} />
       </Routes>
     </Router>,
     document.getElementById("root"),

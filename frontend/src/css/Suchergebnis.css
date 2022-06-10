@@ -1,0 +1,9 @@
+.ResultList {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.NoResultText {
+    font-weight: 600;
+    text-align: center;
+}

@@ -1,8 +1,9 @@
 import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
-import {ShowHeader, ShowNavbar} from "./App";
+import {ShowNavbar} from "./App";
 import {useParams} from "react-router-dom";
 import {ShowFooter} from "./Footer";
+import {ShowHeader} from "./Kopfzeile";
 
 import "../css/Overlay.css";
 import "../css/Kursansicht.css";

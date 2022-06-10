@@ -70,9 +70,7 @@
 }
 
 
-
-
-#loginbutton {
+.LoginButton {
     margin: 1rem;
     padding: 1px;
     width: 5rem;
