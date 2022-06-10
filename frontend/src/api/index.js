@@ -319,3 +319,44 @@ export function getUser(caller) {
       })
       .catch((error) => console.error(error));
 }
+
+function startOfWeek(date) {
+  const diff = date.getDate() - date.getDay() +
+    (date.getDay() === 0 ? -6 : 1)-1;
+  return new Date(date.setDate(diff));
+}
+
+function endOfWeek(date) {
+  const diff = date.getDate() - date.getDay() +
+    (date.getDay() === 0 ? -6 : 1)+7;
+  return new Date(date.setDate(diff));
+}
+
+
+export function getAppointments(caller, callback) {
+  console.log("(getAppointments): " + Actualadress + "appointments");
+  const startD = startOfWeek(new Date());
+  const endD = endOfWeek(new Date());
+  const object = {
+    "startDate": startD.toISOString().split("T")[0],
+    "endDate": endD.toISOString().split("T")[0],
+  };
+
+  const requestOptions = {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify(object),
+  };
+
+  fetch(Actualadress + "appointments", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({Apointments: data}, ()=> {
+          console.log("callback");
+          console.log(caller.state.Apointments[0][0].id);
+          callback(caller);
+        });
+      })
+      .catch((error) => console.error(error));
+}
