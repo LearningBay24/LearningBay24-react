@@ -93,7 +93,7 @@ html {
     display: block;
     text-transform: uppercase;
     text-decoration: none;
-    color: var(--dark);
+    color: var(--white);
     font-weight: 600;
 }
 
