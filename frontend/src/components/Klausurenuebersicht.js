@@ -176,16 +176,6 @@ export class Klausurenuebersicht extends Component {
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" fluid>
                 <h1>Klausurenübersicht</h1>
-                <div className="AdminArea">
-                  <button className="btnCreateCourse"
-                    onClick={this.toggleCreateCourse}>
-                    Kurs erstellen
-                  </button>
-                  <button className="btnCreateCourse"
-                    onClick={this.toggleCreateCourse}>
-                    Benoten
-                  </button>
-                </div>
                 <Row className="Section">
                   <h1>Angemeldete Klausuren</h1>
                   {registeredList}
@@ -197,11 +187,11 @@ export class Klausurenuebersicht extends Component {
                 <Row className="Section">
                   <h1>Vergangene Klausuren</h1>
                   <Row className="Section">
-                    <h1>Teilgenommene Klausuren</h1>
+                    <h2>Teilgenommene Klausuren</h2>
                     {attendedList}
                   </Row>
                   <Row className="Section">
-                    <h1>Bestandene Klausuren</h1>
+                    <h2>Bestandene Klausuren</h2>
                     {passedList}
                   </Row>
                 </Row>

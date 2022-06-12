@@ -9,7 +9,7 @@ import "../css/Kursansicht.css";
 
 import {
   getCourse, getFiles, updateCourse,
-  uploadFile, getFileByID, uploadLink,
+  uploadFile, getFileByID, uploadLink, createExam,
 } from "../api";
 
 import PropTypes from "prop-types";
@@ -69,6 +69,7 @@ export class Kursansicht extends Component {
 
       // variables for editing course
       ChangeAppointmentId: "-1",
+      ChangeExamId: "-1",
 
       // _______________________________________________________________________
       // actual structs from DB these get filled by the api call and should be
@@ -138,6 +139,7 @@ export class Kursansicht extends Component {
     this.onFileChange = this.onFileChange.bind(this);
     this.onSaveDescriptionChange = this.onSaveDescriptionChange.bind(this);
     this.onSaveAppointmentChange = this.onSaveAppointmentChange.bind(this);
+    this.onSaveExam = this.onSaveExam.bind(this);
   }
 
 
@@ -201,6 +203,28 @@ export class Kursansicht extends Component {
       }
     }
     console.log(this.state.Course.CourseAppointments);
+  }
+
+  onSaveExam() {
+    if (this.state.ChangeExamId === "-1") {
+      let online_ = 0;
+      if (this.state.NewExamOnline != null) {
+        online_ = this.state.NewExamOnline;
+      }
+      const Exam ={
+        name: this.state.NewExamName,
+        description: this.state.NewExamDescription,
+        date: new Date(this.state.NewExamDate).toISOString(),
+        duration: (this.state.NewExamDuration*60).toString(),
+        location: this.state.NewExamLocation,
+        online: online_,
+        course_id: this.state.CurrentCourse.id.toString(),
+        register_deadline: new Date(this.state.NewExamRegister).toISOString(),
+        deregister_deadline:
+          new Date(this.state.NewExamDeregister).toISOString(),
+      };
+      createExam(this, Exam);
+    }
   }
 
 
@@ -413,24 +437,59 @@ export class Kursansicht extends Component {
                   </div>
                   <br />
                   <div className="Section">
-                    <select>{EditExam}</select>
+                    <select onChange={this.onInputChange} name="ChangeExamId">
+                      {EditExam}
+                    </select>
                     <label htmlFor="EditExamName">Name:</label>
                     <input type="Text" id="EditExamName"
-                      placeholder="Klausurname"></input>
+                      placeholder="Klausurname" onChange={this.onInputChange}
+                      name="NewExamName">
+                    </input>
+                    <label htmlFor="EditExamDescription">Beschreibung:</label>
+                    <input type="Text" id="EditExamDescription"
+                      placeholder="Klausurbeschreibung"
+                      onChange={this.onInputChange}
+                      name="NewExamDescription">
+                    </input>
                     <label htmlFor="EditExamDate">Datum:</label>
-                    <input type="Date" id="EditExamDate"></input>
-                    <label htmlFor="EditExamTime">Uhrzeit:</label>
-                    <input type="Time" id="EditExamTime"></input>
-                    <label htmlFor="EditExamDuration">Dauer:</label>
+                    <input type="Datetime-local" id="EditExamDate"
+                      onChange={this.onInputChange}
+                      name="NewExamDate">
+                    </input>
+                    <label htmlFor="EditExamDuration">Dauer(in min):</label>
                     <input type="Text" id="EditExamDuration"
-                      placeholder="Dauer"></input>
+                      placeholder="Dauer" onChange={this.onInputChange}
+                      name="NewExamDuration">
+                    </input>
+                    <label>Offline/Online</label>
+                    <select onChange={this.onInputChange}
+                      name="NewExamOnline">
+                      <option value="0">Offline</option>
+                      <option value="1">Online</option>
+                    </select>
+                    <label htmlFor="EditExamLocation">
+                      Raum(Zoomlink falls online):</label>
+                    <input type="Text" id="EditExamLocation"
+                      placeholder="Raum" onChange={this.onInputChange}
+                      name="NewExamLocation"></input>
+                    <label htmlFor="EditExamRegDate">Deadline Anmeldung:</label>
+                    <input type="Datetime-local" id="EditExamRegDate"
+                      onChange={this.onInputChange}
+                      name="NewExamRegister">
+                    </input>
+                    <label htmlFor="EditExamDeregDate">
+                      Deadline Abmeldung:</label>
+                    <input type="Datetime-local" id="EditExamDeregDate"
+                      onChange={this.onInputChange}
+                      name="NewExamDeregister">
+                    </input>
 
                     {
                       // TODO add material
                     }
                     <br />
                     <button>Löschen</button>
-                    <button>Speichern</button>
+                    <button onClick={this.onSaveExam}>Speichern</button>
                   </div>
                   <br />
 

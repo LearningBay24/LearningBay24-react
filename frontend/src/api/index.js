@@ -408,3 +408,22 @@ export function getExams(caller) {
         caller.setState({RegisteredExams: data});
       });
 }
+
+export function createExam(caller, object) {
+  console.log("(CreateExam): " + Actualadress + "exams");
+
+  const requestOptions = {
+    method: "POST",
+    body: JSON.stringify(object),
+    credentials: "include",
+  };
+  console.log(requestOptions.body);
+
+  fetch(Actualadress + "exams", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({ /* TODO: Return wert in state speichern */});
+      })
+      .catch((error) => console.error(error));
+}
