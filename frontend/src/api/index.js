@@ -11,7 +11,7 @@
  * @return {void} returns nothing.
  */
 
-const Testlocal = 1;
+const Testlocal = 0;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
 const Localadress = "http://learningbay24.local:8080/";
@@ -359,4 +359,52 @@ export function getAppointments(caller, callback) {
         });
       })
       .catch((error) => console.error(error));
+}
+
+export function getAttendedExams(caller) {
+  console.log("(getExams): " + Actualadress + "exams/attended");
+
+  fetch(Actualadress + "exams/attended", {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({AttendedExams: data});
+      });
+}
+
+export function getPassedExams(caller) {
+  console.log("(getExams): " + Actualadress + "exams/passed");
+
+  fetch(Actualadress + "exams/passed", {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({PassedExams: data});
+      });
+}
+
+export function getCreatedExams(caller) {
+  console.log("(getExams): " + Actualadress + "exams/created");
+
+  fetch(Actualadress + "exams/created", {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({CreatedExams: data});
+      });
+}
+
+export function getExams(caller) {
+  console.log("(getExams): " + Actualadress + "exams");
+
+  fetch(Actualadress + "users/exams", {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({RegisteredExams: data});
+      });
 }
