@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowHeader, ShowNavbar} from "./App";
@@ -8,8 +9,8 @@ import "../css/Overlay.css";
 import "../css/Kursansicht.css";
 
 import {
-  getCourse, getFiles, updateCourse,
-  uploadFile, getFileByID, uploadLink, createExam,
+  getCourse, getFiles, updateCourse, createExam, registerToExam,
+  uploadFile, getFileByID, uploadLink, getExamsFromCourse,
 } from "../api";
 
 import PropTypes from "prop-types";
@@ -132,6 +133,24 @@ export class Kursansicht extends Component {
       Material: [{
       }],
 
+      // Exams: [{
+      //   id: -1,
+      //   name: "",
+      //   description: "",
+      //   date: "",
+      //   duration: "",
+      //   online: "",
+      //   location: "",
+      //   course_id: "",
+      //   creator_id: "",
+      //   graded: "",
+      //   register_deadline: "",
+      //   deregister_deadline: "",
+      //   created_at: "",
+      //   updated_at: "",
+      //   deleted_at: "",
+      // }],
+
     };
 
 
@@ -146,6 +165,7 @@ export class Kursansicht extends Component {
   componentDidMount() {
     getCourse(this, this.state.id);
     getFiles(this, this.state.id);
+    getExamsFromCourse(this, this.state.id);
   }
 
 
@@ -211,11 +231,11 @@ export class Kursansicht extends Component {
       if (this.state.NewExamOnline != null) {
         online_ = this.state.NewExamOnline;
       }
-      const Exam ={
+      const Exam = {
         name: this.state.NewExamName,
         description: this.state.NewExamDescription,
         date: new Date(this.state.NewExamDate).toISOString(),
-        duration: (this.state.NewExamDuration*60).toString(),
+        duration: (this.state.NewExamDuration * 60).toString(),
         location: this.state.NewExamLocation,
         online: online_,
         course_id: this.state.CurrentCourse.id.toString(),
@@ -272,10 +292,20 @@ export class Kursansicht extends Component {
     }
 
     const Examlist = [];
-    for (const Exam of this.state.Course.CourseExams) {
-      Examlist.push(<ShowExam Name={Exam.Name} Content={Exam.Content}
-        Date={Exam.Date} Duration={Exam.Duration}
-        Location={Exam.Location} className="Exam" />);
+    if (this.state.Exams != null) {
+      for (const Exam of this.state.Exams) {
+        if (Exam.id != -1) {
+          Examlist.push(<Col xs={4} fluid><ShowUnregisteredExam
+            id={Exam.id}
+            name={Exam.name}
+            creator_id={Exam.creator_id}
+            description={Exam.description}
+            register_deadline={Exam.register_deadline}
+            deregister_deadline={Exam.deregister_deadline}
+            date={Exam.date}
+            duration={Exam.duration / 60} /></Col>);
+        }
+      }
     }
 
 
@@ -571,27 +601,20 @@ ShowAssignment.propTypes = {
   Deadline: PropTypes.string.isRequired,
 };
 
-function ShowExam(props) {
+function ShowUnregisteredExam(props) {
   return (
-    <div className='ExamContainer'>
-      <h6>{props.Name}</h6>
-      <a href={props.Content} target='_blank'
-        rel='noopener noreferrer'>{props.Content}</a>
-      <p>Zeit: {props.Duration}</p>
-      <p>Datum: {props.Date}</p>
-      <p>Ort: {props.Location}</p>
-      <br />
-      <input type="submit" value="zur Prüfung anmelden"
-        className="SubmitButton" />
-    </div>);
+    <div className="Exam">
+      <h4 className="ExamName">{props.name}</h4>
+      <p className="ExamDescription">{props.description}</p>
+      <p className="Examduration">Dauer :{props.duration}min.</p>
+      <p className="ExamDate">{props.date}</p>
+      <p className="ExamRoom">{props.location}</p>
+      <button onClick={() => {
+        registerToExam(this, props.id);
+      }}>Anmelden</button>
+    </div>
+  );
 }
-ShowExam.propTypes = {
-  Name: PropTypes.string.isRequired,
-  Content: PropTypes.string.isRequired,
-  Date: PropTypes.string.isRequired,
-  Duration: PropTypes.string.isRequired,
-  Location: PropTypes.string.isRequired,
-};
 
 function ShowSurvey(props) {
   return (

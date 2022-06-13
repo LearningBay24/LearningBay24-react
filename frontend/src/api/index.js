@@ -362,55 +362,77 @@ export function getAppointments(caller, callback) {
 }
 
 export function getAttendedExams(caller) {
-  console.log("(getExams): " + Actualadress + "exams/attended");
+  console.log("(getExams): " + Actualadress + "users/exams/attended");
 
-  fetch(Actualadress + "exams/attended", {method: "GET",
+  fetch(Actualadress + "users/exams/attended", {method: "GET",
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         caller.setState({AttendedExams: data});
       });
 }
 
 export function getPassedExams(caller) {
-  console.log("(getExams): " + Actualadress + "exams/passed");
+  console.log("(getExams): " + Actualadress + "users/exams/passed");
 
-  fetch(Actualadress + "exams/passed", {method: "GET",
+  fetch(Actualadress + "users/exams/passed", {method: "GET",
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         caller.setState({PassedExams: data});
       })
       .catch((error) => console.error(error));
 }
 
 export function getCreatedExams(caller) {
-  console.log("(getExams): " + Actualadress + "exams/created");
+  console.log("(getExams): " + Actualadress + "users/exams/created");
 
-  fetch(Actualadress + "exams/created", {method: "GET",
+  fetch(Actualadress + "users/exams/created", {method: "GET",
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         caller.setState({CreatedExams: data});
       })
       .catch((error) => console.error(error));
 }
 
-export function getExams(caller) {
-  console.log("(getExams): " + Actualadress + "exams");
+export function getRegisteredExams(caller) {
+  console.log("(getExams): " + Actualadress + "users/exams/registered");
 
-  fetch(Actualadress + "users/exams", {method: "GET",
+  fetch(Actualadress + "users/exams/registered", {method: "GET",
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         caller.setState({RegisteredExams: data});
       })
       .catch((error) => console.error(error));
 }
+
+export function getUnregisteredExams(caller) {
+  console.log("(getExams): " + Actualadress + "users/exams/unregistered");
+
+  fetch(Actualadress + "users/exams/unregistered", {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        caller.setState({UnregisteredExams: data});
+      })
+      .catch((error) => console.error(error));
+}
+
+export async function getExamsFromCourse(caller, courseId) {
+  console.log("(getExamsFromCourse): " + Actualadress +
+  `courses/${courseId}/exams`);
+
+  await fetch(Actualadress + `courses/${courseId}/exams`, {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        caller.setState({Exams: data});
+      })
+      .catch((error) => console.error(error));
+}
+
 
 export function createExam(caller, object) {
   console.log("(CreateExam): " + Actualadress + "exams");
@@ -431,13 +453,29 @@ export function createExam(caller, object) {
 }
 
 export function registerToExam(caller, examId) {
-  console.log("(registerToExam): " + Actualadress + "exams/" + examId);
+  console.log("(registerToExam): " + Actualadress +
+  `users/exams/${examId}`);
 
   fetch(Actualadress + `users/exams/${examId}`, {method: "POST",
     credentials: "include"})
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
+      .then((response) => {
+        if (response.status != 200) {
+          alert("error");
+        }
+      })
+      .catch((error) => console.error(error));
+}
+
+export function deregisterFromExam(caller, examId) {
+  console.log("(deregisterFromExam): " + Actualadress +
+  `users/exams/${examId}`);
+
+  fetch(Actualadress + `users/exams/${examId}`, {method: "DELETE",
+    credentials: "include"})
+      .then((response) => {
+        if (response.status != 204) {
+          alert("error");
+        }
       })
       .catch((error) => console.error(error));
 }
