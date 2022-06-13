@@ -5,16 +5,11 @@
  * data in the components state
  */
 
-/**
- * get subscribed courses
- * @param {any} caller The component that calls the api function
- * @return {void} returns nothing.
- */
-
 const Testlocal = 0;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
 const Localadress = "http://learningbay24.local:8080/";
+
 let Actualadress;
 if (Testlocal) {
   Actualadress = Localadress;
@@ -23,6 +18,11 @@ if (Testlocal) {
 }
 
 
+/**
+ * get subscribed courses
+ * @param {any} caller The component that calls the api function
+ * @return {void} returns nothing.
+ */
 export function getMyCourses(caller) {
   console.log("(getMyCourses): " + Actualadress + "users/courses");
 
@@ -30,10 +30,38 @@ export function getMyCourses(caller) {
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         caller.setState({MyCourses: data});
       })
       .catch((error) => console.error(error));
+}
+
+export async function getMyCoursesAsync() {
+  const result = await fetch(Actualadress + "users/courses",
+      {method: "GET", credentials: "include"});
+
+  return await result.json();
+}
+
+export async function checkIfUserEnrolledCourse(
+    courseIdParam, isEnrolledCallback, isNotEnrolledCallback) {
+  const myCoursesResponseObj = await fetch(Actualadress + "users/courses",
+      {method: "GET", credentials: "include"});
+  let myCourses = [{}];
+  myCourses = await myCoursesResponseObj.json();
+
+  if (myCourses != null) {
+    for (const item of myCourses) {
+      // compare strings
+      if (courseIdParam == item.id) {
+        // user is enrolled, do not call callback
+        isEnrolledCallback(courseIdParam);
+        return;
+      }
+    }
+  }
+  // user is not enrolled, call callback
+  isNotEnrolledCallback();
+  return;
 }
 
 /**
@@ -49,7 +77,6 @@ export function getCourse(caller, id) {
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         caller.setState({CurrentCourse: data});
       })
       .catch((error) => console.error(error));
@@ -62,7 +89,7 @@ export function getCourse(caller, id) {
  * @return {void} returns nothing.
  */
 export function getUsersInCourse(caller, id) {
-  console.log("(getUsersInCourse): " + Actualadress + `courses/${id}/users`);
+  console.log("(getUsersInCourse): "+ Actualadress + `courses/${id}/users`);
 
   fetch(Actualadress + `courses/${id}/users`, {method: "GET",
     credentials: "include"})
@@ -125,27 +152,22 @@ export function updateCourse(caller, object, id) {
       .catch((error) => console.error(error));
 }
 
-/*
-export function enrollUser(caller, user_id,id)
-{
-    // NOTE: backend is not implemented correctly, do not use this function yet
 
-    console.log("(enrollUser): " + `https://learningbay24.de/api/v1/courses/${id}/enroll/user/${user_id}`)
+export async function enrollUserIntoCourse(courseID, enrollKey, callback) {
+  const requestOptions = {
+    method: "POST",
+    body: JSON.stringify({enroll_key: enrollKey}),
+    credentials: "include",
+  };
 
-    const requestOptions = {
-        method: 'POST',
-        body: JSON.stringify(user_id)
-    };
-
-    fetch(`https://learningbay24.de/api/v1/courses/${id}`, requestOptions)
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            // TODO
-        })
-        .catch((error) => console.error(error));
+  const result = await fetch(
+      Actualadress + "courses/" + courseID.toString(), requestOptions);
+  const data = await result.json();
+  console.log("(enrollAPOI");
+  console.log(data);
+  return data;
 }
-*/
+
 
 /**
  * deletes a course with id=id
@@ -165,7 +187,7 @@ export function deleteCourse(caller, id) {
       .catch((error) => console.error(error));
 }
 
-export function login(caller, data) {
+export async function login(data, callback) {
   console.log("(login): " + Actualadress + "login");
 
   const requestOptions = {
@@ -174,17 +196,13 @@ export function login(caller, data) {
     body: JSON.stringify(data),
   };
 
-  fetch(Actualadress + "login", requestOptions)
-      .then((response) => {
-        if (response.ok) {
-          alert("Login erfolgreich");
-        } else {
-          alert("Login fehlgeschlagen");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const returnVal = await fetch(Actualadress + "login", requestOptions);
+
+  if (returnVal.ok) {
+    callback();
+  } else {
+    console.log("Login fehlgeschlagen");
+  }
 }
 
 export function register(caller, data) {
@@ -206,6 +224,44 @@ export function register(caller, data) {
         caller.setState({ /* TODO: Return wert in state speichern */});
       })
       .catch((error) => console.error(error));
+}
+
+/**
+ * gets courses by search-query
+ * @param {any} caller The component that calls the api function
+ * @param {any} query the search string
+ * @return {void} returns nothing.
+ */
+/*
+export function getCoursesByQuery(caller, query) {
+  console.log("(getCoursesByQuery) query: " + query);
+
+  const requestOptions = {
+    method: "GET",
+    credentials: "include",
+  };
+
+  fetch(Actualadress + "courses/search?" +
+      "searchterm=" + query, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({MatchedCourses: data});
+      })
+      .catch((error) => console.error(error));
+}*/
+
+export async function getCoursesByQuery(query, callback) {
+  console.log("(getCoursesByQuery) query: " + query);
+
+  const requestOptions = {
+    method: "GET",
+    credentials: "include",
+  };
+
+  const result = await fetch(Actualadress + "courses/search?" +
+      "searchterm=" + query, requestOptions);
+  callback(await result.json());
 }
 
 export function uploadFile(caller, file, id) {

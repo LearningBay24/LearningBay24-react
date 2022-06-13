@@ -2,8 +2,10 @@
     /*--white: #F4F4F2;*/
     --white: #FFFFFF;
     --grey: #BBBFCA;
-    --mid: #BBBFCA;
-    --dark: #495464;
+/*    --mid: #BBBFCA;*/
+    --mid: #90B8F8;
+/*    --dark: #495464;*/
+    --dark: #353941;
     --font-fam: 'Lato', sans-serif;
     --rad: 0.3rem;
     --pad-top: 2rem;
@@ -84,7 +86,6 @@ button {
 #btnSearchbar{
     margin: 1rem;
     margin-left: 2px;
-    padding-top: 2px;
     width: 6rem;
     height: 1.8rem;
 
@@ -106,7 +107,7 @@ button {
     display: block;
     text-transform: uppercase;
     text-decoration: none;
-    color: var(--dark);
+    color: var(--white);
     font-weight: 600;
 }
 
@@ -205,7 +206,7 @@ button {
     font-weight: 800;
 }
 
-.Navbar li a:focus {
+.Navbar li:focus {
     color: var(--dark);
 }
 
@@ -224,12 +225,11 @@ button {
 }
 
 .ColContent h1 {
-    margin-left: 1rem;
     margin-bottom: 1rem;
     text-transform: uppercase;
-    text-align: center;
     scale: var(--header-scale);
     color: var(--dark);
+    text-align: center;
 }
 
 .ColContent h2 {
@@ -270,3 +270,9 @@ button {
 
 /* --- Other global elements --- */
 
+#lnkSearch {
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: var(--dark);
+}

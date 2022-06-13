@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
-import {ShowHeader, ShowNavbar} from "./App";
+import {ShowNavbar} from "./App";
 import {ShowFooter} from "./Footer";
+import {ShowHeader} from "./Kopfzeile";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -9,10 +10,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import {Link} from "react-router-dom";
-import PropTypes from "prop-types";
-
 import {getMyCourses, postNewCourse} from "../api";
+import {ShowCourse} from "../components/Kurs";
 
 import "../css/Overlay.css";
 import "../css/Kursübersicht.css";
@@ -24,31 +23,22 @@ export class Kursuebersicht extends Component {
 
     this.state = {
       NewCourseID: 0,
-
       UserRights: true, // true if active user can create courses
-
       MyCourses: [{
         name: "test1", owner: "Peter", description: "das ist mein Kurs",
         created_at: "19.04.2022", id: "1",
       }],
-
       CoursesTaken: [{
         name: "test2", owner: "Hans", description: "das ist ein anderer Kurs",
         created_at: "4-19-2022", id: "2",
       }],
-
       CoursesSuggested: [{
         name: "test3", owner: "Klaus",
         description: "Dieser Kurs könnte ihnen gefallen",
         created_at: "4-19-2022", id: "3",
       }],
-
       createCourse: false,
-
-      // this object will be filled by the createCourse
-      // Dialog and will be sent to the server
       NewCourse: {name: "", user_id: "", description: "", enroll_key: ""},
-
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onCreateCourse = this.onCreateCourse.bind(this);
@@ -57,6 +47,7 @@ export class Kursuebersicht extends Component {
   toggleCreateCourse = () => {
     this.setState({createCourse: !this.state.createCourse});
   };
+
 
   onInputchange(event) {
     this.setState({
@@ -75,6 +66,7 @@ export class Kursuebersicht extends Component {
     getMyCourses(this);
     this.componentDidMount();
   }
+
 
   componentDidMount() {
     getMyCourses(this);
@@ -130,8 +122,10 @@ export class Kursuebersicht extends Component {
                     <div className="CourseList">
                       {MyCourseslist}
                     </div>
+
                     <Dialog open={this.state.createCourse}
-                      onClose={this.toggleCreateCourse}>
+                      onClose={this.toggleCreateCourse}
+                      className="CreateCourseDialog">
                       <DialogTitle>Kurs erstellen</DialogTitle>
                       <DialogContent>
                         <DialogContentText>
@@ -162,6 +156,7 @@ export class Kursuebersicht extends Component {
                           abbrechen</button>
                       </DialogActions>
                     </Dialog>
+
                   </Row>
                   <Row className="Section">
                     <h1>Belegte Kurse</h1>
@@ -185,31 +180,4 @@ export class Kursuebersicht extends Component {
     );
   }
 }
-
-function ShowCourse(props) {
-  const link = "/kursansicht/" + props.id;
-  return (
-    <div>
-      <Link to={link}>
-        <h4 className='CourseName'>{props.name}</h4>
-      </Link>
-      <p className='CourseDescription'>{props.description}</p>
-      <p className='CourseCreatedAt'>erstellt am:
-        {new Date(props.created_at).toLocaleDateString()}</p>
-
-    </div>
-  );
-}
-ShowCourse.propTypes = {
-  name: PropTypes.string.isRequired,
-  id: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  description: PropTypes.string.isRequired,
-  created_at: PropTypes.string.isRequired,
-  // owner: PropTypes.string.isRequired,
-};
-
-
 export default Kursuebersicht;

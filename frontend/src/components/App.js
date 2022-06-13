@@ -2,12 +2,11 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {Container, Row, Col} from "react-bootstrap";
 import {ShowFooter} from "./Footer";
+import {ShowHeader} from "../components/Kopfzeile";
 
 import "../css/Overlay.css";
 import "../css/App.css";
 import "../css/SvgStyling.css";
-
-import {ReactComponent as HomeSvg} from "../icons/home.svg";
 
 
 function App() {
@@ -33,7 +32,8 @@ function ShowNavbar() {
   return (
     <div className="Navbar">
       <ul>
-        <li key="5"><Link to="/dashboard">Dashboard</Link></li>
+        <li key="5"><Link to="/dashboard"
+          className="lnkDashboard">Dashboard</Link></li>
         <li key="9"><Link to="/kursuebersicht">Kursübersicht</Link></li>
         <li key="4"><Link to="/benachrichtigungen">
           Benachrichtigungen</Link></li>
@@ -49,24 +49,6 @@ function ShowNavbar() {
     </div>
   );
 }
-
-function ShowHeader() {
-  return (
-    <div className="Header">
-      <Container>
-        <Row>
-          <Col md={2}><Link to="/kursuebersicht">
-            <HomeSvg className="homeSvg"/>
-          </Link></Col>
-          <Col md={8}><input type="text" id="tfSearchbar"></input>
-            <button id="btnSearchbar">Suchen</button></Col>
-          <Col md={2}><Link to="/profil" id="lnkProfile">Profil</Link></Col>
-        </Row>
-      </Container>
-    </div>
-  );
-}
-
 export default App;
-export {ShowNavbar, ShowHeader};
+export {ShowNavbar};
 
