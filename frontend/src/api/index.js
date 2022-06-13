@@ -11,7 +11,7 @@
  * @return {void} returns nothing.
  */
 
-const Testlocal = 1;
+const Testlocal = 0;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
 const Localadress = "http://learningbay24.local:8080/";
@@ -310,7 +310,7 @@ export function getFileByID(caller, courseID, fileId, filename) {
 export function getUser(caller) {
   console.log("(getUser): " + Actualadress + "users");
 
-  fetch(Actualadress + "users", {method: "GET",
+  fetch(Actualadress + "users/cookie", {method: "GET",
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
