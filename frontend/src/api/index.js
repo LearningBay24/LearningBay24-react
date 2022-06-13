@@ -232,24 +232,6 @@ export function register(caller, data) {
  * @param {any} query the search string
  * @return {void} returns nothing.
  */
-/*
-export function getCoursesByQuery(caller, query) {
-  console.log("(getCoursesByQuery) query: " + query);
-
-  const requestOptions = {
-    method: "GET",
-    credentials: "include",
-  };
-
-  fetch(Actualadress + "courses/search?" +
-      "searchterm=" + query, requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        caller.setState({MatchedCourses: data});
-      })
-      .catch((error) => console.error(error));
-}*/
 
 export async function getCoursesByQuery(query, callback) {
   console.log("(getCoursesByQuery) query: " + query);

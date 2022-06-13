@@ -31,7 +31,7 @@ export function Login() {
   };
 
   const onSuccessfulLogin = () => {
-    navigate("/dashboard");
+    navigate("/kursuebersicht");
   };
 
   return (
