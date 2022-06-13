@@ -11,7 +11,7 @@
  * @return {void} returns nothing.
  */
 
-const Testlocal = 0;
+const Testlocal = 1;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
 const Localadress = "http://learningbay24.local:8080/";
@@ -382,7 +382,8 @@ export function getPassedExams(caller) {
       .then((data) => {
         console.log(data);
         caller.setState({PassedExams: data});
-      });
+      })
+      .catch((error) => console.error(error));
 }
 
 export function getCreatedExams(caller) {
@@ -394,7 +395,8 @@ export function getCreatedExams(caller) {
       .then((data) => {
         console.log(data);
         caller.setState({CreatedExams: data});
-      });
+      })
+      .catch((error) => console.error(error));
 }
 
 export function getExams(caller) {
@@ -406,7 +408,8 @@ export function getExams(caller) {
       .then((data) => {
         console.log(data);
         caller.setState({RegisteredExams: data});
-      });
+      })
+      .catch((error) => console.error(error));
 }
 
 export function createExam(caller, object) {
@@ -423,7 +426,18 @@ export function createExam(caller, object) {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        caller.setState({ /* TODO: Return wert in state speichern */});
+      })
+      .catch((error) => console.error(error));
+}
+
+export function registerToExam(caller, examId) {
+  console.log("(registerToExam): " + Actualadress + "exams/" + examId);
+
+  fetch(Actualadress + `users/exams/${examId}`, {method: "POST",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
       })
       .catch((error) => console.error(error));
 }
