@@ -205,6 +205,28 @@ export async function login(data, callback) {
   }
 }
 
+export function logout(caller) {
+  console.log("(logout): " + Actualadress + "logout");
+
+  const requestOptions = {
+    method: "POST",
+    credentials: "include",
+  };
+
+  fetch(Actualadress + "logout", requestOptions)
+      .then((response) => {
+        if (response.ok) {
+          alert("Logout erfolgreich");
+        } else {
+          alert("Logout fehlgeschlagen");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+}
+
+
 export function register(caller, data) {
   console.log("(register): " + Actualadress + "register");
   const requestOptions = {
@@ -319,6 +341,60 @@ export function getFileByID(caller, courseID, fileId, filename) {
 
         window.URL.revokeObjectURL(url);
         document.removeChild(anchor);
+      })
+      .catch((error) => console.error(error));
+}
+
+export function getUser(caller) {
+  console.log("(getUser): " + Actualadress + "users");
+
+  fetch(Actualadress + "users/cookie", {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState(data);
+      })
+      .catch((error) => console.error(error));
+}
+
+function startOfWeek(date) {
+  const diff = date.getDate() - date.getDay() +
+    (date.getDay() === 0 ? -6 : 1)-1;
+  return new Date(date.setDate(diff));
+}
+
+function endOfWeek(date) {
+  const diff = date.getDate() - date.getDay() +
+    (date.getDay() === 0 ? -6 : 1)+7;
+  return new Date(date.setDate(diff));
+}
+
+
+export function getAppointments(caller, callback) {
+  console.log("(getAppointments): " + Actualadress + "appointments");
+  const startD = startOfWeek(new Date());
+  const endD = endOfWeek(new Date());
+  const object = {
+    "startDate": startD.toISOString().split("T")[0],
+    "endDate": endD.toISOString().split("T")[0],
+  };
+
+  const requestOptions = {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify(object),
+  };
+
+  fetch(Actualadress + "appointments", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data");
+        console.log(data);
+        caller.setState({Apointments: data}, ()=> {
+          console.log("callback");
+          callback(caller);
+        });
       })
       .catch((error) => console.error(error));
 }
