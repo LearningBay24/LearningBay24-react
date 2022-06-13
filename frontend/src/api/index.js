@@ -5,7 +5,7 @@
  * data in the components state
  */
 
-const Testlocal = 1;
+const Testlocal = 0;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
 const Localadress = "http://learningbay24.local:8080/";
@@ -46,14 +46,17 @@ export async function checkIfUserEnrolledCourse(
     courseIdParam, isEnrolledCallback, isNotEnrolledCallback) {
   const myCoursesResponseObj = await fetch(Actualadress + "users/courses",
       {method: "GET", credentials: "include"});
-  const myCourses = await myCoursesResponseObj.json();
+  let myCourses = [{}];
+  myCourses = await myCoursesResponseObj.json();
 
-  for (const item of myCourses) {
-    // compare strings
-    if (courseIdParam == item.id) {
-      // user is enrolled, do not call callback
-      isEnrolledCallback(courseIdParam);
-      return;
+  if (myCourses != null) {
+    for (const item of myCourses) {
+      // compare strings
+      if (courseIdParam == item.id) {
+        // user is enrolled, do not call callback
+        isEnrolledCallback(courseIdParam);
+        return;
+      }
     }
   }
   // user is not enrolled, call callback
@@ -153,7 +156,8 @@ export function updateCourse(caller, object, id) {
 export async function enrollUserIntoCourse(courseID, enrollKey, callback) {
   const requestOptions = {
     method: "POST",
-    body: JSON.stringify(enrollKey),
+    body: JSON.stringify({enroll_key: enrollKey}),
+    credentials: "include",
   };
 
   const result = await fetch(
