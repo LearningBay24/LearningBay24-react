@@ -5,10 +5,11 @@
  * data in the components state
  */
 
-const Testlocal = 0;
+const Testlocal = 1;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
 const Localadress = "http://learningbay24.local:8080/";
+
 let Actualadress;
 if (Testlocal) {
   Actualadress = Localadress;
@@ -26,14 +27,38 @@ export function getMyCourses(caller) {
   console.log("(getMyCourses): " + Actualadress + "users/courses");
 
   fetch(Actualadress + "users/courses", {method: "GET",
-    mode: "no-cors",
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         caller.setState({MyCourses: data});
       })
       .catch((error) => console.error(error));
+}
+
+export async function getMyCoursesAsync() {
+  const result = await fetch(Actualadress + "users/courses",
+      {method: "GET", credentials: "include"});
+
+  return await result.json();
+}
+
+export async function checkIfUserEnrolledCourse(
+    courseIdParam, isEnrolledCallback, isNotEnrolledCallback) {
+  const myCoursesResponseObj = await fetch(Actualadress + "users/courses",
+      {method: "GET", credentials: "include"});
+  const myCourses = await myCoursesResponseObj.json();
+
+  for (const item of myCourses) {
+    // compare strings
+    if (courseIdParam == item.id) {
+      // user is enrolled, do not call callback
+      isEnrolledCallback(courseIdParam);
+      return;
+    }
+  }
+  // user is not enrolled, call callback
+  isNotEnrolledCallback();
+  return;
 }
 
 /**
@@ -46,11 +71,9 @@ export function getCourse(caller, id) {
   console.log("(getCourse): " + Actualadress + `courses/${id}`);
 
   fetch(Actualadress + `courses/${id}`, {method: "GET",
-    mode: "no-cors",
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         caller.setState({CurrentCourse: data});
       })
       .catch((error) => console.error(error));
@@ -127,20 +150,18 @@ export function updateCourse(caller, object, id) {
 }
 
 
-export function enrollUserIntoCourse(caller, userID, courseID, enrollKey) {
+export async function enrollUserIntoCourse(courseID, enrollKey, callback) {
   const requestOptions = {
     method: "POST",
     body: JSON.stringify(enrollKey),
   };
 
-  fetch(Actualadress + courseID.toString() +
-    "/users/" + userID.toString(), requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        // TODO
-      })
-      .catch((error) => console.error(error));
+  const result = await fetch(
+      Actualadress + "courses/" + courseID.toString(), requestOptions);
+  const data = await result.json();
+  console.log("(enrollAPOI");
+  console.log(data);
+  return data;
 }
 
 
@@ -162,32 +183,22 @@ export function deleteCourse(caller, id) {
       .catch((error) => console.error(error));
 }
 
-export function login(data) {
-  let successful = false;
-
+export async function login(data, callback) {
   console.log("(login): " + Actualadress + "login");
 
   const requestOptions = {
     method: "POST",
     credentials: "include",
-    mode: "no-cors",
     body: JSON.stringify(data),
   };
 
-  fetch(Actualadress + "login", requestOptions)
-      .then((response) => {
-        console.log(response);
-        if (response.ok) {
-          successful = true;
-        } else {
-          alert("Login fehlgeschlagen");
-          successful = false;
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  return successful;
+  const returnVal = await fetch(Actualadress + "login", requestOptions);
+
+  if (returnVal.ok) {
+    callback();
+  } else {
+    console.log("Login fehlgeschlagen");
+  }
 }
 
 export function register(caller, data) {
@@ -211,18 +222,19 @@ export function register(caller, data) {
       .catch((error) => console.error(error));
 }
 
+
 /**
  * gets courses by search-query
  * @param {any} caller The component that calls the api function
  * @param {any} query the search string
  * @return {void} returns nothing.
  */
+/*
 export function getCoursesByQuery(caller, query) {
   console.log("(getCoursesByQuery) query: " + query);
 
   const requestOptions = {
     method: "GET",
-    mode: "no-cors",
     credentials: "include",
   };
 
@@ -231,8 +243,20 @@ export function getCoursesByQuery(caller, query) {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        caller.setState({MatchedCourses: data});
       })
       .catch((error) => console.error(error));
+}*/
+
+export async function getCoursesByQuery(query, callback) {
+  console.log("(getCoursesByQuery) query: " + query);
+
+  const requestOptions = {
+    method: "GET",
+    credentials: "include",
+  };
+
+  const result = await fetch(Actualadress + "courses/search?" +
+      "searchterm=" + query, requestOptions);
+  callback(await result.json());
 }
-
-

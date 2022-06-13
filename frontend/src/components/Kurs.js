@@ -2,10 +2,9 @@ import React from "react";
 import {useNavigate} from "react-router-dom";
 import PropTypes from "prop-types";
 
-function onClickHandler(navigate, link) {
-  // check if user is already enrolled
+async function onClickHandler(navigate, link) {
   // show form
-  navigate(link);
+  // navigate(link);
 }
 
 export function ShowCourse(props) {
@@ -14,7 +13,7 @@ export function ShowCourse(props) {
   return (
     <div onClick={() => {
       onClickHandler(navigate, link);
-      props.callback();
+      props.callback(props.id);
     }}>
       <h4 className='CourseName'>{props.name}</h4>
       <p className='CourseDescription'>{props.description}</p>

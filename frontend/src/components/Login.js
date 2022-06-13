@@ -11,7 +11,6 @@ import "../css/Login.css";
 export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [successful, setSuccessful] = useState(false);
   const navigate = useNavigate();
 
   const onEmailChange = (event) => {
@@ -27,12 +26,8 @@ export function Login() {
       Email: email,
       Password: password,
     };
-    setSuccessful(login(data));
 
-    if (successful) {
-      onSuccessfulLogin();
-      alert("Successfully logged in!");
-    }
+    login(data, onSuccessfulLogin);
   };
 
   const onSuccessfulLogin = () => {

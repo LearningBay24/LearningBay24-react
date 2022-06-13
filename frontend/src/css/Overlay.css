@@ -2,8 +2,10 @@
     /*--white: #F4F4F2;*/
     --white: #FFFFFF;
     --grey: #BBBFCA;
-    --mid: #BBBFCA;
-    --dark: #495464;
+/*    --mid: #BBBFCA;*/
+    --mid: #90B8F8;
+/*    --dark: #495464;*/
+    --dark: #353941;
     --font-fam: 'Lato', sans-serif;
     --rad: 0.3rem;
     --pad-top: 2rem;
