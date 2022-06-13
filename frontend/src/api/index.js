@@ -226,8 +226,6 @@ export function register(caller, data) {
       .catch((error) => console.error(error));
 }
 
-
-
 /**
  * gets courses by search-query
  * @param {any} caller The component that calls the api function
