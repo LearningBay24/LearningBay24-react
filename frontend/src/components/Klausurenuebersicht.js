@@ -136,6 +136,15 @@ export class Klausurenuebersicht extends Component {
       gradeExamBool: false,
       gradeExamId: -1,
 
+      NewExamName: "",
+      NewExamDescription: "",
+      NewExamDate: "",
+      NewExamDuration: "",
+      NewExamOnline: "",
+      NewExamLocation: "",
+      NewExamRegister: "",
+      NewExamDeregister: "",
+
       examAtendeeFeedback: "",
       examAtendeeGrade: "",
       examAtendeeId: -1,
@@ -308,6 +317,7 @@ export class Klausurenuebersicht extends Component {
               <label>Offline/Online</label>
               <select onChange={this.onInputChange}
                 name="NewExamOnline">
+                <option>Online/Offline</option>
                 <option value="0">Offline</option>
                 <option value="1">Online</option>
               </select>
