@@ -11,7 +11,7 @@
  * @return {void} returns nothing.
  */
 
-const Testlocal = 0;
+const Testlocal = 1;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
 const Localadress = "http://learningbay24.local:8080/";
@@ -368,6 +368,8 @@ export function getAttendedExams(caller) {
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
+        console.log("attended");
+        console.log(data);
         caller.setState({AttendedExams: data});
       });
 }
@@ -379,6 +381,8 @@ export function getPassedExams(caller) {
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
+        console.log("passed");
+        console.log(data);
         caller.setState({PassedExams: data});
       })
       .catch((error) => console.error(error));
@@ -391,6 +395,8 @@ export function getCreatedExams(caller) {
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
+        console.log("created");
+        console.log(data);
         caller.setState({CreatedExams: data});
       })
       .catch((error) => console.error(error));
@@ -403,6 +409,8 @@ export function getRegisteredExams(caller) {
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
+        console.log("registered");
+        console.log(data);
         caller.setState({RegisteredExams: data});
       })
       .catch((error) => console.error(error));
@@ -415,6 +423,8 @@ export function getUnregisteredExams(caller) {
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
+        console.log("unregistered");
+        console.log(data);
         caller.setState({UnregisteredExams: data});
       })
       .catch((error) => console.error(error));
@@ -428,6 +438,8 @@ export async function getExamsFromCourse(caller, courseId) {
     credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
+        console.log("fromcourse");
+        console.log(data);
         caller.setState({Exams: data});
       })
       .catch((error) => console.error(error));
@@ -451,6 +463,106 @@ export function createExam(caller, object) {
       })
       .catch((error) => console.error(error));
 }
+
+export function editExam(caller, object) {
+  console.log("(editExam): " + Actualadress + `exams/${object.id}/edit`);
+
+
+  const requestOptions = {
+    method: "POST",
+    body: JSON.stringify(object),
+    credentials: "include",
+  };
+  console.log(requestOptions.body);
+
+  fetch(Actualadress + `exams/${object.id}/edit`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(data);
+      })
+      .catch((error) => console.error(error));
+}
+
+export function uploadFileExam(caller, id, file) {
+  console.log("(uploadFileExam): " + Actualadress + `exams/${id}/files`);
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const requestOptions = {
+    method: "POST",
+    body: formData,
+    credentials: "include",
+  };
+
+  fetch(Actualadress + `exams/${id}/files`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => console.error(error));
+}
+
+
+export async function deleteExam(caller, examId) {
+  console.log("(deleteExam): " + Actualadress +
+  `exams/${examId}`);
+
+  await fetch(Actualadress + `exams/${examId}`, {method: "DELETE",
+    credentials: "include"})
+      .then((response) => {
+        if (response.status != 204) {
+          alert("error");
+        }
+      })
+      .catch((error) => console.error(error));
+}
+
+export function getFileFromExam(caller, examId, filename) {
+  console.log("(getFileFromExam): " + Actualadress +
+  `exams/${examId}/files`);
+
+  fetch(Actualadress + `exams/${examId}/files`, {method: "GET",
+    credentials: "include"})
+      .then((result) => {
+        if (result.status != 200) {
+          throw new Error("Bad server response");
+        }
+        return result.blob();
+      })
+      .then((data) => {
+        console.log(data);
+        const url = window.URL.createObjectURL(data);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = filename;
+        anchor.click();
+
+        window.URL.revokeObjectURL(url);
+        document.removeChild(anchor);
+      })
+      .catch((error) => console.error(error));
+}
+
+export function uploadSolutionExam(caller, id, file) {
+  console.log("(uploadFile): " + Actualadress + `users/exams/${id}/submit`);
+  console.log(file);
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const requestOptions = {
+    method: "POST",
+    body: formData,
+    credentials: "include",
+  };
+
+  fetch(Actualadress + `users/exams/${id}/submit`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {})
+      .catch((error) => console.error(error));
+}
+
 
 export function registerToExam(caller, examId) {
   console.log("(registerToExam): " + Actualadress +

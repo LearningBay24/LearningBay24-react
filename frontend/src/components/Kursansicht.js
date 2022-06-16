@@ -234,14 +234,19 @@ export class Kursansicht extends Component {
       const Exam = {
         name: this.state.NewExamName,
         description: this.state.NewExamDescription,
-        date: new Date(this.state.NewExamDate).toISOString(),
+        date: new Date(
+            (new Date(this.state.NewExamDate).getTime() +
+            3600000 * 2)).toISOString().split(".")[0]+"Z",
         duration: (this.state.NewExamDuration * 60).toString(),
         location: this.state.NewExamLocation,
         online: online_,
         course_id: this.state.CurrentCourse.id.toString(),
-        register_deadline: new Date(this.state.NewExamRegister).toISOString(),
-        deregister_deadline:
-          new Date(this.state.NewExamDeregister).toISOString(),
+        register_deadline: new Date(
+            (new Date(this.state.NewExamRegister).getTime() +
+            3600000 * 2)).toISOString().split(".")[0]+"Z",
+        deregister_deadline: new Date(
+            (new Date(this.state.NewExamDeregister).getTime() +
+            3600000 * 2)).toISOString().split(".")[0]+"Z",
       };
       createExam(this, Exam);
     }
