@@ -558,8 +558,11 @@ export function uploadSolutionExam(caller, id, file) {
   };
 
   fetch(Actualadress + `users/exams/${id}/submit`, requestOptions)
-      .then((response) => response.json())
-      .then((data) => {})
+      .then((response) => {
+        if (response.status != 201) {
+          alert("error");
+        }
+      })
       .catch((error) => console.error(error));
 }
 
@@ -588,6 +591,93 @@ export function deregisterFromExam(caller, examId) {
         if (response.status != 204) {
           alert("error");
         }
+      })
+      .catch((error) => console.error(error));
+}
+
+export function getExamAttendees(caller, examId) {
+  console.log("(getExamAttendees): " + Actualadress +
+  `exams/${examId}/users/attended`);
+
+  fetch(Actualadress + `exams/${examId}/users`, {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({ExamAttendees: data});
+      })
+      .catch((error) => console.error(error));
+}
+
+export function getExamRegistered(caller, examId) {
+  console.log("(getExamregistered): " + Actualadress +
+  `exams/${examId}/users`);
+
+  fetch(Actualadress + `exams/${examId}/users`, {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({ExamRegistered: data});
+      })
+      .catch((error) => console.error(error));
+}
+
+export function gradeExam(caller, userId, examId, object) {
+  console.log("(gradeExam): " + Actualadress +
+  `users/${userId}/exams/${examId}/grade`);
+
+  const requestOptions = {
+    method: "PATCH",
+    body: JSON.stringify(object),
+    credentials: "include",
+  };
+
+  fetch(Actualadress + `users/${userId}/exams/${examId}/grade`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => console.error(error));
+}
+
+export function setAttendency(caller, userId, examId) {
+  console.log("(setAttendency): " + Actualadress +
+  `users/${userId}/exams/${examId}/attend`);
+
+  fetch(Actualadress + `users/${userId}/exams/${examId}/attend`,
+      {method: "PATCH", credentials: "include"})
+      .then((response) => {
+        if (response.status != 200) {
+          alert("error");
+        }
+      })
+      .catch((error) => console.error(error));
+}
+
+export function getExamSubmission(caller, userId, examId, filename) {
+  console.log("(getExamSubmission): " + Actualadress +
+  `usersx/exams/${userId}/${examId}/files`);
+
+  fetch(Actualadress +
+    `usersx/${userId}/exams/${examId}/files`, {method: "GET",
+    credentials: "include"})
+      .then((result) => {
+        if (result.status != 200) {
+          throw new Error("Bad server response");
+        }
+        return result.blob();
+      })
+      .then((data) => {
+        console.log(data);
+        const url = window.URL.createObjectURL(data);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = filename;
+        anchor.click();
+
+        window.URL.revokeObjectURL(url);
+        document.removeChild(anchor);
       })
       .catch((error) => console.error(error));
 }
