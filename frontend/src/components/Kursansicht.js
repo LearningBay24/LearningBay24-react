@@ -133,6 +133,12 @@ export class Kursansicht extends Component {
       Material: [{
       }],
 
+      NewExamName: "",
+      NewExamDescription: "",
+      NewExamDate: "",
+      NewExamOnline: "0",
+      NewExamLocation: "",
+
       // Exams: [{
       //   id: -1,
       //   name: "",
