@@ -118,7 +118,7 @@ export class Kursuebersicht extends Component {
                     </button>
                   </div>
                   <Row className="Section" hidden={!this.state.UserRights}>
-                    <h1>Meine Kurse</h1>
+                    <h2>Meine Kurse</h2>
                     <div className="CourseList">
                       {MyCourseslist}
                     </div>
@@ -159,13 +159,13 @@ export class Kursuebersicht extends Component {
 
                   </Row>
                   <Row className="Section">
-                    <h1>Belegte Kurse</h1>
+                    <h2>Belegte Kurse</h2>
                     <div className="CourseList">
                       {CoursesTakenlist}
                     </div>
                   </Row>
                   <Row className="Section">
-                    <h1>Vorgeschlagene Kurse</h1>
+                    <h2>Vorgeschlagene Kurse</h2>
                     <div className="CourseList">
                       {CoursesSuggestedlist}
                     </div>

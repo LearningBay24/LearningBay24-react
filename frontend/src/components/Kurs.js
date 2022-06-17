@@ -2,18 +2,12 @@ import React from "react";
 import {useNavigate} from "react-router-dom";
 import PropTypes from "prop-types";
 
-async function onClickHandler(navigate, link) {
-  // show form
-  // navigate(link);
-}
-
 export function ShowCourse(props) {
   const navigate = useNavigate();
   const link = "/kursansicht/" + props.id;
   return (
     <div onClick={() => {
-      onClickHandler(navigate, link);
-      props.callback(props.id);
+      navigate(link);
     }}>
       <h4 className='CourseName'>{props.name}</h4>
       <p className='CourseDescription'>{props.description}</p>

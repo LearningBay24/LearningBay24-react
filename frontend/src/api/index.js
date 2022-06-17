@@ -228,29 +228,10 @@ export function register(caller, data) {
 
 /**
  * gets courses by search-query
- * @param {any} caller The component that calls the api function
  * @param {any} query the search string
+ * @param {any} callback gets called when the result is fetched
  * @return {void} returns nothing.
  */
-/*
-export function getCoursesByQuery(caller, query) {
-  console.log("(getCoursesByQuery) query: " + query);
-
-  const requestOptions = {
-    method: "GET",
-    credentials: "include",
-  };
-
-  fetch(Actualadress + "courses/search?" +
-      "searchterm=" + query, requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        caller.setState({MatchedCourses: data});
-      })
-      .catch((error) => console.error(error));
-}*/
-
 export async function getCoursesByQuery(query, callback) {
   console.log("(getCoursesByQuery) query: " + query);
 
@@ -337,6 +318,31 @@ export function getFileByID(caller, courseID, fileId, filename) {
 
         window.URL.revokeObjectURL(url);
         document.removeChild(anchor);
+      })
+      .catch((error) => console.error(error));
+}
+
+export function getSubmissionFromUser(caller) {
+  console.log("(getSubmissionsFromUser)");
+  fetch(Actualadress + "user/submissions", {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => console.error(error));
+}
+
+export function getSubmissionById(caller, id) {
+  console.log("(getSubmissionsById)");
+  fetch(Actualadress + `submission/${id}`, {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.ok) {
+          console.log("ok");
+        }
       })
       .catch((error) => console.error(error));
 }
