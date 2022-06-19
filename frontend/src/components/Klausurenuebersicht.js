@@ -145,6 +145,7 @@ export class Klausurenuebersicht extends Component {
       NewExamRegister: "",
       NewExamDeregister: "",
 
+      examAtendeePassed: "0",
       examAtendeeFeedback: "",
       examAtendeeGrade: "",
       examAtendeeId: -1,
@@ -388,8 +389,8 @@ export class Klausurenuebersicht extends Component {
               <input type="text" name="examAtendeeFeedback"
                 onChange={this.onInputChange}/>
               <select name="examAtendeePassed" onChange={this.onInputChange}>
-                <option value="1">Bestanden</option>
                 <option value="0">Nicht bestanden</option>
+                <option value="1">Bestanden</option>
               </select>
             </DialogContentText>
           </DialogContent>
