@@ -2,11 +2,6 @@ import React from "react";
 import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
 
-// async function onClickHandler(navigate, link) {
-// show form
-// navigate(link);
-// }
-
 export function ShowCourse(props) {
   const link = "/kursansicht/" + props.id;
   return (

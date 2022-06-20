@@ -227,13 +227,12 @@ button {
 .ColContent h1 {
     margin-bottom: 1rem;
     text-transform: uppercase;
-    scale: var(--header-scale);
+    font-size: 1.7rem;
     color: var(--dark);
     text-align: center;
 }
 
 .ColContent h2 {
-    margin-left: 1rem;
     margin-bottom: 1rem;
     text-transform: uppercase;
     text-align: center;
