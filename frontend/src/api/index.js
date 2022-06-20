@@ -357,6 +357,20 @@ export function getSubmissionFromUser(caller) {
       .catch((error) => console.error(error));
 }
 
+export function getSubmissionById(caller, id) {
+  console.log("(getSubmissionsById)");
+  fetch(Actualadress + `submission/${id}`, {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.ok) {
+          console.log("ok");
+        }
+      })
+      .catch((error) => console.error(error));
+}
+
 export function getUser(caller) {
   console.log("(getUser): " + Actualadress + "users");
 
@@ -448,21 +462,11 @@ export function getCreatedExams(caller) {
         console.log("created");
         console.log(data);
         caller.setState({CreatedExams: data});
-
       })
       .catch((error) => console.error(error));
 }
 
-export function getSubmissionById(caller, id) {
-  console.log("(getSubmissionsById)");
-  fetch(Actualadress + `submission/${id}`, {method: "GET",
-    credentials: "include"})
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        if (data.ok) {
-          console.log("ok");
-=======
+
 export function getRegisteredExams(caller) {
   console.log("(getExams): " + Actualadress + "users/exams/registered");
 
