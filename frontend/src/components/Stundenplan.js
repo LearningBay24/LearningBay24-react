@@ -47,7 +47,7 @@ export class Stundenplan extends Component {
 
   AppointmentsCallback(caller) {
     console.log("AppointmentsCallback");
-    if (caller.state.Apointments[0] != null) {
+    if (caller.state.Apointments != null) {
       console.log("test");
       for (let i = 0; i < caller.state.Apointments.length; i++) {
         this.state.events.push({
@@ -57,7 +57,8 @@ export class Stundenplan extends Component {
           ).toISOString().split(".")[0]+"Z",
 
           end: new Date(Date.parse(caller.state.Apointments[i][0].date) +
-            90 * 60 * 1000).toISOString().split(".")[0]+"Z",
+          caller.state.Apointments[i][0].duration * 1000).toISOString()
+              .split(".")[0]+"Z",
         });
       }
     }

@@ -11,7 +11,7 @@ import "../css/Kursansicht.css";
 
 import {
   getCourse, getFiles, updateCourse, createExam, registerToExam,
-  uploadFile, getFileByID, uploadLink, getExamsFromCourse,
+  uploadFile, getFileByID, uploadLink, getExamsFromCourse, createAppointment,
 } from "../api";
 
 import PropTypes from "prop-types";
@@ -110,6 +110,7 @@ export class Kursansicht extends Component {
       Appointments: [{
         id: 0,
         date: "",
+        duration: "",
         location: "",
         online: "",
         course_id: "",
@@ -205,31 +206,15 @@ export class Kursansicht extends Component {
 
   onSaveAppointmentChange() {
     if (this.state.ChangeAppointmentId === "-1") {
-      console.log(this.state.ChangeAppointmentId);
-      this.state.Course.CourseAppointments.push({
-
-        Day: this.state.NewWeekDay,
-        Time: this.state.NewCourseTime,
-        Duration: this.state.NewCourseDuration,
-        Content: this.state.NewCourseContent,
-        Location: this.state.NewCourseLocation,
-      });
-    } else {
-      for (const Appointment of this.state.Course.CourseAppointments) {
-        if (Appointment.id === this.state.ChangeAppointmentId) {
-          this.setState({
-            Appointment: {
-              Day: this.state.NewWeekDay,
-              Time: this.state.NewCourseTime,
-              Duration: this.state.NewCourseDuration,
-              Content: this.state.NewCourseContent,
-              Location: this.state.NewCourseLocation,
-            },
-          });
-        }
-      }
+      const Appointment = {
+        date: this.state.NewAppointmentDate,
+        duration: this.state.NewAppointmentDuration,
+        location: this.state.NewAppointmentLocation,
+        online: this.state.NewAppointmentOnline,
+        course_id: this.state.id,
+      };
+      createAppointment(this, Appointment);
     }
-    console.log(this.state.Course.CourseAppointments);
   }
 
   onSaveExam() {
