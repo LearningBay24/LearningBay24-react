@@ -353,7 +353,8 @@ export function getSubmissionFromUser(caller) {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-  }
+      })
+      .catch((error) => console.error(error));
 }
 
 export function getUser(caller) {
