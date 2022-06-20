@@ -250,8 +250,8 @@ export function register(caller, data) {
 
 /**
  * gets courses by search-query
- * @param {any} caller The component that calls the api function
  * @param {any} query the search string
+ * @param {any} callback gets called when the result is fetched
  * @return {void} returns nothing.
  */
 
@@ -347,6 +347,32 @@ export function getFileByID(caller, courseID, fileId, filename) {
       .catch((error) => console.error(error));
 }
 
+
+export function getSubmissionFromUser(caller) {
+  console.log("(getSubmissionsFromUser)");
+  fetch(Actualadress + "user/submissions", {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => console.error(error));
+}
+
+export function getSubmissionById(caller, id) {
+  console.log("(getSubmissionsById)");
+  fetch(Actualadress + `submission/${id}`, {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.ok) {
+          console.log("ok");
+        }
+      })
+      .catch((error) => console.error(error));
+}
+
 export function getUser(caller) {
   console.log("(getUser): " + Actualadress + "users");
 
@@ -401,6 +427,7 @@ export function getCreatedExams(caller) {
       })
       .catch((error) => console.error(error));
 }
+
 
 export function getRegisteredExams(caller) {
   console.log("(getExams): " + Actualadress + "users/exams/registered");

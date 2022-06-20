@@ -11,7 +11,8 @@ import "../css/Kursansicht.css";
 
 import {
   getCourse, getFiles, updateCourse, createExam, registerToExam,
-  uploadFile, getFileByID, uploadLink, getExamsFromCourse, createAppointment,
+  uploadFile, getFileByID, uploadLink, getExamsFromCourse, getSubmissionById,
+  createAppointment,
 } from "../api";
 
 import PropTypes from "prop-types";
@@ -173,6 +174,10 @@ export class Kursansicht extends Component {
   componentDidMount() {
     getCourse(this, this.state.id);
     getFiles(this, this.state.id);
+
+
+    // get Submission for current course
+    getSubmissionById(this, this.state.id);
     getExamsFromCourse(this, this.state.id);
   }
 
@@ -250,13 +255,7 @@ export class Kursansicht extends Component {
     // Lists for general view
     // ________________________________________________________________________
 
-    const Generallist = [
-      <h1 key="0">{this.state.CurrentCourse.name}</h1>,
-      <button hidden={!this.state.CourseAdmin} key="1"
-        onClick={() => this.setState({CourseEdit: !this.state.CourseEdit})}>
-        Kurs bearbeiten
-      </button>,
-    ];
+    const Generallist = [];
 
     for (const Appointment of this.state.Course.CourseAppointments) {
       Generallist.push(<h3 hidden={this.state.CourseEdit}>
@@ -358,20 +357,40 @@ export class Kursansicht extends Component {
             <Row className="Content" fluid>
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" fluid>
-                {Generallist}
+                <h1>{this.state.CurrentCourse.name}</h1>
+                <div className="AdminArea" hidden={!this.state.CourseAdmin}>
+                  <button className="btnCreateCourse"
+                    onClick={() =>
+                      this.setState({CourseEdit: !this.state.CourseEdit})}>
+                    Kurs Bearbeiten
+                  </button>
+                </div>
 
-                <div className="editSection Section"
+                <div className="EditSection"
                   hidden={!this.state.CourseEdit}>
-                  <h2>Kurs Bearbeiten</h2>
-                  <div className="Section">
+                  <h2 className="EditHeader">
+                    [Kursbearbeitung]</h2>
+                  <div className="EditSectionPart">
+                    <div className="EditArea">
+                      <button className="EditButton"
+                        onClick={this.onSaveDescriptionChange}>
+                        Beschreibung speichern</button>
+                    </div>
+                    <h2>Kursinformationen</h2>
                     <input type="text" id="EditCourseBioId" name="description"
                       placeholder={this.state.CurrentCourse.description}
                       onChange={this.onInputChange} />
-                    <button onClick={this.onSaveDescriptionChange}>
-                      Beschreibung speichern</button>
                   </div>
                   <br />
-                  <div className="Section">
+                  <div className="EditSectionPart">
+                    <div className="EditArea">
+                      <button className="EditButton">Löschen</button>
+                      <button className="EditButton"
+                        onClick={this.onSaveAppointmentChange}>
+                        Speichern
+                      </button>
+                    </div>
+                    <h2>Termin</h2>
                     <select name="ChangeAppointmentId"
                       onChange={this.onInputChange}>
                       {EditAppointments}</select>
@@ -396,30 +415,36 @@ export class Kursansicht extends Component {
                       name="NewCourseLocation"
                       placeholder="Raum" onChange={this.onInputChange}></input>
                     <br />
-                    <button>Löschen</button>
-                    <button onClick={this.onSaveAppointmentChange}>
-                      Speichern
-                    </button>
                   </div>
                   <br />
-                  <div className="Section">
+                  <div className="EditSectionPart">
+                    <div className="EditArea">
+                      <button className="EditButton">
+                        Tutorenrechte geben/entziehen</button>
+                      <button className="EditButton">Ausschreiben</button>
+                    </div>
+                    <h2>Tutoren</h2>
                     <select>{EditParticipants}</select>
                     <br />
-                    <button>Tutorenrechte geben/entziehen</button>
-                    <button>Ausschreiben</button>
                   </div>
                   <br />
-                  <div className="Section">
+                  <div className="EditSectionPart">
+                    <div className="EditArea">
+                      <button className="EditButton" type="submit"
+                        onClick={() => uploadFile(this, this.state.newFile,
+                            this.state.CurrentCourse.id)}>
+                        File Speichern</button>
+                      <button className="EditButton">Löschen</button>
+                      <button className="EditButton" type="submit"
+                        onClick={() => uploadLink(this, this.state.uri,
+                            this.state.uriName, this.state.CurrentCourse.id)}>
+                        Link Speichern</button>
+                    </div>
+                    <h2>Material</h2>
                     <select>{EditMaterial}</select>
                     <label>Datei auswählen</label>
                     <input type="file" onChange={this.onFileChange} />
                     <br />
-                    <button type="submit"
-                      onClick={() => uploadFile(this, this.state.newFile,
-                          this.state.CurrentCourse.id)}>
-                      File Speichern</button>
-                    <button>Löschen</button>
-
                     <label>Link Name</label>
                     <input type="text" onChange={this.onInputChange}
                       name="uriName" />
@@ -427,13 +452,14 @@ export class Kursansicht extends Component {
                     <label>Link einfügen</label>
                     <input type="text" onChange={this.onInputChange}
                       name="uri" />
-                    <button type="submit"
-                      onClick={() => uploadLink(this, this.state.uri,
-                          this.state.uriName, this.state.CurrentCourse.id)}>
-                      Link Speichern</button>
                   </div>
                   <br />
-                  <div className="Section">
+                  <div className="EditSectionPart">
+                    <div className="EditArea">
+                      <button className="EditButton">Löschen</button>
+                      <button className="EditButton">Speichern</button>
+                    </div>
+                    <h2>Abgaben</h2>
                     <select>{EditAssignment}</select>
                     <label htmlFor="EditAssignmentName">Name:</label>
                     <input type="Text" id="EditAssignmentName"
@@ -446,11 +472,14 @@ export class Kursansicht extends Component {
                       // TODO add material
                     }
                     <br />
-                    <button>Löschen</button>
-                    <button>Speichern</button>
                   </div>
                   <br />
-                  <div className="Section">
+                  <div className="EditSectionPart">
+                    <div className="EditArea">
+                      <button className="EditButton">Löschen</button>
+                      <button className="EditButton">Speichern</button>
+                    </div>
+                    <h2>Umfrage</h2>
                     <select>{EditSurvey}</select>
                     <label htmlFor="EditSurveyName">Name:</label>
                     <input type="Text" id="EditSurveyName"
@@ -459,11 +488,15 @@ export class Kursansicht extends Component {
                     <input type="Text" id="EditSurveyLink"
                       placeholder="Umfragelink"></input>
                     <br />
-                    <button>Löschen</button>
-                    <button>Speichern</button>
                   </div>
                   <br />
-                  <div className="Section">
+                  <div className="EditSectionPart">
+                    <div className="EditArea">
+                      <button className="EditButton">Löschen</button>
+                      <button className="EditButton">Speichern</button>
+                    </div>
+                    <h2>Klausur</h2>
+
                     <select onChange={this.onInputChange} name="ChangeExamId">
                       {EditExam}
                     </select>
@@ -519,7 +552,10 @@ export class Kursansicht extends Component {
                     <button onClick={this.onSaveExam}>Speichern</button>
                   </div>
                   <br />
+                </div>
 
+                <div className="InfoSection">
+                  {Generallist}
                 </div>
 
                 <div className="MaterialSection"

@@ -6,7 +6,7 @@
     display: flex;
     justify-content: center;
 
-    border-bottom: solid 1px var(--mid);
+    border-bottom: solid 2px var(--grey);
 }
 
 .ExamWrapper {
@@ -70,3 +70,4 @@
 .ExamName {
     font-weight: 800;
 }
+

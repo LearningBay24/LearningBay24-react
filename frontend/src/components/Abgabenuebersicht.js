@@ -3,12 +3,88 @@ import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
 import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
+import {getSubmissionFromUser} from "../api/index";
+import {ShowAssignment} from "./Abgabe";
 
 import "../css/Overlay.css";
 import "../css/Abgabenuebersicht.css";
 
 export class Abgabenuebersicht extends Component {
-  render(test) {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      DueAssign: [{
+        assignname: "name", coursename: "kurs", owner: "peter",
+        subject: "AI",
+        created_at: "19.04.2022", time: "15:00", deadline: "27.04.2022",
+        comment: "kommentar",
+      }],
+      SubmittedAssign: [{
+        assignname: "name", coursename: "kurs", owner: "peter",
+        subject: "AI",
+        created_at: "19.04.2022", time: "15:00", deadline: "27.04.2022",
+        comment: "kommentar",
+      }],
+      EvalAssign: [{
+        assignname: "name", coursename: "kurs", owner: "peter",
+        subject: "AI",
+        created_at: "19.04.2022", time: "15:00", deadline: "27.04.2022",
+        comment: "kommentar",
+      }],
+    };
+  }
+
+  componentDidMount() {
+    getSubmissionFromUser(this);
+  }
+
+  render() {
+    const DueAssignList = [];
+    if (this.state.DueAssign != null) {
+      for (const Assign of this.state.DueAssign) {
+        DueAssignList.push(<div>
+          <ShowAssignment assignname={Assign.assignname}
+            coursename={Assign.coursename}
+            owner={Assign.owner}
+            subject={Assign.subject}
+            created_at={Assign.created_at}
+            time={Assign.time}
+            deadline={Assign.deadline}
+            comment={Assign.comment} /></div>);
+      }
+    }
+
+    const SubmittedAssignList = [];
+    if (this.state.SubmittedAssign != null) {
+      for (const Assign of this.state.SubmittedAssign) {
+        SubmittedAssignList.push(<div>
+          <ShowAssignment assignname={Assign.assignname}
+            coursename={Assign.coursename}
+            owner={Assign.owner}
+            subject={Assign.subject}
+            created_at={Assign.created_at}
+            time={Assign.time}
+            deadline={Assign.deadline}
+            comment={Assign.comment} /></div>);
+      }
+    }
+
+    const EvalAssignList = [];
+    if (this.state.EvalAssign != null) {
+      for (const Assign of this.state.EvalAssign) {
+        EvalAssignList.push(<div>
+          <ShowAssignment assignname={Assign.assignname}
+            coursename={Assign.coursename}
+            owner={Assign.owner}
+            subject={Assign.subject}
+            created_at={Assign.created_at}
+            time={Assign.time}
+            deadline={Assign.deadline}
+            comment={Assign.comment} /></div>);
+      }
+    }
+
     return (
       <div className="Abgabenuebersicht">
         <ShowHeader />
@@ -26,24 +102,15 @@ export class Abgabenuebersicht extends Component {
                 </div>
                 <Row className="Section">
                   <h2>Abgaben fällig</h2>
-                  <div className="AssignmentWrapper"><ShowAssignment /></div>
-                  <div className="AssignmentWrapper"><ShowAssignment /></div>
-                  <div className="AssignmentWrapper"><ShowAssignment /></div>
-                  <div className="AssignmentWrapper"><ShowAssignment /></div>
+                  {DueAssignList}
                 </Row>
                 <Row className="Section">
                   <h2>Abgegeben</h2>
-                  <div className="AssignmentWrapper"><ShowAssignment /></div>
-                  <div className="AssignmentWrapper"><ShowAssignment /></div>
-                  <div className="AssignmentWrapper"><ShowAssignment /></div>
-                  <div className="AssignmentWrapper"><ShowAssignment /></div>
+                  {SubmittedAssignList}
                 </Row>
                 <Row className="Section">
                   <h2>Bewertet</h2>
-                  <div className="AssignmentWrapper"><ShowAssignment /></div>
-                  <div className="AssignmentWrapper"><ShowAssignment /></div>
-                  <div className="AssignmentWrapper"><ShowAssignment /></div>
-                  <div className="AssignmentWrapper"><ShowAssignment /></div>
+                  {EvalAssignList}
                 </Row>
               </Col>
             </Row>
@@ -54,41 +121,4 @@ export class Abgabenuebersicht extends Component {
     );
   }
 }
-
-function ShowAssignment() {
-  return (
-    <div className="Assignment">
-      <div className="AssignmentCourseInfo">
-        <p className="AssignmentName">Abgabename</p>
-        <p className="AssignmentCourse">Kursname</p>
-        <p className="AssignmentOwner">Abgabeersteller</p>
-        <p className="AssignmentDegree">Studiengang</p>
-      </div>
-      <div className="AssignmentInfo">
-        <div className="AssignmentInfoTop">
-          <p className="AssignmentDate">Datum</p>
-          <p className="AssignmentTime">Uhrzeit</p>
-          <p className="AssignmentDeadline">Deadline</p>
-        </div>
-        <div className="AssignmentInfoComment">
-          <input type="text" className="AssignmentComment"
-            placeholder="Kommentar" />
-        </div>
-      </div>
-    </div>
-    /*
-    <div className="Exercise">
-      <table>
-        <tr>
-          <td>
-          </td>
-          <td>
-          </td>
-        </tr>
-      </table>
-    </div>
-    */
-  );
-}
-
 export default Abgabenuebersicht;

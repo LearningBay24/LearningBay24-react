@@ -2,13 +2,11 @@
     height: 100%;
 }
 
-.ColContent {
-    display: flex;
-    flex-flow: column nowrap;
-}
-
-.MaterialSection, .SurveySection, .ExamSection, .AssignmentSection {
+.InfoSection, .MaterialSection, .SurveySection, .ExamSection, .AssignmentSection {
+    margin-bottom: 1rem;
     padding: 1rem;
+
+    min-height: 10rem;
 
     display: flex;
     flex-flow: column nowrap;
@@ -26,19 +24,69 @@
     text-align: center;
 }
 
-h3 {
-    margin: 1rem;
-    margin-bottom: 0.5rem;
+.Kursansicht h3 {
     font-size: 1.2rem;
 }
 
 .MaterialContainer, .AssignmentContainer, .SurveyContainer, .ExamContainer {
-    padding: 1rem;
+    padding: 0.5rem;
     margin: 1rem;
-    border: solid 2px var(--grey);
-    border-radius: 0.5rem;
+    border: solid 2px var(--dark);
+    border-radius: var(--rad);
 }
 
 .LB24Header {
     text-decoration: none;
+}
+
+.InfoSection {
+    margin-top: 1rem;
+}
+
+.ExamSection {
+    border: 0;
+}
+
+.EditSection {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.EditHeader {
+    text-align: center;
+    font-size: 1rem;
+    color: var(--dark);
+}
+
+.EditArea {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-flow: row nowrap;
+    background-color: var(--dark);
+}
+
+.EditSectionPart {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+
+    border-bottom: solid 2px var(--grey);
+}
+
+.EditButton {
+    width: auto;
+    height: 2rem;
+    margin: 0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+
+    color: var(--dark);
+}
+
+.EditButton:hover {
+    background-color: var(--mid);
 }
