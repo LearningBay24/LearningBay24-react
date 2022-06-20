@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
@@ -9,9 +10,8 @@ import "../css/Overlay.css";
 import "../css/Kursansicht.css";
 
 import {
-  getCourse, getFiles, updateCourse,
-  uploadFile, getFileByID, uploadLink,
-  getSubmissionById,
+  getCourse, getFiles, updateCourse, createExam, registerToExam,
+  uploadFile, getFileByID, uploadLink, getExamsFromCourse, getSubmissionById,
 } from "../api";
 
 import PropTypes from "prop-types";
@@ -71,6 +71,7 @@ export class Kursansicht extends Component {
 
       // variables for editing course
       ChangeAppointmentId: "-1",
+      ChangeExamId: "-1",
 
       // _______________________________________________________________________
       // actual structs from DB these get filled by the api call and should be
@@ -133,6 +134,30 @@ export class Kursansicht extends Component {
       Material: [{
       }],
 
+      NewExamName: "",
+      NewExamDescription: "",
+      NewExamDate: "",
+      NewExamOnline: "0",
+      NewExamLocation: "",
+
+      // Exams: [{
+      //   id: -1,
+      //   name: "",
+      //   description: "",
+      //   date: "",
+      //   duration: "",
+      //   online: "",
+      //   location: "",
+      //   course_id: "",
+      //   creator_id: "",
+      //   graded: "",
+      //   register_deadline: "",
+      //   deregister_deadline: "",
+      //   created_at: "",
+      //   updated_at: "",
+      //   deleted_at: "",
+      // }],
+
     };
 
 
@@ -140,6 +165,7 @@ export class Kursansicht extends Component {
     this.onFileChange = this.onFileChange.bind(this);
     this.onSaveDescriptionChange = this.onSaveDescriptionChange.bind(this);
     this.onSaveAppointmentChange = this.onSaveAppointmentChange.bind(this);
+    this.onSaveExam = this.onSaveExam.bind(this);
   }
 
 
@@ -147,8 +173,10 @@ export class Kursansicht extends Component {
     getCourse(this, this.state.id);
     getFiles(this, this.state.id);
 
+
     // get Submission for current course
     getSubmissionById(this, this.state.id);
+    getExamsFromCourse(this, this.state.id);
   }
 
 
@@ -208,6 +236,33 @@ export class Kursansicht extends Component {
     console.log(this.state.Course.CourseAppointments);
   }
 
+  onSaveExam() {
+    if (this.state.ChangeExamId === "-1") {
+      let online_ = 0;
+      if (this.state.NewExamOnline != null) {
+        online_ = this.state.NewExamOnline;
+      }
+      const Exam = {
+        name: this.state.NewExamName,
+        description: this.state.NewExamDescription,
+        date: new Date(
+            (new Date(this.state.NewExamDate).getTime() +
+            3600000 * 2)).toISOString().split(".")[0]+"Z",
+        duration: (this.state.NewExamDuration * 60).toString(),
+        location: this.state.NewExamLocation,
+        online: online_,
+        course_id: this.state.CurrentCourse.id.toString(),
+        register_deadline: new Date(
+            (new Date(this.state.NewExamRegister).getTime() +
+            3600000 * 2)).toISOString().split(".")[0]+"Z",
+        deregister_deadline: new Date(
+            (new Date(this.state.NewExamDeregister).getTime() +
+            3600000 * 2)).toISOString().split(".")[0]+"Z",
+      };
+      createExam(this, Exam);
+    }
+  }
+
 
   render() {
     // ________________________________________________________________________
@@ -247,10 +302,20 @@ export class Kursansicht extends Component {
     }
 
     const Examlist = [];
-    for (const Exam of this.state.Course.CourseExams) {
-      Examlist.push(<ShowExam Name={Exam.Name} Content={Exam.Content}
-        Date={Exam.Date} Duration={Exam.Duration}
-        Location={Exam.Location} className="Exam" />);
+    if (this.state.Exams != null) {
+      for (const Exam of this.state.Exams) {
+        if (Exam.id != -1) {
+          Examlist.push(<Col xs={4} fluid><ShowUnregisteredExam
+            id={Exam.id}
+            name={Exam.name}
+            creator_id={Exam.creator_id}
+            description={Exam.description}
+            register_deadline={Exam.register_deadline}
+            deregister_deadline={Exam.deregister_deadline}
+            date={Exam.date}
+            duration={Exam.duration / 60} /></Col>);
+        }
+      }
     }
 
 
@@ -445,22 +510,60 @@ export class Kursansicht extends Component {
                       <button className="EditButton">Speichern</button>
                     </div>
                     <h2>Klausur</h2>
-                    <select>{EditExam}</select>
+
+                    <select onChange={this.onInputChange} name="ChangeExamId">
+                      {EditExam}
+                    </select>
                     <label htmlFor="EditExamName">Name:</label>
                     <input type="Text" id="EditExamName"
-                      placeholder="Klausurname"></input>
+                      placeholder="Klausurname" onChange={this.onInputChange}
+                      name="NewExamName">
+                    </input>
+                    <label htmlFor="EditExamDescription">Beschreibung:</label>
+                    <input type="Text" id="EditExamDescription"
+                      placeholder="Klausurbeschreibung"
+                      onChange={this.onInputChange}
+                      name="NewExamDescription">
+                    </input>
                     <label htmlFor="EditExamDate">Datum:</label>
-                    <input type="Date" id="EditExamDate"></input>
-                    <label htmlFor="EditExamTime">Uhrzeit:</label>
-                    <input type="Time" id="EditExamTime"></input>
-                    <label htmlFor="EditExamDuration">Dauer:</label>
+                    <input type="Datetime-local" id="EditExamDate"
+                      onChange={this.onInputChange}
+                      name="NewExamDate">
+                    </input>
+                    <label htmlFor="EditExamDuration">Dauer(in min):</label>
                     <input type="Text" id="EditExamDuration"
-                      placeholder="Dauer"></input>
+                      placeholder="Dauer" onChange={this.onInputChange}
+                      name="NewExamDuration">
+                    </input>
+                    <label>Offline/Online</label>
+                    <select onChange={this.onInputChange}
+                      name="NewExamOnline">
+                      <option value="0">Offline</option>
+                      <option value="1">Online</option>
+                    </select>
+                    <label htmlFor="EditExamLocation">
+                      Raum(Zoomlink falls online):</label>
+                    <input type="Text" id="EditExamLocation"
+                      placeholder="Raum" onChange={this.onInputChange}
+                      name="NewExamLocation"></input>
+                    <label htmlFor="EditExamRegDate">Deadline Anmeldung:</label>
+                    <input type="Datetime-local" id="EditExamRegDate"
+                      onChange={this.onInputChange}
+                      name="NewExamRegister">
+                    </input>
+                    <label htmlFor="EditExamDeregDate">
+                      Deadline Abmeldung:</label>
+                    <input type="Datetime-local" id="EditExamDeregDate"
+                      onChange={this.onInputChange}
+                      name="NewExamDeregister">
+                    </input>
 
                     {
                       // TODO add material
                     }
                     <br />
+                    <button>Löschen</button>
+                    <button onClick={this.onSaveExam}>Speichern</button>
                   </div>
                   <br />
                 </div>
@@ -545,27 +648,20 @@ ShowAssignment.propTypes = {
   Deadline: PropTypes.string.isRequired,
 };
 
-function ShowExam(props) {
+function ShowUnregisteredExam(props) {
   return (
-    <div className='ExamContainer'>
-      <h6>{props.Name}</h6>
-      <a href={props.Content} target='_blank'
-        rel='noopener noreferrer'>{props.Content}</a>
-      <p>Zeit: {props.Duration}</p>
-      <p>Datum: {props.Date}</p>
-      <p>Ort: {props.Location}</p>
-      <br />
-      <input type="submit" value="zur Prüfung anmelden"
-        className="SubmitButton" />
-    </div>);
+    <div className="Exam">
+      <h4 className="ExamName">{props.name}</h4>
+      <p className="ExamDescription">{props.description}</p>
+      <p className="Examduration">Dauer :{props.duration}min.</p>
+      <p className="ExamDate">{props.date}</p>
+      <p className="ExamRoom">{props.location}</p>
+      <button onClick={() => {
+        registerToExam(this, props.id);
+      }}>Anmelden</button>
+    </div>
+  );
 }
-ShowExam.propTypes = {
-  Name: PropTypes.string.isRequired,
-  Content: PropTypes.string.isRequired,
-  Date: PropTypes.string.isRequired,
-  Duration: PropTypes.string.isRequired,
-  Location: PropTypes.string.isRequired,
-};
 
 function ShowSurvey(props) {
   return (

@@ -3,6 +3,7 @@ import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
 import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
+import {getUser, logout} from "../api";
 
 import "../css/Overlay.css";
 import "../css/Profil.css";
@@ -12,19 +13,23 @@ export class Profil extends Component {
     super(props);
 
     this.state = {
-      name: "Max",
-      surname: "Mustermann",
-      title: "",
-      email: "max.musterman@web.de",
-      graduation: "Abitur",
-      job: "Student",
-      location: "Offenburg",
-      institutionlocation: "Offenburg",
-      bio: "abc",
-      courses: ["Prog1", "Projekt1", "Mathe1"],
+      firstname: null,
+      surname: null,
+      title: null,
+      email: null,
+      graduation: null,
+      role_id: null,
+      location: null,
+      bio: null,
+      // courses: ["Prog1", "Projekt1", "Mathe1"],
 
     };
   }
+
+  componentDidMount() {
+    getUser(this);
+  }
+
   render() {
     return (
       <div className="Profil">
@@ -33,20 +38,19 @@ export class Profil extends Component {
           <Container className="Container" fluid>
             <Row className="Content" fluid>
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" fluid>
-                <h1>Profil</h1>
-                <div className="ProfileContainer">
-                  <p>{this.state.title} {this.state.surname},
-                    {this.state.name}</p>
-                  <p>{this.state.email}</p>
-                  <p>{this.state.graduation}</p>
-                  <p>{this.state.job}</p>
-                  <p>{this.state.location}</p>
-                  <p>{this.state.institutionlocation}</p>
-                  <input type="text" id="bio" defaultValue={this.state.bio}
-                    onInput={this.ChangeBio} ></input>
-                  <this.FillCourses />
-                </div>
+              <Col xs={10} className="ColContent" fluid><h1>Profil</h1>
+                <p>Name :{this.state.title} {this.state.surname},
+                  {this.state.firstname}</p>
+                <p>Email: {this.state.email}</p>
+                <p>Abschluss: {this.state.graduation}</p>
+                <p>Rolle: {this.state.role_id}</p>
+                <p>Ort: {this.state.location}</p>
+                <input type="text" id="bio" defaultValue={this.state.bio}
+                  onInput={this.ChangeBio} ></input>
+                <button onClick={() => {
+                  logout();
+                  this.componentDidMount();
+                }}>Log Out</button>
               </Col>
             </Row>
           </Container>
