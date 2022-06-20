@@ -353,6 +353,8 @@ export function getSubmissionFromUser(caller) {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+  }
+}
 
 export function getUser(caller) {
   console.log("(getUser): " + Actualadress + "users");
