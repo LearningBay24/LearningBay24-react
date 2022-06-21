@@ -753,3 +753,18 @@ export function getAppointments(caller, callback) {
       })
       .catch((error) => console.error(error));
 }
+
+export function deleteAppointment(caller, appointmentId) {
+  console.log("(deleteAppointment): " + Actualadress +
+  `appointments/${appointmentId}`);
+
+  fetch(Actualadress + "appointments", {method: "DELETE",
+    body: JSON.stringify({appointment_id: appointmentId}),
+    credentials: "include"})
+      .then((response) => {
+        if (response.status > 299) {
+          alert("error");
+        }
+      })
+      .catch((error) => console.error(error));
+}

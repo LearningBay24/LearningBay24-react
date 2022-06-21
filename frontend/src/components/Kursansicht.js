@@ -12,7 +12,7 @@ import "../css/Kursansicht.css";
 import {
   getCourse, getFiles, updateCourse, createExam, registerToExam,
   uploadFile, getFileByID, uploadLink, getExamsFromCourse, getSubmissionById,
-  createAppointment,
+  createAppointment, deleteAppointment,
   getAppointments,
 } from "../api";
 
@@ -172,6 +172,7 @@ export class Kursansicht extends Component {
     this.onFileChange = this.onFileChange.bind(this);
     this.onSaveDescriptionChange = this.onSaveDescriptionChange.bind(this);
     this.onSaveAppointmentChange = this.onSaveAppointmentChange.bind(this);
+    this.onDeleteAppointment = this.onDeleteAppointment.bind(this);
     this.onSaveExam = this.onSaveExam.bind(this);
   }
 
@@ -226,6 +227,12 @@ export class Kursansicht extends Component {
         courseId: this.state.CurrentCourse.id.toString(),
       };
       createAppointment(this, Appointment);
+    }
+  }
+
+  onDeleteAppointment() {
+    if (this.state.ChangeAppointmentId !== "-1") {
+      deleteAppointment(this, this.state.ChangeAppointmentId);
     }
   }
 
@@ -392,7 +399,8 @@ export class Kursansicht extends Component {
                   <br />
                   <div className="EditSectionPart">
                     <div className="EditArea">
-                      <button className="EditButton">Löschen</button>
+                      <button className="EditButton"
+                        onClick={this.onDeleteAppointment}>Löschen</button>
                       <button className="EditButton"
                         onClick={this.onSaveAppointmentChange}>
                         Speichern
