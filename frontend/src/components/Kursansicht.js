@@ -327,7 +327,7 @@ export class Kursansicht extends Component {
     // ________________________________________________________________________
     const EditAppointments = [];
     EditAppointments.push(<option value="-1">Neuer Termin</option>);
-    if(this.state.Appointments != null) {
+    if (this.state.Appointments != null) {
       for (const Appointment of this.state.Appointments) {
         EditAppointments.push(<option value={Appointment.id}>
           {Appointment.date} {Appointment.location}
