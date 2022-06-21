@@ -180,7 +180,7 @@ export class Kursansicht extends Component {
   async componentDidMount() {
     getCourse(this, this.state.id);
     getFiles(this, this.state.id);
-    getAppointments(this, null);
+    // getAppointments(this, null);
 
 
     // get Submission for current course
