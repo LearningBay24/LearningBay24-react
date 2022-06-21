@@ -33,11 +33,6 @@ export class Kursuebersicht extends Component {
         name: "test2", owner: "Hans", description: "das ist ein anderer Kurs",
         created_at: "4-19-2022", id: "2",
       }],
-      CoursesSuggested: [{
-        name: "test3", owner: "Klaus",
-        description: "Dieser Kurs könnte ihnen gefallen",
-        created_at: "4-19-2022", id: "3",
-      }],
       createCourse: false,
       NewCourse: {name: "", user_id: "", description: "", enroll_key: ""},
     };
@@ -79,7 +74,7 @@ export class Kursuebersicht extends Component {
     if (this.state.MyCourses != null) {
       for (const Course of this.state.MyCourses) {
         MyCourseslist.push(
-            <Link to={"/kursansicht/" + Course.courseId} className="Course">
+            <Link to={"/kursansicht/" + Course.id} className="Course">
               <ShowCourse name={Course.name}
                 owner={Course.CourseOwner} description={Course.description}
                 created_at={Course.created_at} id={Course.id} /></Link>);
@@ -88,20 +83,12 @@ export class Kursuebersicht extends Component {
 
     const CoursesTakenlist = [];
     for (const Course of this.state.CoursesTaken) {
-      CoursesTakenlist.push(<div className="Course">
-        <ShowCourse name={Course.name}
-          owner={Course.CourseOwner} description={Course.description}
-          created_at={Course.created_at} id={Course.id} /></div>);
+      CoursesTakenlist.push(
+          <Link to={"/kursansicht/" + Course.id} className="Course">
+            <ShowCourse name={Course.name}
+              owner={Course.CourseOwner} description={Course.description}
+              created_at={Course.created_at} id={Course.id} /></Link>);
     }
-
-    const CoursesSuggestedlist = [];
-    for (const Course of this.state.CoursesSuggested) {
-      CoursesSuggestedlist.push(<div className="Course">
-        <ShowCourse name={Course.name}
-          owner={Course.CourseOwner} description={Course.description}
-          created_at={Course.created_at} id={Course.id} /></div>);
-    }
-
 
     return (
       <div className="Kursuebersicht">
@@ -164,12 +151,6 @@ export class Kursuebersicht extends Component {
                     <h2>Belegte Kurse</h2>
                     <div className="CourseList">
                       {CoursesTakenlist}
-                    </div>
-                  </Row>
-                  <Row className="Section">
-                    <h2>Vorgeschlagene Kurse</h2>
-                    <div className="CourseList">
-                      {CoursesSuggestedlist}
                     </div>
                   </Row>
                 </Row>
