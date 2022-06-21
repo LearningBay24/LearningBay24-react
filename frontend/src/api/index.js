@@ -5,7 +5,7 @@
  * data in the components state
  */
 
-const Testlocal = 1;
+const Testlocal = 0;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
 const Localadress = "http://learningbay24.local:8080/";
@@ -429,7 +429,7 @@ export function getCreatedExams(caller) {
 }
 
 
-export function getRegisteredExams(caller) {
+export function getRegisteredExams(caller, callback) {
   console.log("(getExams): " + Actualadress + "users/exams/registered");
 
   fetch(Actualadress + "users/exams/registered", {method: "GET",
@@ -438,7 +438,11 @@ export function getRegisteredExams(caller) {
       .then((data) => {
         console.log("registered");
         console.log(data);
-        caller.setState({RegisteredExams: data});
+        caller.setState({RegisteredExams: data}, () => {
+          if (callback != null) {
+            callback();
+          }
+        });
       })
       .catch((error) => console.error(error));
 }
@@ -711,7 +715,7 @@ export function getExamSubmission(caller, userId, examId, filename) {
 
 export function createAppointment(caller, object) {
   console.log("(createAppointment): " + Actualadress + "appointments/add");
-
+  console.log(object);
   const requestOptions = {
     method: "POST",
     body: JSON.stringify(object),
@@ -740,9 +744,11 @@ export function getAppointments(caller, callback) {
       .then((data) => {
         console.log("data");
         console.log(data);
-        caller.setState({Apointments: data}, ()=> {
-          console.log("callback");
-          callback(caller);
+        caller.setState({Appointments: data}, ()=> {
+          if (callback != null) {
+            console.log("callback");
+            callback(caller);
+          }
         });
       })
       .catch((error) => console.error(error));

@@ -8,7 +8,7 @@ import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import timeGridPlugin from "@fullcalendar/timegrid";
 import {Col, Container, Row} from "react-bootstrap";
 
-import {getAppointments} from "../api";
+import {getAppointments, getRegisteredExams} from "../api";
 import "../css/Overlay.css";
 import "../css/Stundenplan.css";
 
@@ -43,27 +43,49 @@ export class Stundenplan extends Component {
   componentDidMount() {
     this.setState({events: []});
     getAppointments(this, this.AppointmentsCallback);
+    getRegisteredExams(this, this.ExamsCallback);
   }
 
   AppointmentsCallback(caller) {
-    console.log("AppointmentsCallback");
-    if (caller.state.Apointments != null) {
-      console.log("test");
-      for (let i = 0; i < caller.state.Apointments.length; i++) {
+    if (caller.state.Appointments != null) {
+      console.log(this.state.Appointments);
+      for (const Appointment of caller.state.Appointments) {
         this.state.events.push({
-          title: caller.state.Apointments[i][0].id,
+          title: Appointment.name + " ",
+          url: "/kursansicht/" + Appointment.course_id,
           start: new Date(Date.parse(
-              caller.state.Apointments[i][0].date),
+              Appointment.date),
           ).toISOString().split(".")[0]+"Z",
 
-          end: new Date(Date.parse(caller.state.Apointments[i][0].date) +
-          caller.state.Apointments[i][0].duration * 1000).toISOString()
+          end: new Date(Date.parse(Appointment.date) +
+          Appointment.duration * 1000).toISOString()
               .split(".")[0]+"Z",
+          backgroundColor: "blue",
         });
       }
     }
-    console.log("events");
-    console.log(this.state.events);
+    for (let i = 0; i < this.state.events.length; i++) {
+      this.addEvent(this.state.events[i]);
+    }
+  }
+
+  ExamsCallback(caller) {
+    if (caller.state.Appointments != null) {
+      for (const Exam of caller.state.RegisteredExams) {
+        this.state.events.push({
+          title: Exam.name + " ",
+          url: "/klausurenuebersicht/",
+          start: new Date(Date.parse(
+              Exam.date),
+          ).toISOString().split(".")[0]+"Z",
+
+          end: new Date(Date.parse(Exam.date) +
+          Exam.duration * 1000).toISOString()
+              .split(".")[0]+"Z",
+          backgroundColor: "red",
+        });
+      }
+    }
     for (let i = 0; i < this.state.events.length; i++) {
       this.addEvent(this.state.events[i]);
     }
@@ -85,7 +107,7 @@ export class Stundenplan extends Component {
               <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" fluid><h1
                 onClick={() => {
-                  console.log(this.state.appointments[0].id);
+                  console.log(this.state.appointments.id);
                 }}>Stundenplan</h1>
               <FullCalendar ref={this.calendarRef}
                 plugins={[dayGridPlugin, timeGridPlugin]}
