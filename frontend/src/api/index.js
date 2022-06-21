@@ -744,7 +744,7 @@ export function getAppointments(caller, callback) {
       .then((data) => {
         console.log("data");
         console.log(data);
-        caller.setState({Appointments: data}, ()=> {
+        caller.setState({Appointments: data}, () => {
           if (callback != null) {
             console.log("callback");
             callback(caller);

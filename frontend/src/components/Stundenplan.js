@@ -28,14 +28,17 @@ export class Stundenplan extends Component {
         deleted_at: "",
       }],
 
-      events: [{
-        title: "event 1",
-        start: "2022-06-05",
-        end: "2022-06-07",
-      }],
+      RegisteredExams: [{}],
+
+      eventsAppointments: [{}],
+
+      eventsExams: [{}],
+
     };
 
     this.AppointmentsCallback= this.AppointmentsCallback.bind(this);
+    this.ExamsCallback = this.ExamsCallback.bind(this);
+    this.addEvent = this.addEvent.bind(this);
   }
 
   calendarRef = React.createRef();
@@ -49,9 +52,9 @@ export class Stundenplan extends Component {
   AppointmentsCallback(caller) {
     if (caller.state.Appointments != null) {
       console.log(this.state.Appointments);
-      for (const Appointment of caller.state.Appointments) {
-        this.state.events.push({
-          title: Appointment.name + " ",
+      for (const Appointment of this.state.Appointments) {
+        this.state.eventsAppointments.push({
+          title: Appointment.name + ": " + Appointment.location,
           url: "/kursansicht/" + Appointment.course_id,
           start: new Date(Date.parse(
               Appointment.date),
@@ -64,16 +67,19 @@ export class Stundenplan extends Component {
         });
       }
     }
-    for (let i = 0; i < this.state.events.length; i++) {
-      this.addEvent(this.state.events[i]);
+    for (let i = 0; i < this.state.eventsAppointments.length; i++) {
+      this.addEvent(this.state.eventsAppointments[i]);
     }
   }
 
   ExamsCallback(caller) {
-    if (caller.state.Appointments != null) {
-      for (const Exam of caller.state.RegisteredExams) {
-        this.state.events.push({
-          title: Exam.name + " ",
+    console.log(this.state.RegisteredExams);
+    if (this.state.RegisteredExams != null) {
+      console.log(this.state.RegisteredExams.length);
+      for (const Exam of this.state.RegisteredExams) {
+        this.state.eventsExams.push({
+          title: Exam.name +": " +
+          Exam.location,
           url: "/klausurenuebersicht/",
           start: new Date(Date.parse(
               Exam.date),
@@ -86,8 +92,9 @@ export class Stundenplan extends Component {
         });
       }
     }
-    for (let i = 0; i < this.state.events.length; i++) {
-      this.addEvent(this.state.events[i]);
+    console.log(this.state.eventsExams);
+    for (let i = 0; i < this.state.eventsExams.length; i++) {
+      this.addEvent(this.state.eventsExams[i]);
     }
   }
 
