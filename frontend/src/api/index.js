@@ -311,7 +311,8 @@ export function uploadLink(caller, link, name, id) {
 export function getFiles(caller, id) {
   console.log("(getFiles): " + Actualadress + `courses/${id}/files`);
 
-  fetch(Actualadress + `courses/${id}/files`, {method: "GET"})
+  fetch(Actualadress + `courses/${id}/files`, {method: "GET",
+    credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -324,7 +325,8 @@ export function getFileByID(caller, courseID, fileId, filename) {
   console.log("(getFileByID): " + Actualadress +
   `courses/${courseID}/files/${fileId}`);
 
-  fetch(Actualadress + `courses/${courseID}/files/${fileId}`, {method: "GET"})
+  fetch(Actualadress + `courses/${courseID}/files/${fileId}`, {method: "GET",
+    credentials: "include"})
       .then((result) => {
         if (result.status != 200) {
           throw new Error("Bad server response");
@@ -384,46 +386,6 @@ export function getUser(caller) {
       .catch((error) => console.error(error));
 }
 
-function startOfWeek(date) {
-  const diff = date.getDate() - date.getDay() +
-    (date.getDay() === 0 ? -6 : 1)-1;
-  return new Date(date.setDate(diff));
-}
-
-function endOfWeek(date) {
-  const diff = date.getDate() - date.getDay() +
-    (date.getDay() === 0 ? -6 : 1)+7;
-  return new Date(date.setDate(diff));
-}
-
-
-export function getAppointments(caller, callback) {
-  console.log("(getAppointments): " + Actualadress + "appointments");
-  const startD = startOfWeek(new Date());
-  const endD = endOfWeek(new Date());
-  const object = {
-    "startDate": startD.toISOString().split("T")[0],
-    "endDate": endD.toISOString().split("T")[0],
-  };
-
-  const requestOptions = {
-    method: "POST",
-    credentials: "include",
-    body: JSON.stringify(object),
-  };
-
-  fetch(Actualadress + "appointments", requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("data");
-        console.log(data);
-        caller.setState({Apointments: data}, ()=> {
-          console.log("callback");
-          callback(caller);
-        });
-      })
-      .catch((error) => console.error(error));
-}
 
 export function getAttendedExams(caller) {
   console.log("(getExams): " + Actualadress + "users/exams/attended");
@@ -467,7 +429,7 @@ export function getCreatedExams(caller) {
 }
 
 
-export function getRegisteredExams(caller) {
+export function getRegisteredExams(caller, callback) {
   console.log("(getExams): " + Actualadress + "users/exams/registered");
 
   fetch(Actualadress + "users/exams/registered", {method: "GET",
@@ -476,7 +438,11 @@ export function getRegisteredExams(caller) {
       .then((data) => {
         console.log("registered");
         console.log(data);
-        caller.setState({RegisteredExams: data});
+        caller.setState({RegisteredExams: data}, () => {
+          if (callback != null) {
+            callback();
+          }
+        });
       })
       .catch((error) => console.error(error));
 }
@@ -743,6 +709,62 @@ export function getExamSubmission(caller, userId, examId, filename) {
 
         window.URL.revokeObjectURL(url);
         document.removeChild(anchor);
+      })
+      .catch((error) => console.error(error));
+}
+
+export function createAppointment(caller, object) {
+  console.log("(createAppointment): " + Actualadress + "appointments/add");
+  console.log(object);
+  const requestOptions = {
+    method: "POST",
+    body: JSON.stringify(object),
+    credentials: "include",
+  };
+
+  fetch(Actualadress + "appointments/add", requestOptions)
+      .then((response) => {
+        if (response.status > 299) {
+          alert("error");
+        }
+      })
+      .catch((error) => console.error(error));
+}
+
+export function getAppointments(caller, callback) {
+  console.log("(getAppointments): " + Actualadress + "courses/appointments");
+
+  const requestOptions = {
+    method: "GET",
+    credentials: "include",
+  };
+
+  fetch(Actualadress + "courses/appointments", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data");
+        console.log(data);
+        caller.setState({Appointments: data}, ()=> {
+          if (callback != null) {
+            console.log("callback");
+            callback(caller);
+          }
+        });
+      })
+      .catch((error) => console.error(error));
+}
+
+export function deleteAppointment(caller, appointmentId) {
+  console.log("(deleteAppointment): " + Actualadress +
+  `appointments/${appointmentId}`);
+
+  fetch(Actualadress + "appointments", {method: "DELETE",
+    body: JSON.stringify({appointment_id: appointmentId}),
+    credentials: "include"})
+      .then((response) => {
+        if (response.status > 299) {
+          alert("error");
+        }
       })
       .catch((error) => console.error(error));
 }
