@@ -3,6 +3,7 @@ import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
 import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
+import {Link} from "react-router-dom";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -77,10 +78,11 @@ export class Kursuebersicht extends Component {
     const MyCourseslist = [];
     if (this.state.MyCourses != null) {
       for (const Course of this.state.MyCourses) {
-        MyCourseslist.push(<div className="Course">
-          <ShowCourse name={Course.name}
-            owner={Course.CourseOwner} description={Course.description}
-            created_at={Course.created_at} id={Course.id} /></div>);
+        MyCourseslist.push(
+            <Link to={"/kursansicht/" + Course.courseId} className="Course">
+              <ShowCourse name={Course.name}
+                owner={Course.CourseOwner} description={Course.description}
+                created_at={Course.created_at} id={Course.id} /></Link>);
       }
     }
 

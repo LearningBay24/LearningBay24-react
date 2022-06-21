@@ -440,7 +440,7 @@ export function getRegisteredExams(caller, callback) {
         console.log(data);
         caller.setState({RegisteredExams: data}, () => {
           if (callback != null) {
-            callback();
+            callback(caller);
           }
         });
       })
