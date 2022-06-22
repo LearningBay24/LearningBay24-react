@@ -210,7 +210,7 @@ export async function login(data, callback) {
   }
 }
 
-export function logout(caller) {
+export function logout(callback) {
   console.log("(logout): " + Actualadress + "logout");
 
   const requestOptions = {
@@ -220,8 +220,10 @@ export function logout(caller) {
 
   fetch(Actualadress + "logout", requestOptions)
       .then(handleErrors)
-      .then((response) => alert("Logout erfolgreich"),
-          (reason) => alert(reason))
+      .then((response) => {
+        alert("Logout erfolgreich");
+        callback();
+      }, (reason) => alert(reason))
       .catch((error) => {
         console.error(error);
       });

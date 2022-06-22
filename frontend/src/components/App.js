@@ -41,7 +41,6 @@ function ShowNavbar() {
         <li key="7"><Link to="/klausurenuebersicht">
           Klausurenübersicht</Link></li>
         <li key="2"><Link to="/abgabenuebersicht">Abgabenübersicht</Link></li>
-        <li key="11"><Link to="/profil">Profil</Link></li>
         <li key="12"><Link to="/stundenplan">Stundenplan</Link></li>
         <li key="10"><Link to="/login">Login</Link></li>
         <li key="3"><Link to="/anlegen">Nutzer Anlegen</Link></li>

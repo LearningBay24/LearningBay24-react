@@ -18,7 +18,6 @@ import Wrapper from "./components/Kursansicht";
 import Kursuebersicht from "./components/Kursuebersicht";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
-import Profil from "./components/Profil";
 import Stundenplan from "./components/Stundenplan";
 import Suchergebnis from "./components/Suchergebnis";
 
@@ -26,7 +25,7 @@ import Suchergebnis from "./components/Suchergebnis";
 ReactDOM.render(
     <Router>
       <Routes>
-        <Route exact path="/" element={<Kursuebersicht />} />
+        <Route exact path="/" element={<Login />} />
         <Route exact path="/abgabenuebersicht"
           element={<Abgabenuebersicht />} />
         <Route exact path="/anlegen" element={<Anlegen />} />
@@ -39,7 +38,6 @@ ReactDOM.render(
         <Route exact path="/kursansicht/:id" element={<Wrapper />} />
         <Route exact path="/kursuebersicht" element={<Kursuebersicht />} />
         <Route exact path="/login" element={<Login />} />
-        <Route exact path="/profil" element={<Profil />} />
         <Route exact path="/stundenplan" element={<Stundenplan />} />
         <Route exact path="/suchergebnis" element={<Suchergebnis />} />
       </Routes>

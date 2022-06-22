@@ -3,7 +3,7 @@ import {Container, Row, Col} from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
 import {ReactComponent as HomeSvg} from "../icons/home.svg";
 import PropTypes from "prop-types";
-import {getCoursesByQuery} from "../api/index";
+import {getCoursesByQuery, logout} from "../api/index";
 
 
 export function ShowHeader(props) {
@@ -24,6 +24,10 @@ export function ShowHeader(props) {
     navigate("/suchergebnis", {state: {Result: result}});
   };
 
+  const onSuccessfulLogout = () => {
+    navigate("/login");
+  };
+
   return (
     <div className="Header">
       <Container>
@@ -35,7 +39,8 @@ export function ShowHeader(props) {
             onChange={onInputChange}></input>
           <button id="btnSearchbar"
             onClick={onButtonClick}>Suchen</button></Col>
-          <Col md={2}><Link to="/profil" id="lnkProfile">Profil</Link></Col>
+          <Col md={2}><button id="btnLogout"
+            onClick={() => logout(onSuccessfulLogout)}>Logout</button></Col>
         </Row>
       </Container>
     </div>
