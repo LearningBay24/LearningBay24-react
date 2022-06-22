@@ -15,11 +15,8 @@ export function ShowCourse(props) {
 }
 ShowCourse.propTypes = {
   name: PropTypes.string.isRequired,
-  id: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  description: PropTypes.string.isRequired,
+  id: PropTypes.number,
+  description: PropTypes.string,
   created_at: PropTypes.string.isRequired,
   // owner: PropTypes.string.isRequired,
   callback: PropTypes.func,
