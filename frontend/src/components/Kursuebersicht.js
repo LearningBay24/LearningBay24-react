@@ -25,14 +25,8 @@ export class Kursuebersicht extends Component {
     this.state = {
       NewCourseID: 0,
       UserRights: true, // true if active user can create courses
-      MyCourses: [{
-        name: "test1", owner: "Peter", description: "das ist mein Kurs",
-        created_at: "19.04.2022", id: "1",
-      }],
-      CoursesTaken: [{
-        name: "test2", owner: "Hans", description: "das ist ein anderer Kurs",
-        created_at: "4-19-2022", id: "2",
-      }],
+      MyCourses: [],
+      CoursesTaken: [],
       createCourse: false,
       NewCourse: {name: "", user_id: "", description: "", enroll_key: ""},
     };
