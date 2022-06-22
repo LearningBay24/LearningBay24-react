@@ -414,17 +414,6 @@ export class Kursansicht extends Component {
                   <br />
                   <div className="EditSectionPart">
                     <div className="EditArea">
-                      <button className="EditButton">
-                        Tutorenrechte geben/entziehen</button>
-                      <button className="EditButton">Ausschreiben</button>
-                    </div>
-                    <h2>Tutoren</h2>
-                    <select>{EditParticipants}</select>
-                    <br />
-                  </div>
-                  <br />
-                  <div className="EditSectionPart">
-                    <div className="EditArea">
                       <button className="EditButton" type="submit"
                         onClick={() => uploadFile(this, this.state.newFile,
                             this.state.CurrentCourse.id)}>
