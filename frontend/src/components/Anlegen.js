@@ -15,7 +15,6 @@ export class Anlegen extends Component {
     this.state = {
       role_id: 3,
       preferred_language_id: 1,
-
     };
   }
   render() {
@@ -60,11 +59,6 @@ export class Anlegen extends Component {
                       <option value={3}>Nutzer</option>
                       <option value={2}>Moderator</option>
                       <option value={1}>Admin</option>
-                    </select>
-                    <label className="AddUserLabel">Sprache</label>
-                    <select className="AddUserSelect"
-                      name="preferred_language_id">
-                      <option value={1}>Deutsch</option>
                     </select>
                   </div>
                   <div className="ButtonArea">
