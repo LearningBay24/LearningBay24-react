@@ -536,7 +536,7 @@ export class Kursansicht extends Component {
                       name="NewExamDate">
                     </input>
                     <label htmlFor="EditExamDuration">Dauer(in min):</label>
-                    <input type="Text" id="EditExamDuration"
+                    <input type="number" pattern="[0-9]*" id="EditExamDuration"
                       placeholder="Dauer" onChange={this.onInputChange}
                       name="NewExamDuration">
                     </input>
