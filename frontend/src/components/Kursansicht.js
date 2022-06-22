@@ -270,11 +270,13 @@ export class Kursansicht extends Component {
     // ________________________________________________________________________
 
     const Generallist = [];
-    for (const Appointment of this.state.Appointments) {
-      Generallist.push(<h3 hidden={this.state.CourseEdit}>
-        Datum: {Appointment.date} Dauer
-        : {Appointment.duration / 60} Minuten
-        Raum: {Appointment.location}</h3>);
+    if (this.state.Appointment != null) {
+      for (const Appointment of this.state.Appointments) {
+        Generallist.push(<h3 hidden={this.state.CourseEdit}>
+          Datum: {Appointment.date} Dauer
+          : {Appointment.duration / 60} Minuten
+          Raum: {Appointment.location}</h3>);
+      }
     }
 
     Generallist.push(<p hidden={this.state.CourseEdit}>
@@ -325,10 +327,12 @@ export class Kursansicht extends Component {
     // ________________________________________________________________________
     const EditAppointments = [];
     EditAppointments.push(<option value="-1">Neuer Termin</option>);
-    for (const Appointment of this.state.Appointments) {
-      EditAppointments.push(<option value={Appointment.id}>
-        {Appointment.date} {Appointment.location}
-      </option>);
+    if (this.state.Appointments != null) {
+      for (const Appointment of this.state.Appointments) {
+        EditAppointments.push(<option value={Appointment.id}>
+          {Appointment.date} {Appointment.location}
+        </option>);
+      }
     }
 
     const EditParticipants = [];
