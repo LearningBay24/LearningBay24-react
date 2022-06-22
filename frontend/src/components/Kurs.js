@@ -4,7 +4,9 @@ import PropTypes from "prop-types";
 export function ShowCourse(props) {
   return (
     <div onClick={() => {
-      props.callback(props.id);
+      if (props.callback !== null) {
+        props.callback(props.id);
+      }
     }}>
       <h4 className='CourseName'>{props.name}</h4>
       <p className='CourseDescription'>{props.description}</p>

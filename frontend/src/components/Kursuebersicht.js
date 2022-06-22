@@ -72,7 +72,8 @@ export class Kursuebersicht extends Component {
             <Link to={"/kursansicht/" + Course.id} className="Course">
               <ShowCourse name={Course.name}
                 owner={Course.CourseOwner} description={Course.description}
-                created_at={Course.created_at} id={Course.id} /></Link>);
+                created_at={Course.created_at} id={Course.id}
+                callback={null} /></Link>);
       }
     }
 
@@ -82,7 +83,8 @@ export class Kursuebersicht extends Component {
           <Link to={"/kursansicht/" + Course.id} className="Course">
             <ShowCourse name={Course.name}
               owner={Course.CourseOwner} description={Course.description}
-              created_at={Course.created_at} id={Course.id} /></Link>);
+              created_at={Course.created_at} id={Course.id}
+              callback={null} /></Link>);
     }
 
     return (

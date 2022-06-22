@@ -117,8 +117,7 @@ export class Kursansicht extends Component {
         deleted_at: "",
       }],
 
-      Material: [{
-      }],
+      Material: [],
 
       NewExamName: "",
       NewExamDescription: "",
