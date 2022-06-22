@@ -139,7 +139,7 @@ export class Kursuebersicht extends Component {
                         <button onClick={this.onCreateCourse}>
                           Kurs erstellen</button>
                         <button onClick={this.toggleCreateCourse}>
-                          abbrechen</button>
+                          Abbrechen</button>
                       </DialogActions>
                     </Dialog>
 
