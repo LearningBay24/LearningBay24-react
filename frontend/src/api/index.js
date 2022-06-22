@@ -201,6 +201,7 @@ export async function login(data, callback) {
   };
 
   const returnVal = await fetch(Actualadress + "login", requestOptions);
+  await handleErrors(returnVal).then(null, (reason) => alert(reason));
 
   if (returnVal.ok) {
     callback();
