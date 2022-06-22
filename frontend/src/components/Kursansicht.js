@@ -354,12 +354,6 @@ export class Kursansicht extends Component {
         {Assignment.Name} {Assignment.Date}</option>);
     }
 
-    const EditSurvey = [];
-    EditSurvey.push(<option value="-1">Neue Umfrage</option>);
-    for (const Survey of this.state.Course.CourseSurveys) {
-      EditSurvey.push(<option value={Survey.id}>{Survey.Name}</option>);
-    }
-
     const EditExam = [];
     EditExam.push(<option value="-1">Neue Prüfung</option>);
     for (const Exam of this.state.Course.CourseExams) {
@@ -498,22 +492,6 @@ export class Kursansicht extends Component {
                       <button className="EditButton">Löschen</button>
                       <button className="EditButton">Speichern</button>
                     </div>
-                    <h2>Umfrage</h2>
-                    <select>{EditSurvey}</select>
-                    <label htmlFor="EditSurveyName">Name:</label>
-                    <input type="Text" id="EditSurveyName"
-                      placeholder="Umfragename"></input>
-                    <label htmlFor="EditSurveyLink">Link:</label>
-                    <input type="Text" id="EditSurveyLink"
-                      placeholder="Umfragelink"></input>
-                    <br />
-                  </div>
-                  <br />
-                  <div className="EditSectionPart">
-                    <div className="EditArea">
-                      <button className="EditButton">Löschen</button>
-                      <button className="EditButton">Speichern</button>
-                    </div>
                     <h2>Klausur</h2>
 
                     <select onChange={this.onInputChange} name="ChangeExamId">
@@ -587,12 +565,6 @@ export class Kursansicht extends Component {
                   hidden={this.state.CourseEdit}>
                   <h2>Abgaben</h2>
                   {Assignmentlist}
-                </div>
-
-                <div className="SurveySection"
-                  hidden={this.state.CourseEdit}>
-                  <h2>Umfragen</h2>
-                  {Surveylist}
                 </div>
 
                 <div className="ExamSection"
