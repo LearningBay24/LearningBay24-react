@@ -139,12 +139,9 @@ export class Klausurenuebersicht extends Component {
 
       NewExamName: "",
       NewExamDescription: "",
-      NewExamDate: "",
       NewExamDuration: "",
       NewExamOnline: "",
       NewExamLocation: "",
-      NewExamRegister: "",
-      NewExamDeregister: "",
 
       examAtendeePassed: "0",
       examAtendeeFeedback: "",
@@ -349,22 +346,34 @@ export class Klausurenuebersicht extends Component {
               Abbrechen
             </button>
             <button onClick={() => {
+              let dateStr = "";
+              let registerStr = "";
+              let deregisterStr = "";
+              if (this.state.NewExamDate != null) {
+                dateStr = new Date(
+                    (new Date(this.state.NewExamDate).getTime() + 3600000 * 2))
+                    .toISOString().split(".")[0]+"Z";
+              }
+              if (this.state.NewExamRegister != null) {
+                registerStr = new Date(
+                    (new Date(this.state.NewExamRegister).getTime() +
+                    3600000 * 2)).toISOString().split(".")[0]+"Z";
+              }
+              if (this.state.NewExamDeregister != null) {
+                deregisterStr = new Date(
+                    (new Date(this.state.NewExamDeregister).getTime() +
+                    3600000 * 2)).toISOString().split(".")[0]+"Z";
+              }
               const object = {
                 id: this.state.editExamId,
                 name: this.state.NewExamName,
                 description: this.state.NewExamDescription,
-                date: new Date(
-                    (new Date(this.state.NewExamDate).getTime() + 3600000 * 2))
-                    .toISOString().split(".")[0]+"Z",
+                date: dateStr,
                 duration: (this.state.NewExamDuration*60).toString(),
                 online: this.state.NewExamOnline,
                 location: this.state.NewExamLocation,
-                register_deadline: new Date(
-                    (new Date(this.state.NewExamRegister).getTime() +
-                    3600000 * 2)).toISOString().split(".")[0]+"Z",
-                deregister_deadline: new Date(
-                    (new Date(this.state.NewExamDeregister).getTime() +
-                    3600000 * 2)).toISOString().split(".")[0]+"Z",
+                register_deadline: registerStr,
+                deregister_deadline: deregisterStr,
               };
               editExam(this, object);
               if (this.state.newExamFile != null) {
