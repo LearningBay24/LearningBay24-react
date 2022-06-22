@@ -270,7 +270,7 @@ export class Kursansicht extends Component {
     // ________________________________________________________________________
 
     const Generallist = [];
-    if (this.state.Appointment != null) {
+    if (this.state.Appointments != null) {
       for (const Appointment of this.state.Appointments) {
         Generallist.push(<h3 hidden={this.state.CourseEdit}>
           Datum: {Appointment.date} Dauer
