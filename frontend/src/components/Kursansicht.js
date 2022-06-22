@@ -601,7 +601,7 @@ function ShowUnregisteredExam(props) {
     <div className="Exam">
       <h4 className="ExamName">{props.name}</h4>
       <p className="ExamDescription">{props.description}</p>
-      <p className="Examduration">Dauer :{props.duration}min.</p>
+      <p className="Examduration">Dauer: {props.duration}min.</p>
       <p className="ExamDate">{props.date}</p>
       <p className="ExamRoom">{props.location}</p>
       <button onClick={() => {

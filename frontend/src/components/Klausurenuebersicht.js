@@ -311,7 +311,7 @@ export class Klausurenuebersicht extends Component {
                 onChange={this.onInputChange}
                 name="NewExamDate">
               </input>
-              <label htmlFor="EditExamDuration">Dauer(in min):</label>
+              <label htmlFor="EditExamDuration">Dauer (in min):</label>
               <input type="Text" id="EditExamDuration"
                 placeholder="Dauer" onChange={this.onInputChange}
                 name="NewExamDuration">
@@ -319,7 +319,7 @@ export class Klausurenuebersicht extends Component {
               <label>Offline/Online</label>
               <select onChange={this.onInputChange}
                 name="NewExamOnline">
-                <option>Online/Offline</option>
+                <option></option>
                 <option value="0">Offline</option>
                 <option value="1">Online</option>
               </select>
@@ -568,7 +568,7 @@ function ShowCreatedExam(props) {
 
       <button hidden={actual > start} onClick={() => {
         toggleEdit(props.Exam.id);
-      }}>bearbeiten</button>
+      }}>Bearbeiten</button>
       <button onClick={() => {
         deleteExam(this, props.Exam.id);
       }}>Löschen</button>
