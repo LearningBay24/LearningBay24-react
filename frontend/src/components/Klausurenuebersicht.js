@@ -205,7 +205,7 @@ export class Klausurenuebersicht extends Component {
     if (this.state.UnregisteredExams != null) {
       for (const Exam of this.state.UnregisteredExams) {
         if (Exam.id != -1) {
-          unregisteredList.push(<Col xs={4} fluid><ShowUnregisteredExam
+          unregisteredList.push(<Col xs={4} ><ShowUnregisteredExam
             Exam={Exam}/></Col>);
         }
       }
@@ -215,7 +215,7 @@ export class Klausurenuebersicht extends Component {
     if (this.state.RegisteredExams != null) {
       for (const Exam of this.state.RegisteredExams) {
         if (Exam.id != -1) {
-          registeredList.push(<Col xs={4} fluid><ShowRegisteredExam Exam={Exam}
+          registeredList.push(<Col xs={4} ><ShowRegisteredExam Exam={Exam}
             solution={null}/></Col>);
         }
       }
@@ -230,7 +230,7 @@ export class Klausurenuebersicht extends Component {
           if (grade === 0 || grade === null) {
             grade = "Noch nicht bewertet";
           }
-          attendedList.push(<Col xs={4} fluid><ShowAttendedExam Exam={Exam}
+          attendedList.push(<Col xs={4} ><ShowAttendedExam Exam={Exam}
             graded={grade}/></Col>);
         }
       }
@@ -240,7 +240,7 @@ export class Klausurenuebersicht extends Component {
     if (this.state.PassedExams != null) {
       for (const Exam of this.state.PassedExams) {
         if (Exam.id != -1) {
-          passedList.push(<Col xs={4} fluid>
+          passedList.push(<Col xs={4} >
             <ShowAttendedExam Exam={Exam} graded={Exam.grade}/>
           </Col>);
         }
@@ -251,7 +251,7 @@ export class Klausurenuebersicht extends Component {
     if (this.state.CreatedExams != null) {
       for (const Exam of this.state.CreatedExams) {
         if (Exam.id != -1) {
-          createdList.push(<Col xs={4} fluid><ShowCreatedExam Exam={Exam}
+          createdList.push(<Col xs={4} ><ShowCreatedExam Exam={Exam}
             toggleAttendency = {this.toggleAttendency}
             toggleGrade = {this.toggleGradeExam}
             toggleEdit = {this.toggleEditExam} />
@@ -441,10 +441,10 @@ export class Klausurenuebersicht extends Component {
         </Dialog>
 
         <div className="Body">
-          <Container className="Container" fluid>
-            <Row className="Content" fluid>
-              <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" fluid>
+          <Container className="Container" >
+            <Row className="Content" >
+              <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
+              <Col xs={10} className="ColContent" >
                 <h1>Klausurenübersicht</h1>
                 <Row className="Section" hidden={createdList.length == 0}>
                   <h2>Erstellte Klausuren</h2>

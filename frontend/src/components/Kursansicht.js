@@ -291,7 +291,7 @@ export class Kursansicht extends Component {
     if (this.state.Exams != null) {
       for (const Exam of this.state.Exams) {
         if (Exam.id != -1) {
-          Examlist.push(<Col xs={4} fluid><ShowUnregisteredExam
+          Examlist.push(<Col xs={4} ><ShowUnregisteredExam
             id={Exam.id}
             name={Exam.name}
             creator_id={Exam.creator_id}
@@ -349,10 +349,10 @@ export class Kursansicht extends Component {
       <div className="Kursansicht">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" fluid>
-            <Row className="Content" fluid>
-              <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" fluid>
+          <Container className="Container" >
+            <Row className="Content" >
+              <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
+              <Col xs={10} className="ColContent" >
                 <h1>{this.state.CurrentCourse.name}</h1>
                 <div className="AdminArea" hidden={!this.state.CourseAdmin}>
                   <button className="btnCreateCourse"

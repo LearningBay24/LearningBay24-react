@@ -109,10 +109,10 @@ export class Stundenplan extends Component {
       <div className="Stundenplan">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" fluid>
-            <Row className="Content" fluid>
-              <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" fluid><h1
+          <Container className="Container" >
+            <Row className="Content" >
+              <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
+              <Col xs={10} className="ColContent" ><h1
                 onClick={() => {
                   console.log(this.state.appointments.id);
                 }}>Stundenplan</h1>

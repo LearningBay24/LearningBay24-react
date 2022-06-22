@@ -51,6 +51,7 @@ export class Kursuebersicht extends Component {
       description: this.state.NewBio,
       enroll_key: this.state.NewKey,
     };
+
     postNewCourse(this, NewCourse);
     this.toggleCreateCourse();
     getMyCourses(this);
@@ -88,10 +89,10 @@ export class Kursuebersicht extends Component {
       <div className="Kursuebersicht">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" fluid>
-            <Row className="Content" fluid>
-              <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" fluid>
+          <Container className="Container" >
+            <Row className="Content" >
+              <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
+              <Col xs={10} className="ColContent" >
                 <Row className="SectionContainer">
                   <h1>Kursübersicht</h1>
                   <div className="AdminArea">
