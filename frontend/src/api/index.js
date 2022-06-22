@@ -359,14 +359,11 @@ export function getSubmissionFromUser(caller) {
 
 export function getSubmissionById(caller, id) {
   console.log("(getSubmissionsById)");
-  fetch(Actualadress + `submission/${id}`, {method: "GET",
+  fetch(Actualadress + `courses/${id}/submissions`, {method: "GET",
     credentials: "include"})
       .then(handleErrors)
       .then((data) => {
         console.log(data);
-        if (data.ok) {
-          console.log("ok");
-        }
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
