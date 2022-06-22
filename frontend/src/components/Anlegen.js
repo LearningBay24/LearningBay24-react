@@ -13,8 +13,8 @@ export class Anlegen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      role_id: 9999,
-      preferred_language_id: 9999,
+      role_id: 3,
+      preferred_language_id: 1,
 
     };
   }
@@ -57,12 +57,14 @@ export class Anlegen extends Component {
                     <br />
                     <label className="AddUserLabel">Rolle</label>
                     <select className="AddUserSelect" name="role_id">
-                      <option value={2}>Dozent</option>
+                      <option value={3}>Nutzer</option>
+                      <option value={2}>Moderator</option>
+                      <option value={1}>Admin</option>
                     </select>
                     <label className="AddUserLabel">Sprache</label>
                     <select className="AddUserSelect"
                       name="preferred_language_id">
-                      <option value={2}>Deutsch</option>
+                      <option value={1}>Deutsch</option>
                     </select>
                   </div>
                   <div className="ButtonArea">
