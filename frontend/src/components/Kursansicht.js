@@ -32,42 +32,25 @@ export class Kursansicht extends Component {
       CourseEdit: false, // true if admin is editing course
       Course: {
 
-        name: "Beispielkurs",
+        name: "",
 
-        CourseOwner: {LastName: "Mustermann", FirstName: "Max", id: ""},
+        CourseOwner: {LastName: "", FirstName: "", id: ""},
         CourseParticipants: [{FirstName: "", LastName: "", Role: "", id: ""}],
         CourseTutors: [{FirstName: "", LastName: "", Role: "", id: ""}],
 
 
-        CourseAppointments: [
-          {
-            Day: "Montag", Time: "11:00", Duration: "1:30h",
-            Content: "Vorlesung", Location: "Raum A123", id: "1",
-          },
-          {
-            Day: "Freitag", Time: "8:00", Duration: "1:30h",
-            Content: "Praktikum", Location: "Raum A123", id: "2",
-          }],
+        CourseAppointments: [],
 
-        CourseBio: "Das ist ein Beispielkurs",
-        CourseCreatedAt: "17.04.2022",
+        CourseBio: "",
+        CourseCreatedAt: "",
         CourseForum: "",
 
 
-        CourseMaterial: [
-          {Name: "mat1", Content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", id: ""}],
-        CourseAssignments: [{
-          Name: "Abgabe1", Content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-          Date: "17.04.2022", Deadline: "25.04.2022 0:00", id: "",
-        }],
+        CourseMaterial: [],
+        CourseAssignments: [],
 
-        CourseSurveys: [
-          {Name: "Umfrage1", Content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", id: ""}],
-        CourseExams: [
-          {
-            Name: "Klausur1", Date: "30.4.2022", Duration: "1:30h",
-            Location: "Raum A123", id: "",
-          }],
+        CourseSurveys: [],
+        CourseExams: [],
       },
       // ______________________________________________________________________
 
