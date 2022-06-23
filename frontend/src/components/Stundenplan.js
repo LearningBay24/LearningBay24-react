@@ -8,7 +8,7 @@ import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import timeGridPlugin from "@fullcalendar/timegrid";
 import {Col, Container, Row} from "react-bootstrap";
 
-import {getAppointments} from "../api";
+import {getAppointments, getRegisteredExams} from "../api";
 import "../css/Overlay.css";
 import "../css/Stundenplan.css";
 
@@ -28,14 +28,17 @@ export class Stundenplan extends Component {
         deleted_at: "",
       }],
 
-      events: [{
-        title: "event 1",
-        start: "2022-06-05",
-        end: "2022-06-07",
-      }],
+      RegisteredExams: [{}],
+
+      eventsAppointments: [{}],
+
+      eventsExams: [{}],
+
     };
 
     this.AppointmentsCallback= this.AppointmentsCallback.bind(this);
+    this.ExamsCallback = this.ExamsCallback.bind(this);
+    this.addEvent = this.addEvent.bind(this);
   }
 
   calendarRef = React.createRef();
@@ -43,28 +46,55 @@ export class Stundenplan extends Component {
   componentDidMount() {
     this.setState({events: []});
     getAppointments(this, this.AppointmentsCallback);
+    getRegisteredExams(this, this.ExamsCallback);
   }
 
   AppointmentsCallback(caller) {
-    console.log("AppointmentsCallback");
-    if (caller.state.Apointments[0] != null) {
-      console.log("test");
-      for (let i = 0; i < caller.state.Apointments.length; i++) {
-        this.state.events.push({
-          title: caller.state.Apointments[i][0].id,
+    if (caller.state.Appointments != null) {
+      console.log(this.state.Appointments);
+      for (const Appointment of this.state.Appointments) {
+        this.state.eventsAppointments.push({
+          title: Appointment.name + ": " + Appointment.location,
+          url: "/kursansicht/" + Appointment.course_id,
           start: new Date(Date.parse(
-              caller.state.Apointments[i][0].date),
+              Appointment.date),
           ).toISOString().split(".")[0]+"Z",
 
-          end: new Date(Date.parse(caller.state.Apointments[i][0].date) +
-            90 * 60 * 1000).toISOString().split(".")[0]+"Z",
+          end: new Date(Date.parse(Appointment.date) +
+          Appointment.duration * 1000).toISOString()
+              .split(".")[0]+"Z",
+          backgroundColor: "blue",
         });
       }
     }
-    console.log("events");
-    console.log(this.state.events);
-    for (let i = 0; i < this.state.events.length; i++) {
-      this.addEvent(this.state.events[i]);
+    for (let i = 0; i < this.state.eventsAppointments.length; i++) {
+      this.addEvent(this.state.eventsAppointments[i]);
+    }
+  }
+
+  ExamsCallback(caller) {
+    console.log(this.state.RegisteredExams);
+    if (this.state.RegisteredExams != null) {
+      console.log(this.state.RegisteredExams.length);
+      for (const Exam of this.state.RegisteredExams) {
+        this.state.eventsExams.push({
+          title: Exam.name +": " +
+          Exam.location,
+          url: "/klausurenuebersicht/",
+          start: new Date(Date.parse(
+              Exam.date),
+          ).toISOString().split(".")[0]+"Z",
+
+          end: new Date(Date.parse(Exam.date) +
+          Exam.duration * 1000).toISOString()
+              .split(".")[0]+"Z",
+          backgroundColor: "red",
+        });
+      }
+    }
+    console.log(this.state.eventsExams);
+    for (let i = 0; i < this.state.eventsExams.length; i++) {
+      this.addEvent(this.state.eventsExams[i]);
     }
   }
 
@@ -79,12 +109,12 @@ export class Stundenplan extends Component {
       <div className="Stundenplan">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" fluid>
-            <Row className="Content" fluid>
-              <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" fluid><h1
+          <Container className="Container" >
+            <Row className="Content" >
+              <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
+              <Col xs={10} className="ColContent" ><h1
                 onClick={() => {
-                  console.log(this.state.appointments[0].id);
+                  console.log(this.state.appointments.id);
                 }}>Stundenplan</h1>
               <FullCalendar ref={this.calendarRef}
                 plugins={[dayGridPlugin, timeGridPlugin]}

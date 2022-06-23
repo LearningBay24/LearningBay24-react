@@ -13,9 +13,8 @@ export class Anlegen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      role_id: 9999,
-      preferred_language_id: 9999,
-
+      role_id: "3",
+      preferred_language_id: 1,
     };
   }
   render() {
@@ -26,10 +25,10 @@ export class Anlegen extends Component {
       <div className="Anlegen">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" fluid>
-            <Row className="Content" fluid>
-              <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" fluid>
+          <Container className="Container" >
+            <Row className="Content" >
+              <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
+              <Col xs={10} className="ColContent" >
                 <div className="AddUserContainer">
                   <h1>Nutzer Anlegen</h1>
                   <div className="AddUserSection">
@@ -56,13 +55,11 @@ export class Anlegen extends Component {
                       onChange={this.onInputChange}></input>
                     <br />
                     <label className="AddUserLabel">Rolle</label>
-                    <select className="AddUserSelect" name="role_id">
-                      <option value={2}>Dozent</option>
-                    </select>
-                    <label className="AddUserLabel">Sprache</label>
-                    <select className="AddUserSelect"
-                      name="preferred_language_id">
-                      <option value={2}>Deutsch</option>
+                    <select className="AddUserSelect" name="role_id"
+                      onChange={this.onInputChange}>
+                      <option value={3}>Nutzer</option>
+                      <option value={2}>Moderator</option>
+                      <option value={1}>Admin</option>
                     </select>
                   </div>
                   <div className="ButtonArea">
@@ -92,7 +89,7 @@ export class Anlegen extends Component {
       surname: this.state.surname,
       email: this.state.Email,
       password: this.state.password,
-      role_id: this.state.role_id,
+      role_id: parseInt(this.state.role_id),
       preferred_language_id: this.state.preferred_language_id,
 
     };

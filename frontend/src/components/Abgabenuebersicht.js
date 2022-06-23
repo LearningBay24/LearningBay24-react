@@ -100,10 +100,10 @@ export class Abgabenuebersicht extends Component {
       <div className="Abgabenuebersicht">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" fluid>
-            <Row key={1} className="Content" fluid>
-              <Col key={1} xs={2} className="ColNav" fluid><ShowNavbar /></Col>
-              <Col key={2} xs={10} className="ColContent" fluid>
+          <Container className="Container" >
+            <Row className="Content" >
+              <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
+              <Col xs={10} className="ColContent" >
                 <h1>Abgabenübersicht</h1>
                 <div className="AdminArea">
                   <button className="btnCreateCourse"

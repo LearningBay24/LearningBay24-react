@@ -13,10 +13,10 @@ export class Benachrichtigungen extends Component {
       <div className="Benachrichtigungen">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" fluid>
-            <Row className="Content" fluid>
-              <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" fluid>
+          <Container className="Container" >
+            <Row className="Content" >
+              <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
+              <Col xs={10} className="ColContent" >
                 <h1>Benachrichtigungen</h1>
               </Col>
             </Row>

@@ -14,11 +14,11 @@ function App() {
     <div className="App">
       <ShowHeader />
       <div className="Body">
-        <Container className="Container" fluid>
-          <Row className="Content" fluid>
-            <Col xs={2} className="ColNav" fluid><div className="darkBar">
+        <Container className="Container" >
+          <Row className="Content" >
+            <Col xs={2} className="ColNav" ><div className="darkBar">
             </div><ShowNavbar /></Col>
-            <Col xs={10} className="ColContent" fluid><h1>Home</h1></Col>
+            <Col xs={10} className="ColContent" ><h1>Home</h1></Col>
           </Row>
         </Container>
       </div>
@@ -32,18 +32,11 @@ function ShowNavbar() {
   return (
     <div className="Navbar">
       <ul>
-        <li key="5"><Link to="/dashboard"
-          className="lnkDashboard">Dashboard</Link></li>
         <li key="9"><Link to="/kursuebersicht">Kursübersicht</Link></li>
-        <li key="4"><Link to="/benachrichtigungen">
-          Benachrichtigungen</Link></li>
-        <li key="6"><Link to="/institution">Institution</Link></li>
         <li key="7"><Link to="/klausurenuebersicht">
           Klausurenübersicht</Link></li>
         <li key="2"><Link to="/abgabenuebersicht">Abgabenübersicht</Link></li>
-        <li key="11"><Link to="/profil">Profil</Link></li>
         <li key="12"><Link to="/stundenplan">Stundenplan</Link></li>
-        <li key="10"><Link to="/login">Login</Link></li>
         <li key="3"><Link to="/anlegen">Nutzer Anlegen</Link></li>
       </ul>
     </div>

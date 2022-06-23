@@ -139,12 +139,9 @@ export class Klausurenuebersicht extends Component {
 
       NewExamName: "",
       NewExamDescription: "",
-      NewExamDate: "",
       NewExamDuration: "",
       NewExamOnline: "",
       NewExamLocation: "",
-      NewExamRegister: "",
-      NewExamDeregister: "",
 
       examAtendeePassed: "0",
       examAtendeeFeedback: "",
@@ -205,7 +202,7 @@ export class Klausurenuebersicht extends Component {
     if (this.state.UnregisteredExams != null) {
       for (const Exam of this.state.UnregisteredExams) {
         if (Exam.id != -1) {
-          unregisteredList.push(<Col xs={4} fluid><ShowUnregisteredExam
+          unregisteredList.push(<Col xs={4} ><ShowUnregisteredExam
             Exam={Exam}/></Col>);
         }
       }
@@ -215,7 +212,7 @@ export class Klausurenuebersicht extends Component {
     if (this.state.RegisteredExams != null) {
       for (const Exam of this.state.RegisteredExams) {
         if (Exam.id != -1) {
-          registeredList.push(<Col xs={4} fluid><ShowRegisteredExam Exam={Exam}
+          registeredList.push(<Col xs={4} ><ShowRegisteredExam Exam={Exam}
             solution={null}/></Col>);
         }
       }
@@ -230,7 +227,7 @@ export class Klausurenuebersicht extends Component {
           if (grade === 0 || grade === null) {
             grade = "Noch nicht bewertet";
           }
-          attendedList.push(<Col xs={4} fluid><ShowAttendedExam Exam={Exam}
+          attendedList.push(<Col xs={4} ><ShowAttendedExam Exam={Exam}
             graded={grade}/></Col>);
         }
       }
@@ -240,7 +237,7 @@ export class Klausurenuebersicht extends Component {
     if (this.state.PassedExams != null) {
       for (const Exam of this.state.PassedExams) {
         if (Exam.id != -1) {
-          passedList.push(<Col xs={4} fluid>
+          passedList.push(<Col xs={4} >
             <ShowAttendedExam Exam={Exam} graded={Exam.grade}/>
           </Col>);
         }
@@ -251,7 +248,7 @@ export class Klausurenuebersicht extends Component {
     if (this.state.CreatedExams != null) {
       for (const Exam of this.state.CreatedExams) {
         if (Exam.id != -1) {
-          createdList.push(<Col xs={4} fluid><ShowCreatedExam Exam={Exam}
+          createdList.push(<Col xs={4} ><ShowCreatedExam Exam={Exam}
             toggleAttendency = {this.toggleAttendency}
             toggleGrade = {this.toggleGradeExam}
             toggleEdit = {this.toggleEditExam} />
@@ -311,7 +308,7 @@ export class Klausurenuebersicht extends Component {
                 onChange={this.onInputChange}
                 name="NewExamDate">
               </input>
-              <label htmlFor="EditExamDuration">Dauer(in min):</label>
+              <label htmlFor="EditExamDuration">Dauer (in min):</label>
               <input type="Text" id="EditExamDuration"
                 placeholder="Dauer" onChange={this.onInputChange}
                 name="NewExamDuration">
@@ -319,7 +316,7 @@ export class Klausurenuebersicht extends Component {
               <label>Offline/Online</label>
               <select onChange={this.onInputChange}
                 name="NewExamOnline">
-                <option>Online/Offline</option>
+                <option></option>
                 <option value="0">Offline</option>
                 <option value="1">Online</option>
               </select>
@@ -349,22 +346,34 @@ export class Klausurenuebersicht extends Component {
               Abbrechen
             </button>
             <button onClick={() => {
+              let dateStr = "";
+              let registerStr = "";
+              let deregisterStr = "";
+              if (this.state.NewExamDate != null) {
+                dateStr = new Date(
+                    (new Date(this.state.NewExamDate).getTime() + 3600000 * 2))
+                    .toISOString().split(".")[0]+"Z";
+              }
+              if (this.state.NewExamRegister != null) {
+                registerStr = new Date(
+                    (new Date(this.state.NewExamRegister).getTime() +
+                    3600000 * 2)).toISOString().split(".")[0]+"Z";
+              }
+              if (this.state.NewExamDeregister != null) {
+                deregisterStr = new Date(
+                    (new Date(this.state.NewExamDeregister).getTime() +
+                    3600000 * 2)).toISOString().split(".")[0]+"Z";
+              }
               const object = {
                 id: this.state.editExamId,
                 name: this.state.NewExamName,
                 description: this.state.NewExamDescription,
-                date: new Date(
-                    (new Date(this.state.NewExamDate).getTime() + 3600000 * 2))
-                    .toISOString().split(".")[0]+"Z",
+                date: dateStr,
                 duration: (this.state.NewExamDuration*60).toString(),
                 online: this.state.NewExamOnline,
                 location: this.state.NewExamLocation,
-                register_deadline: new Date(
-                    (new Date(this.state.NewExamRegister).getTime() +
-                    3600000 * 2)).toISOString().split(".")[0]+"Z",
-                deregister_deadline: new Date(
-                    (new Date(this.state.NewExamDeregister).getTime() +
-                    3600000 * 2)).toISOString().split(".")[0]+"Z",
+                register_deadline: registerStr,
+                deregister_deadline: deregisterStr,
               };
               editExam(this, object);
               if (this.state.newExamFile != null) {
@@ -441,10 +450,10 @@ export class Klausurenuebersicht extends Component {
         </Dialog>
 
         <div className="Body">
-          <Container className="Container" fluid>
-            <Row className="Content" fluid>
-              <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" fluid>
+          <Container className="Container" >
+            <Row className="Content" >
+              <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
+              <Col xs={10} className="ColContent" >
                 <h1>Klausurenübersicht</h1>
                 <Row className="Section" hidden={createdList.length == 0}>
                   <h2>Erstellte Klausuren</h2>
@@ -568,7 +577,7 @@ function ShowCreatedExam(props) {
 
       <button hidden={actual > start} onClick={() => {
         toggleEdit(props.Exam.id);
-      }}>bearbeiten</button>
+      }}>Bearbeiten</button>
       <button onClick={() => {
         deleteExam(this, props.Exam.id);
       }}>Löschen</button>

@@ -3,6 +3,7 @@ import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
 import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
+import {Link} from "react-router-dom";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -26,7 +27,6 @@ export class Kursuebersicht extends Component {
       UserRights: true, // true if active user can create courses
       MyCourses: [],
       CoursesTaken: [],
-      CoursesSuggested: [],
       createCourse: false,
       NewCourse: {name: "", user_id: "", description: "", enroll_key: ""},
     };
@@ -51,6 +51,7 @@ export class Kursuebersicht extends Component {
       description: this.state.NewBio,
       enroll_key: this.state.NewKey,
     };
+
     postNewCourse(this, NewCourse);
     this.toggleCreateCourse();
     getMyCourses(this);
@@ -67,38 +68,33 @@ export class Kursuebersicht extends Component {
     const MyCourseslist = [];
     if (this.state.MyCourses != null) {
       for (const Course of this.state.MyCourses) {
-        MyCourseslist.push(<div className="Course">
-          <ShowCourse name={Course.name}
-            owner={Course.CourseOwner} description={Course.description}
-            created_at={Course.created_at} id={Course.id} /></div>);
+        MyCourseslist.push(
+            <Link to={"/kursansicht/" + Course.id} className="Course">
+              <ShowCourse name={Course.name}
+                owner={Course.CourseOwner} description={Course.description}
+                created_at={Course.created_at} id={Course.id}
+                callback={null} /></Link>);
       }
     }
 
     const CoursesTakenlist = [];
     for (const Course of this.state.CoursesTaken) {
-      CoursesTakenlist.push(<div className="Course">
-        <ShowCourse name={Course.name}
-          owner={Course.CourseOwner} description={Course.description}
-          created_at={Course.created_at} id={Course.id} /></div>);
+      CoursesTakenlist.push(
+          <Link to={"/kursansicht/" + Course.id} className="Course">
+            <ShowCourse name={Course.name}
+              owner={Course.CourseOwner} description={Course.description}
+              created_at={Course.created_at} id={Course.id}
+              callback={null} /></Link>);
     }
-
-    const CoursesSuggestedlist = [];
-    for (const Course of this.state.CoursesSuggested) {
-      CoursesSuggestedlist.push(<div className="Course">
-        <ShowCourse name={Course.name}
-          owner={Course.CourseOwner} description={Course.description}
-          created_at={Course.created_at} id={Course.id} /></div>);
-    }
-
 
     return (
       <div className="Kursuebersicht">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" fluid>
-            <Row className="Content" fluid>
-              <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" fluid>
+          <Container className="Container" >
+            <Row className="Content" >
+              <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
+              <Col xs={10} className="ColContent" >
                 <Row className="SectionContainer">
                   <h1>Kursübersicht</h1>
                   <div className="AdminArea">
@@ -143,7 +139,7 @@ export class Kursuebersicht extends Component {
                         <button onClick={this.onCreateCourse}>
                           Kurs erstellen</button>
                         <button onClick={this.toggleCreateCourse}>
-                          abbrechen</button>
+                          Abbrechen</button>
                       </DialogActions>
                     </Dialog>
 
@@ -152,12 +148,6 @@ export class Kursuebersicht extends Component {
                     <h2>Belegte Kurse</h2>
                     <div className="CourseList">
                       {CoursesTakenlist}
-                    </div>
-                  </Row>
-                  <Row className="Section">
-                    <h2>Vorgeschlagene Kurse</h2>
-                    <div className="CourseList">
-                      {CoursesSuggestedlist}
                     </div>
                   </Row>
                 </Row>
