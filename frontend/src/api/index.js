@@ -19,7 +19,6 @@ if (Testlocal) {
 
 async function handleErrors(response) {
   if (!response.ok) throw await response.json();
-  console.log(response.headers.get("Content-Length"));
   if (response.headers.get("Content-Length") != 0) {
     return response.json();
   }
@@ -381,7 +380,7 @@ export function getUser(caller) {
       .then(handleErrors)
       .then((data) => {
         console.log(data);
-        caller.setState(data);
+        return (data);
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
