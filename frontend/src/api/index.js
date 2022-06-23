@@ -499,7 +499,7 @@ export function editExam(caller, object) {
 
 
   const requestOptions = {
-    method: "POST",
+    method: "PATCH",
     body: JSON.stringify(object),
     credentials: "include",
   };

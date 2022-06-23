@@ -12,8 +12,8 @@ import "../css/Kursansicht.css";
 import {
   getCourse, getFiles, updateCourse, createExam, registerToExam,
   uploadFile, getFileByID, uploadLink, getExamsFromCourse, getSubmissionById,
-  createAppointment, deleteAppointment,
-  getAppointments,
+  createAppointment, deleteAppointment, editExam, getAppointments,
+  deleteExam,
 } from "../api";
 
 import PropTypes from "prop-types";
@@ -202,7 +202,7 @@ export class Kursansicht extends Component {
     if (this.state.ChangeAppointmentId === "-1") {
       const Appointment = {
         date: new Date(this.state.NewAppointmentDate)
-            .toISOString().split(".")[0]+"Z",
+            .toISOString().split(".")[0] + "Z",
         duration: (this.state.NewAppointmentDuration * 60).toString(),
         location: this.state.NewAppointmentLocation,
         online: this.state.NewAppointmentOnline,
@@ -219,29 +219,60 @@ export class Kursansicht extends Component {
   }
 
   onSaveExam() {
+    let online_ = 0;
+    if (this.state.NewExamOnline != null) {
+      online_ = this.state.NewExamOnline;
+    }
     if (this.state.ChangeExamId === "-1") {
-      let online_ = 0;
-      if (this.state.NewExamOnline != null) {
-        online_ = this.state.NewExamOnline;
-      }
       const Exam = {
         name: this.state.NewExamName,
         description: this.state.NewExamDescription,
         date: new Date(
             (new Date(this.state.NewExamDate).getTime() +
-            3600000 * 2)).toISOString().split(".")[0]+"Z",
+            3600000 * 2)).toISOString().split(".")[0] + "Z",
         duration: (this.state.NewExamDuration * 60).toString(),
         location: this.state.NewExamLocation,
         online: online_,
         course_id: this.state.CurrentCourse.id.toString(),
         register_deadline: new Date(
             (new Date(this.state.NewExamRegister).getTime() +
-            3600000 * 2)).toISOString().split(".")[0]+"Z",
+            3600000 * 2)).toISOString().split(".")[0] + "Z",
         deregister_deadline: new Date(
             (new Date(this.state.NewExamDeregister).getTime() +
-            3600000 * 2)).toISOString().split(".")[0]+"Z",
+            3600000 * 2)).toISOString().split(".")[0] + "Z",
       };
       createExam(this, Exam);
+    } else {
+      let dateStr = "";
+      let registerStr = "";
+      let deregisterStr = "";
+      if (this.state.NewExamDate != null) {
+        dateStr = new Date(
+            (new Date(this.state.NewExamDate).getTime() + 3600000 * 2))
+            .toISOString().split(".")[0] + "Z";
+      }
+      if (this.state.NewExamRegister != null) {
+        registerStr = new Date(
+            (new Date(this.state.NewExamRegister).getTime() +
+            3600000 * 2)).toISOString().split(".")[0] + "Z";
+      }
+      if (this.state.NewExamDeregister != null) {
+        deregisterStr = new Date(
+            (new Date(this.state.NewExamDeregister).getTime() +
+            3600000 * 2)).toISOString().split(".")[0] + "Z";
+      }
+      const object = {
+        id: this.state.ChangeExamId,
+        name: this.state.NewExamName,
+        description: this.state.NewExamDescription,
+        date: dateStr,
+        duration: (this.state.NewExamDuration * 60).toString(),
+        online: this.state.NewExamOnline,
+        location: this.state.NewExamLocation,
+        register_deadline: registerStr,
+        deregister_deadline: deregisterStr,
+      };
+      editExam(this, object);
     }
   }
 
@@ -338,8 +369,14 @@ export class Kursansicht extends Component {
 
     const EditExam = [];
     EditExam.push(<option value="-1">Neue Prüfung</option>);
-    for (const Exam of this.state.Course.CourseExams) {
-      EditExam.push(<option value={Exam.id}>{Exam.Name} {Exam.Date}</option>);
+    if (this.state.Exams != null) {
+      for (const Exam of this.state.Exams) {
+        if (Exam.id != -1) {
+          EditExam.push(<option value={Exam.id}>
+            {Exam.name} {Exam.date}
+          </option>);
+        }
+      }
     }
 
     // ________________________________________________________________________
@@ -460,8 +497,15 @@ export class Kursansicht extends Component {
                   <br />
                   <div className="EditSectionPart">
                     <div className="EditArea">
-                      <button className="EditButton">Löschen</button>
-                      <button className="EditButton">Speichern</button>
+                      <button className="EditButton"
+                        onClick={() => {
+                          deleteExam(this, this.state.ChangeExamId);
+                        }}>
+                        Löschen
+                      </button>
+                      <button className="EditButton" onClick={this.onSaveExam}>
+                        Speichern
+                      </button>
                     </div>
                     <h2>Klausur</h2>
 
@@ -511,13 +555,6 @@ export class Kursansicht extends Component {
                       onChange={this.onInputChange}
                       name="NewExamDeregister">
                     </input>
-
-                    {
-                      // TODO add material
-                    }
-                    <br />
-                    <button>Löschen</button>
-                    <button onClick={this.onSaveExam}>Speichern</button>
                   </div>
                   <br />
                 </div>
