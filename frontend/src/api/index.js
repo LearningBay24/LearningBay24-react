@@ -19,7 +19,10 @@ if (Testlocal) {
 
 async function handleErrors(response) {
   if (!response.ok) throw await response.json();
-  return response.json();
+  console.log(response.headers.get("Content-Length"));
+  if (response.headers.get("Content-Length") != 0) {
+    return response.json();
+  }
 }
 
 /**
