@@ -28,7 +28,9 @@ export class Kursuebersicht extends Component {
       MyCourses: [],
       CoursesTaken: [],
       createCourse: false,
-      NewCourse: {name: "", user_id: "", description: "", enroll_key: ""},
+
+      NewBio: "", // Defaultvalue for creating new Course
+      NewKey: "", // Defaultvalue for creating new Course
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onCreateCourse = this.onCreateCourse.bind(this);

@@ -128,7 +128,6 @@ export function postNewCourse(caller, object) {
       .then(handleErrors)
       .then((data) => {
         console.log(data);
-        caller.setState({ /* TODO: Return wert in state speichern */});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
