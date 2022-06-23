@@ -186,11 +186,23 @@ export class Kursansicht extends Component {
   }
 
   onSaveDescriptionChange() {
+    let description = this.state.description;
+    let key = this.state.key;
+    let name = this.state.name;
+    if (name == null) {
+      name = this.state.CurrentCourse.name;
+    }
+    if (description == null) {
+      description = this.state.CurrentCourse.description;
+    }
+    if (key == null) {
+      key = this.state.CurrentCourse.enroll_key;
+    }
     const newCourse = {
       id: this.state.CurrentCourse.id,
-      name: this.state.CurrentCourse.name,
+      name: name,
       description: this.state.description,
-      enroll_key: this.state.CurrentCourse.enroll_key,
+      enroll_key: key,
       forum_id: this.state.CurrentCourse.forum_id,
       created_at: this.state.CurrentCourse.created_at,
       updated_at: this.state.CurrentCourse.updated_at,
@@ -406,11 +418,20 @@ export class Kursansicht extends Component {
                     <div className="EditArea">
                       <button className="EditButton"
                         onClick={this.onSaveDescriptionChange}>
-                        Beschreibung speichern</button>
+                        Speichern</button>
                     </div>
                     <h2>Kursinformationen</h2>
+                    <label>Kursname:</label>
+                    <input type="text" id="EditCourseNameId" name="name"
+                      placeholder={this.state.CurrentCourse.name}
+                      onChange={this.onInputChange} />
+                    <label>Beschreibung:</label>
                     <input type="text" id="EditCourseBioId" name="description"
                       placeholder={this.state.CurrentCourse.description}
+                      onChange={this.onInputChange} />
+                    <label>Einschreibeschlüssel:</label>
+                    <input type="text" id="EditCourseKeyId" name="key"
+                      placeholder={this.state.CurrentCourse.enroll_key}
                       onChange={this.onInputChange} />
                   </div>
                   <br />
