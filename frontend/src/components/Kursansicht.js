@@ -406,7 +406,8 @@ export class Kursansicht extends Component {
                   <button className="btnCreateCourse"
                     onClick={() =>
                       this.setState({CourseEdit: !this.state.CourseEdit})}>
-                    Kurs Bearbeiten
+                    {this.state.CourseEdit?
+                    "Kurs bearbeiten" : "Zurück zum Kurs"}
                   </button>
                 </div>
 
