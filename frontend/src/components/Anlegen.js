@@ -13,7 +13,7 @@ export class Anlegen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      role_id: 3,
+      role_id: "3",
       preferred_language_id: 1,
     };
   }
@@ -55,7 +55,8 @@ export class Anlegen extends Component {
                       onChange={this.onInputChange}></input>
                     <br />
                     <label className="AddUserLabel">Rolle</label>
-                    <select className="AddUserSelect" name="role_id">
+                    <select className="AddUserSelect" name="role_id"
+                      onChange={this.onInputChange}>
                       <option value={3}>Nutzer</option>
                       <option value={2}>Moderator</option>
                       <option value={1}>Admin</option>
@@ -88,7 +89,7 @@ export class Anlegen extends Component {
       surname: this.state.surname,
       email: this.state.Email,
       password: this.state.password,
-      role_id: this.state.role_id,
+      role_id: parseInt(this.state.role_id),
       preferred_language_id: this.state.preferred_language_id,
 
     };
