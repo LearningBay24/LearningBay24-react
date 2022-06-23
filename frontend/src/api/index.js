@@ -18,8 +18,14 @@ if (Testlocal) {
 }
 
 async function handleErrors(response) {
-  if (!response.ok) throw await response.json();
-  if (response.headers.get("Content-Length") != 0) {
+  if (response.status == 401) {
+    history.replaceState(null, "", "/login");
+    location.reload();
+
+    throw new Error("Must be logged in to view another page");
+  } else if (!response.ok) {
+    throw await response.json();
+  } else if (response.headers.get("Content-Length") != 0) {
     return response.json();
   }
 }
