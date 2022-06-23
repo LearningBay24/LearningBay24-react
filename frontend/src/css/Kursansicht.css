@@ -2,7 +2,7 @@
     height: 100%;
 }
 
-.InfoSection, .MaterialSection, .SurveySection, .ExamSection, .AssignmentSection {
+.InfoSection, .MaterialSection, .SurveySection, .ExamSection, .SubmissionSection {
     margin-bottom: 1rem;
     padding: 1rem;
 
@@ -28,7 +28,7 @@
     font-size: 1.2rem;
 }
 
-.MaterialContainer, .AssignmentContainer, .SurveyContainer, .ExamContainer {
+.MaterialContainer, .SubmissionContainer, .SurveyContainer, .ExamContainer {
     padding: 0.5rem;
     margin: 1rem;
     border: solid 2px var(--dark);

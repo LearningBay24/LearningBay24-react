@@ -275,3 +275,8 @@ button {
     text-decoration: none;
     color: var(--dark);
 }
+
+#mui-18 {
+    background-color: var(--dark);
+    color: var(--white);
+}

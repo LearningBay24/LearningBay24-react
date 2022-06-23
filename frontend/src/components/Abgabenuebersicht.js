@@ -4,7 +4,7 @@ import {ShowNavbar} from "./App";
 import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
 import {getSubmissionFromUser} from "../api/index";
-import {ShowAssignment} from "./Abgabe";
+import {ShowSubmission} from "./Abgabe";
 
 import "../css/Overlay.css";
 import "../css/Abgabenuebersicht.css";
@@ -14,20 +14,21 @@ export class Abgabenuebersicht extends Component {
     super(props);
 
     this.state = {
-      DueAssign: [{
-        assignname: "name", coursename: "kurs", owner: "peter",
+      AllSub: [{}],
+      DueSubmission: [{
+        submissionname: "name", coursename: "kurs", owner: "peter",
         subject: "AI",
         created_at: "19.04.2022", time: "15:00", deadline: "27.04.2022",
         comment: "kommentar",
       }],
-      SubmittedAssign: [{
-        assignname: "name", coursename: "kurs", owner: "peter",
+      SubmittedSubmission: [{
+        submissionname: "name", coursename: "kurs", owner: "peter",
         subject: "AI",
         created_at: "19.04.2022", time: "15:00", deadline: "27.04.2022",
         comment: "kommentar",
       }],
-      EvalAssign: [{
-        assignname: "name", coursename: "kurs", owner: "peter",
+      EvalSubmission: [{
+        submissionname: "name", coursename: "kurs", owner: "peter",
         subject: "AI",
         created_at: "19.04.2022", time: "15:00", deadline: "27.04.2022",
         comment: "kommentar",
@@ -40,48 +41,58 @@ export class Abgabenuebersicht extends Component {
   }
 
   render() {
-    const DueAssignList = [];
-    if (this.state.DueAssign != null) {
-      for (const Assign of this.state.DueAssign) {
-        DueAssignList.push(<div>
-          <ShowAssignment assignname={Assign.assignname}
-            coursename={Assign.coursename}
-            owner={Assign.owner}
-            subject={Assign.subject}
-            created_at={Assign.created_at}
-            time={Assign.time}
-            deadline={Assign.deadline}
-            comment={Assign.comment} /></div>);
+    const DueSubmissionList = [];
+    if (this.state.DueSubmission != null) {
+      let i = 0;
+      for (const Submission of this.state.DueSubmission) {
+        DueSubmissionList.push(<div>
+          <ShowSubmission submissionname={Submission.submissionname}
+            coursename={Submission.coursename}
+            owner={Submission.owner}
+            subject={Submission.subject}
+            created_at={Submission.created_at}
+            time={Submission.time}
+            deadline={Submission.deadline}
+            key={i}
+            comment={Submission.comment} /></div>);
+        i++;
       }
     }
 
-    const SubmittedAssignList = [];
-    if (this.state.SubmittedAssign != null) {
-      for (const Assign of this.state.SubmittedAssign) {
-        SubmittedAssignList.push(<div>
-          <ShowAssignment assignname={Assign.assignname}
-            coursename={Assign.coursename}
-            owner={Assign.owner}
-            subject={Assign.subject}
-            created_at={Assign.created_at}
-            time={Assign.time}
-            deadline={Assign.deadline}
-            comment={Assign.comment} /></div>);
+    const SubmittedSubmissionList = [];
+    if (this.state.SubmittedSubmission != null) {
+      let i = 0;
+      for (const Submission of this.state.SubmittedSubmission) {
+        SubmittedSubmissionList.push(<div>
+          <ShowSubmission submissionname={Submission.submissionname}
+            coursename={Submission.coursename}
+            owner={Submission.owner}
+            subject={Submission.subject}
+            created_at={Submission.created_at}
+            time={Submission.time}
+            deadline={Submission.deadline}
+            key={i}
+            comment={Submission.comment} /></div>);
+        i++;
       }
     }
 
-    const EvalAssignList = [];
-    if (this.state.EvalAssign != null) {
-      for (const Assign of this.state.EvalAssign) {
-        EvalAssignList.push(<div>
-          <ShowAssignment assignname={Assign.assignname}
-            coursename={Assign.coursename}
-            owner={Assign.owner}
-            subject={Assign.subject}
-            created_at={Assign.created_at}
-            time={Assign.time}
-            deadline={Assign.deadline}
-            comment={Assign.comment} /></div>);
+    const EvalSubmissionList = [];
+    if (this.state.EvalSubmission != null) {
+      let i = 0;
+      for (const Submission of this.state.EvalSubmission) {
+        EvalSubmissionList.push(<div>
+          <ShowSubmission
+            submissionname={Submission.submissionname}
+            coursename={Submission.coursename}
+            owner={Submission.owner}
+            subject={Submission.subject}
+            created_at={Submission.created_at}
+            time={Submission.time}
+            deadline={Submission.deadline}
+            key={i}
+            comment={Submission.comment} /></div>);
+        i++;
       }
     }
 
@@ -90,9 +101,9 @@ export class Abgabenuebersicht extends Component {
         <ShowHeader />
         <div className="Body">
           <Container className="Container" fluid>
-            <Row className="Content" fluid>
-              <Col xs={2} className="ColNav" fluid><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" fluid>
+            <Row key={1} className="Content" fluid>
+              <Col key={1} xs={2} className="ColNav" fluid><ShowNavbar /></Col>
+              <Col key={2} xs={10} className="ColContent" fluid>
                 <h1>Abgabenübersicht</h1>
                 <div className="AdminArea">
                   <button className="btnCreateCourse"
@@ -100,17 +111,17 @@ export class Abgabenuebersicht extends Component {
                     Bearbeiten
                   </button>
                 </div>
-                <Row className="Section">
+                <Row key={1} className="Section">
                   <h2>Abgaben fällig</h2>
-                  {DueAssignList}
+                  {DueSubmissionList}
                 </Row>
-                <Row className="Section">
+                <Row key={2} className="Section">
                   <h2>Abgegeben</h2>
-                  {SubmittedAssignList}
+                  {SubmittedSubmissionList}
                 </Row>
-                <Row className="Section">
+                <Row key={3} className="Section">
                   <h2>Bewertet</h2>
-                  {EvalAssignList}
+                  {EvalSubmissionList}
                 </Row>
               </Col>
             </Row>

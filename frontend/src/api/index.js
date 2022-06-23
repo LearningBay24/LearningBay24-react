@@ -5,7 +5,7 @@
  * data in the components state
  */
 
-const Testlocal = 0;
+const Testlocal = 1;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
 const Localadress = "http://learningbay24.local:8080/";
@@ -71,8 +71,6 @@ export async function checkIfUserEnrolledCourse(
  * @return {void} returns nothing.
  */
 export function getCourse(caller, id) {
-  console.log("(getCourse): " + Actualadress + `courses/${id}`);
-
   fetch(Actualadress + `courses/${id}`, {method: "GET",
     credentials: "include"})
       .then((response) => response.json())
@@ -108,8 +106,6 @@ export function getUsersInCourse(caller, id) {
  * @return {void} returns nothing.
  */
 export function postNewCourse(caller, object) {
-  console.log("(postNewCourse): " + Actualadress + "courses");
-
   const requestOptions = {
     method: "POST",
     body: JSON.stringify(object),
@@ -254,7 +250,6 @@ export function register(caller, data) {
  * @param {any} callback gets called when the result is fetched
  * @return {void} returns nothing.
  */
-
 export async function getCoursesByQuery(query, callback) {
   console.log("(getCoursesByQuery) query: " + query);
 
@@ -341,32 +336,6 @@ export function getFileByID(caller, courseID, fileId, filename) {
 
         window.URL.revokeObjectURL(url);
         document.removeChild(anchor);
-      })
-      .catch((error) => console.error(error));
-}
-
-
-export function getSubmissionFromUser(caller) {
-  console.log("(getSubmissionsFromUser)");
-  fetch(Actualadress + "user/submissions", {method: "GET",
-    credentials: "include"})
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => console.error(error));
-}
-
-export function getSubmissionById(caller, id) {
-  console.log("(getSubmissionsById)");
-  fetch(Actualadress + `submission/${id}`, {method: "GET",
-    credentials: "include"})
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        if (data.ok) {
-          console.log("ok");
-        }
       })
       .catch((error) => console.error(error));
 }
@@ -743,6 +712,102 @@ export function getExamSubmission(caller, userId, examId, filename) {
 
         window.URL.revokeObjectURL(url);
         document.removeChild(anchor);
+      })
+      .catch((error) => console.error(error));
+}
+
+export function getSubmissionFromUser(caller) {
+  fetch(Actualadress + "users/submissions", {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({AllSub: data});
+        // might check if file is uploaded/evaluated or not
+      })
+      .catch((error) => console.error(error));
+}
+
+export function getSubmissionById(caller, id) {
+  fetch(Actualadress + `submission/${id}`, {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.ok) {
+          console.log("ok");
+        }
+      })
+      .catch((error) => console.error(error));
+}
+
+export function getSubmissionsFromCourse(caller, courseId) {
+  fetch(Actualadress + `courses/${courseId}/submissions`, {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        caller.setState({Submissions: data});
+      })
+      .catch((error) => console.error(error));
+}
+
+export async function createSubmission(caller, newSub, file) {
+  const courseId = newSub.course_id;
+  const subId = newSub.id;
+
+  const requestOptions1 = {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify(newSub),
+  };
+
+  // first upload to 'submissions'
+  const result1 = await fetch(Actualadress + `courses/${courseId}/submissions`,
+      requestOptions1);
+
+  const data1 = await result1.json();
+  console.log(data1);
+
+  // then upload to 'submission_has_files'
+  if (file != null) {
+    createSubmissionHasFiles(caller, courseId, subId, file);
+  }
+}
+
+export function createSubmissionHasFiles(caller, courseId, subId, file) {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const requestOptions = {
+    method: "POST",
+    credentials: "include",
+    body: formData,
+  };
+
+  fetch(Actualadress + `courses/${courseId}/submissions/${subId}/files`,
+      requestOptions).then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({ /* TODO: Return wert in state speichern */});
+      })
+      .catch((error) => console.error(error));
+}
+
+export function editSubmissionById(caller, courseId, submissionId, submission) {
+  fetch(Actualadress + `courses/${courseId}/submissions/${submissionId}`
+      , {method: "PATCH", credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => console.error(error));
+}
+
+export function deleteSubmission(caller, courseId, submissionId) {
+  fetch(Actualadress + `courses/${courseId}/submissions/${submissionId}`
+      , {method: "DELETE", credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
       })
       .catch((error) => console.error(error));
 }

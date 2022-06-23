@@ -1,17 +1,35 @@
-/* eslint-disable react/prop-types */
 import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
 import {useParams} from "react-router-dom";
 import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
+import {ShowSubmission, ShowSubmissionEdit} from "./Abgabe";
+import {cutDateStringToDate} from "../api/helperfunctions";
+import {ShowConfirmation} from "./DialogComponent";
+
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 import "../css/Overlay.css";
 import "../css/Kursansicht.css";
-
+/*
 import {
-  getCourse, getFiles, updateCourse, createExam, registerToExam,
-  uploadFile, getFileByID, uploadLink, getExamsFromCourse, getSubmissionById,
+  getCourse, getFiles, updateCourse,
+  uploadFile, getFileByID, uploadLink,
+  getSubmissionById,
+} from "../api";
+*/
+import {
+  getCourse, updateCourse, getFiles,
+  uploadFile, getFileByID, uploadLink,
+  getSubmissionsFromCourse,
+  createSubmission, deleteSubmission,
+  createExam, registerToExam,
+  getExamsFromCourse,
 } from "../api";
 
 import PropTypes from "prop-types";
@@ -51,13 +69,8 @@ export class Kursansicht extends Component {
         CourseCreatedAt: "17.04.2022",
         CourseForum: "",
 
-
         CourseMaterial: [
           {Name: "mat1", Content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", id: ""}],
-        CourseAssignments: [{
-          Name: "Abgabe1", Content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-          Date: "17.04.2022", Deadline: "25.04.2022 0:00", id: "",
-        }],
 
         CourseSurveys: [
           {Name: "Umfrage1", Content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", id: ""}],
@@ -118,18 +131,20 @@ export class Kursansicht extends Component {
         deleted_at: "",
       }],
 
-      Submission: [{
-        id: 0,
-        name: "",
-        deadline: "",
-        course_id: "",
-        max_filesize: "",
-        visible_from: "",
-        created_at: "",
-        updated_at: "",
-        graded_at: "",
-        deleted_at: "",
-      }],
+      Submissions: [
+        {
+          id: 0,
+          name: "",
+          deadline: "",
+          course_id: "",
+          max_filesize: "",
+          visible_from: "",
+          created_at: "",
+          updated_at: "",
+          graded_at: "",
+          deleted_at: "",
+        },
+      ],
 
       Material: [{
       }],
@@ -140,24 +155,13 @@ export class Kursansicht extends Component {
       NewExamOnline: "0",
       NewExamLocation: "",
 
-      // Exams: [{
-      //   id: -1,
-      //   name: "",
-      //   description: "",
-      //   date: "",
-      //   duration: "",
-      //   online: "",
-      //   location: "",
-      //   course_id: "",
-      //   creator_id: "",
-      //   graded: "",
-      //   register_deadline: "",
-      //   deregister_deadline: "",
-      //   created_at: "",
-      //   updated_at: "",
-      //   deleted_at: "",
-      // }],
+      // for editing and adding submissions
+      FocusedSubId: -1,
+      EditedSubmissionIds: [],
 
+      // bools for Dialogs
+      OpenAddSubDialog: false,
+      OpenSubDeleteConfirmation: false,
     };
 
 
@@ -165,6 +169,13 @@ export class Kursansicht extends Component {
     this.onFileChange = this.onFileChange.bind(this);
     this.onSaveDescriptionChange = this.onSaveDescriptionChange.bind(this);
     this.onSaveAppointmentChange = this.onSaveAppointmentChange.bind(this);
+    this.onSubmissionEditedCallback =
+      this.onSubmissionEditedCallback.bind(this);
+    this.onSubmissionSaveClick = this.onSubmissionSaveClick.bind(this);
+    this.toggleAddSubDialog = this.toggleAddSubDialog.bind(this);
+    this.addSubmissionHandler = this.addSubmissionHandler.bind(this);
+    this.toggleSubDeleteConfirmation =
+      this.toggleSubDeleteConfirmation.bind(this);
     this.onSaveExam = this.onSaveExam.bind(this);
   }
 
@@ -173,9 +184,7 @@ export class Kursansicht extends Component {
     getCourse(this, this.state.id);
     getFiles(this, this.state.id);
 
-
-    // get Submission for current course
-    getSubmissionById(this, this.state.id);
+    getSubmissionsFromCourse(this, this.state.id);
     getExamsFromCourse(this, this.state.id);
   }
 
@@ -264,6 +273,71 @@ export class Kursansicht extends Component {
   }
 
 
+  // Submission functions
+  toggleAddSubDialog() {
+    this.setState({OpenAddSubDialog: !this.state.OpenAddSubDialog});
+  }
+
+  addSubmissionHandler(event) {
+    event.preventDefault();
+    let subid;
+    if (this.state.Submissions == null) {
+      subid = 0;
+    } else {
+      const subLen = this.state.Submissions.length;
+      subid = this.state.Submissions[subLen-1].id + 1;
+      console.log(subid);
+    }
+    const newSubmission = {
+      id: subid,
+      name: event.target.SubName.value,
+      deadline: event.target.SubDate.value + "T" +
+      event.target.SubTime.value + ":05Z",
+      course_id: this.state.CurrentCourse.id,
+      max_filesize: "5",
+      visible_from: event.target.SubVisDate.value + "T" +
+        event.target.SubVisTime.value + ":05Z",
+    };
+    console.log(cutDateStringToDate(newSubmission.deadline));
+
+    console.log("posting...");
+    console.log(newSubmission);
+
+    const file = event.target.SubFile.files[0];
+
+    createSubmission(this, newSubmission, file);
+  }
+
+  // called when any Submission is edited
+  onSubmissionEditedCallback(submissionId) {
+    // check if already contained
+    if (this.state.EditedSubmissionIds.length > 0) {
+      for (const id of this.state.EditedSubmissionIds) {
+        if ((id == submissionId)) {
+          return;
+        }
+      }
+      this.setState({EditedSubmissionIds:
+        [...this.state.EditedSubmissionIds, submissionId]});
+    } else {
+      this.setState({EditedSubmissionIds:
+        [...this.state.EditedSubmissionIds, submissionId]});
+    }
+  }
+
+  onSubmissionSaveClick() {
+    for (const id of this.state.EditedSubmissionIds) {
+      console.log(id);
+      // call editSubmissionById
+    }
+  }
+
+  toggleSubDeleteConfirmation() {
+    this.setState({OpenSubDeleteConfirmation:
+      !this.state.OpenSubDeleteConfirmation});
+  }
+
+
   render() {
     // ________________________________________________________________________
     // Lists for general view
@@ -276,8 +350,14 @@ export class Kursansicht extends Component {
         {Appointment.Day} {Appointment.Time} {Appointment.Duration}
         {Appointment.Content} {Appointment.Location}</h3>);
     }
-    Generallist.push(<p hidden={this.state.CourseEdit}>
-      {this.state.CurrentCourse.description}</p>);
+    Generallist.push(
+        <div>
+          <p hidden={this.state.CourseEdit}>
+            {this.state.CurrentCourse.description}</p>
+          <p hidden={this.state.CourseEdit}>Kursersteller:
+            {this.state.CourseOwner}</p>
+        </div>,
+    );
 
     const Materiallist = [];
     if (this.state.Material != null) {
@@ -288,11 +368,17 @@ export class Kursansicht extends Component {
       }
     }
 
-    const Assignmentlist = [];
-    for (const Assignment of this.state.Course.CourseAssignments) {
-      Assignmentlist.push(<ShowAssignment Name={Assignment.Name}
-        Content={Assignment.Content} Date={Assignment.Date}
-        Deadline={Assignment.Deadline} className="Assignment" />);
+    const Submissionlist = [];
+    for (const Submission of this.state.Submissions) {
+      Submissionlist.push(<ShowSubmission
+        id={Submission.id}
+        submissionname={Submission.name}
+        coursename={this.state.Course.name}
+        owner={this.state.Course.CourseOwner.LastName}
+        link={Submission.content}
+        created_at={Submission.date}
+        deadline={Submission.deadline}
+        time={Submission.time}/>);
     }
 
     const Surveylist = [];
@@ -342,11 +428,21 @@ export class Kursansicht extends Component {
       EditMaterial.push(<option value={Mat.id}>{Mat.Name}</option>);
     }
 
-    const EditAssignment = [];
-    EditAssignment.push(<option value="-1">Neue Aufgabe</option>);
-    for (const Assignment of this.state.Course.CourseAssignments) {
-      EditAssignment.push(<option value={Assignment.id}>
-        {Assignment.Name} {Assignment.Date}</option>);
+    const SubmissionEditList = [];
+    for (const Submission of this.state.Submissions) {
+      SubmissionEditList.push(
+          <ShowSubmissionEdit
+            id={Submission.id}
+            submissionname={Submission.name}
+            coursename={this.state.Course.name}
+            owner={this.state.Course.CourseOwner.LastName}
+            link={Submission.content}
+            created_at={Submission.date}
+            deadline={Submission.deadline}
+            callback={this.onSubmissionEditedCallback}
+            state={this}
+          />,
+      );
     }
 
     const EditSurvey = [];
@@ -441,7 +537,9 @@ export class Kursansicht extends Component {
                     <select>{EditParticipants}</select>
                     <br />
                   </div>
-                  <br />
+
+                  {/* Material */}
+
                   <div className="EditSectionPart">
                     <div className="EditArea">
                       <button className="EditButton" type="submit"
@@ -468,24 +566,89 @@ export class Kursansicht extends Component {
                       name="uri" />
                   </div>
                   <br />
+
+                  {/* Submissions */}
+
                   <div className="EditSectionPart">
                     <div className="EditArea">
-                      <button className="EditButton">Löschen</button>
-                      <button className="EditButton">Speichern</button>
+                      <button className="EditButton"
+                        onClick={this.toggleSubDeleteConfirmation}>
+                        Löschen</button>
+                      <button className="EditButton"
+                        onClick={this.onSubmissionSaveClick}>
+                        Speichern</button>
+                      <button className="EditButton"
+                        onClick={this.toggleAddSubDialog}
+                      >Hinzufügen</button>
                     </div>
                     <h2>Abgaben</h2>
-                    <select>{EditAssignment}</select>
-                    <label htmlFor="EditAssignmentName">Name:</label>
-                    <input type="Text" id="EditAssignmentName"
-                      placeholder="Abgabename"></input>
-                    <label htmlFor="EditAssignmentDate">Datum:</label>
-                    <input type="Date" id="EditAssignmentDate" ></input>
-                    <label htmlFor="EditAssignmentTime">Uhrzeit:</label>
-                    <input type="Time" id="EditAssignmentTime" ></input>
-                    {
-                      // TODO add material
-                    }
-                    <br />
+
+                    <div className="CreateSubDialog">
+                      <Dialog open={this.state.OpenAddSubDialog}
+                        onClose={this.toggleAddSubDialog}
+                        className="CreateSubmission">
+                        <DialogTitle>Abgabe Hinzufügen</DialogTitle>
+                        <DialogContent className="CreateSubmissionContent">
+                          <DialogContentText>
+                            Hier können Sie eine neue Abgabe erstellen.
+                            <div className="AddSubmissionDiv">
+                              <form id="AddSubmissionForm"
+                                onSubmit={this.addSubmissionHandler}>
+                                <label htmlFor="SubName">Abgabenname:
+                                </label>
+                                <input type="Text" id="SubName"
+                                  placeholder="Abgabenname" required></input>
+                                <label htmlFor="SubDate">
+                                  Abgabendatum:</label>
+                                <input type="Date" id="SubDate" required>
+                                </input>
+                                <label htmlFor="SubTime">
+                                  Abgabenuhrzeit:</label>
+                                <input type="Time" id="SubTime" required>
+                                </input>
+                                <div className="SubVisibilityContainer">
+                                  <label htmlFor="SubVisCB">
+                                    Sichbarkeitsdatum</label>
+                                  <input type="checkbox"
+                                    value="Abgabe sichtbar ab:"
+                                    id="SubVisCB">
+                                  </input>
+                                  <div
+                                    className="SubVisibilityDate">
+                                    <input type="Date" id="SubVisDate">
+                                    </input>
+                                    <input type="Time" id="SubVisTime">
+                                    </input>
+                                  </div>
+                                  <label htmlFor="SubAfterDeadline">
+                                    Abgabe nach Ablauf möglich</label>
+                                  <input type="checkbox"
+                                    id="SubAfterDeadline">
+                                  </input>
+                                  <label htmlFor="SubFile">
+                                    Aufgabenblatt</label>
+                                  <input type="file"
+                                    id="SubFile" accept="application/pdf"/>
+                                </div>
+                              </form>
+                            </div>
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <button
+                            type="submit"
+                            form="AddSubmissionForm"
+                            className="DialogButton">
+                            Erstellen</button>
+                          <button
+                            onClick={this.toggleAddSubDialog}
+                            className="DialogButton">
+                            Abbrechen</button>
+                        </DialogActions>
+                      </Dialog>
+                    </div>
+
+                    {SubmissionEditList}
                   </div>
                   <br />
                   <div className="EditSectionPart">
@@ -503,7 +666,9 @@ export class Kursansicht extends Component {
                       placeholder="Umfragelink"></input>
                     <br />
                   </div>
-                  <br />
+
+                  {/* Exams */}
+
                   <div className="EditSectionPart">
                     <div className="EditArea">
                       <button className="EditButton">Löschen</button>
@@ -578,10 +743,10 @@ export class Kursansicht extends Component {
                   {Materiallist}
                 </div>
 
-                <div className="AssignmentSection"
+                <div className="SubmissionSection"
                   hidden={this.state.CourseEdit}>
                   <h2>Abgaben</h2>
-                  {Assignmentlist}
+                  {Submissionlist}
                 </div>
 
                 <div className="SurveySection"
@@ -599,6 +764,16 @@ export class Kursansicht extends Component {
               </Col>
             </Row>
           </Container>
+          <ShowConfirmation
+            open={this.state.OpenSubDeleteConfirmation}
+            onCloseCallback={this.toggleSubDeleteConfirmation}
+            displayText="Sie löschen Abgabe"
+            onAcceptCallback={() =>{
+              deleteSubmission(this, this.state.CurrentCourse.id,
+                  this.state.FocusedSubId);
+            }
+            }
+            onDeclineCallback={this.toggleSubDeleteConfirmation}/>
         </div>
         <ShowFooter />
       </div>
@@ -627,25 +802,6 @@ ShowMaterial.propTypes = {
   uri: PropTypes.string.isRequired,
   fileid: PropTypes.string.isRequired,
   courseid: PropTypes.string.isRequired,
-};
-
-function ShowAssignment(props) {
-  return (
-    <div className='AssignmentContainer'>
-      <h6>{props.Name}</h6>
-      <a href={props.Content} target='_blank'
-        rel='noopener noreferrer'>{props.Content}</a>
-      <p className='AssignmentDate'>{props.Date}</p>
-      <p className='AssignmentDeadline'>{props.Deadline}</p>
-      <br />
-      <input type="submit" value="Datei abgeben" className="SubmitButton" />
-    </div>);
-}
-ShowAssignment.propTypes = {
-  Name: PropTypes.string.isRequired,
-  Content: PropTypes.string.isRequired,
-  Date: PropTypes.string.isRequired,
-  Deadline: PropTypes.string.isRequired,
 };
 
 function ShowUnregisteredExam(props) {
