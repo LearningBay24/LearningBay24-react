@@ -67,6 +67,9 @@ export class Anlegen extends Component {
                       onClick={this.UserRegister}
                       value="Neuen Nutzer anlegen" />
                   </div>
+                  <label id="successId">
+                    {this.state.success? "erfolgreich angelegt":""}
+                  </label>
                 </div>
               </Col>
             </Row>
@@ -81,6 +84,7 @@ export class Anlegen extends Component {
     this.setState({
       [event.target.name]: event.target.value,
     });
+    this.setState({success: 0});
   }
 
   UserRegister() {

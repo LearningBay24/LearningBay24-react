@@ -47,14 +47,14 @@ export class Kursuebersicht extends Component {
     });
   }
 
-  onCreateCourse() {
+  async onCreateCourse() {
     const NewCourse = {
       name: this.state.NewName,
       description: this.state.NewBio,
       enroll_key: this.state.NewKey,
     };
 
-    postNewCourse(this, NewCourse);
+    await postNewCourse(this, NewCourse);
     this.toggleCreateCourse();
     getMyCourses(this);
     this.componentDidMount();

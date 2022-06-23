@@ -183,6 +183,7 @@ export class Kursansicht extends Component {
     this.setState({
       newFile: event.target.files[0],
     });
+    this.setState({success: 0});
   }
 
   onSaveDescriptionChange() {
@@ -406,7 +407,7 @@ export class Kursansicht extends Component {
                   <button className="btnCreateCourse"
                     onClick={() =>
                       this.setState({CourseEdit: !this.state.CourseEdit})}>
-                    {this.state.CourseEdit?
+                    {!this.state.CourseEdit?
                     "Kurs bearbeiten" : "Zurück zum Kurs"}
                   </button>
                 </div>
@@ -483,6 +484,9 @@ export class Kursansicht extends Component {
                             this.state.uriName, this.state.CurrentCourse.id)}>
                         Link Speichern</button>
                     </div>
+                    <label id="successId">
+                      {this.state.success? "erfolgreich hochgeladen":""}
+                    </label>
                     <h2>Material</h2>
                     <select>{EditMaterial}</select>
                     <label>Datei auswählen</label>

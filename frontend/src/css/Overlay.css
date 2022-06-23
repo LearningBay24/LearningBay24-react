@@ -275,3 +275,7 @@ button {
     text-decoration: none;
     color: var(--dark);
 }
+
+#successId {
+    color: green;
+}

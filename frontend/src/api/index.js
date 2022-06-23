@@ -131,9 +131,7 @@ export function postNewCourse(caller, object) {
 
   fetch(Actualadress + "courses", requestOptions)
       .then(handleErrors)
-      .then((data) => {
-        console.log(data);
-      }, (reason) => alert(reason))
+      .then((data) => null, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
 
@@ -250,7 +248,7 @@ export function register(caller, data) {
       .then(handleErrors)
       .then((data) => {
         console.log(data);
-        caller.setState({ /* TODO: Return wert in state speichern */});
+        caller.setState({success: 1});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
@@ -285,13 +283,14 @@ export function uploadFile(caller, file, id) {
   const requestOptions = {
     method: "POST",
     body: formData,
+    credentials: "include",
   };
 
   fetch(Actualadress + `courses/${id}/files`, requestOptions)
       .then(handleErrors)
       .then((data) => {
         console.log(data);
-        caller.setState({ /* TODO: Return wert in state speichern */});
+        caller.setState({success: 1});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
@@ -309,7 +308,7 @@ export function uploadLink(caller, link, name, id) {
       .then(handleErrors)
       .then((data) => {
         console.log(data);
-        caller.setState({ /* TODO: Return wert in state speichern */});
+        caller.setState({success: 1});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
@@ -495,7 +494,7 @@ export function createExam(caller, object) {
   fetch(Actualadress + "exams", requestOptions)
       .then(handleErrors)
       .then((data) => {
-        console.log(data);
+        caller.setState({success: 1});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
@@ -534,7 +533,7 @@ export function uploadFileExam(caller, id, file) {
   fetch(Actualadress + `exams/${id}/files`, requestOptions)
       .then(handleErrors)
       .then((data) => {
-        console.log(data);
+        caller.setState({success: 1});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
@@ -593,7 +592,8 @@ export function uploadSolutionExam(caller, id, file) {
 
   fetch(Actualadress + `users/exams/${id}/submit`, requestOptions)
       .then(handleErrors)
-      .then(null, (reason) => alert(reason))
+      .then(
+          caller.setState({success: 1}), (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
 
@@ -716,7 +716,7 @@ export function createAppointment(caller, object) {
 
   fetch(Actualadress + "appointments/add", requestOptions)
       .then(handleErrors)
-      .then(null, (reason) => alert(reason))
+      .then(caller.setState({success: 1}), (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
 
