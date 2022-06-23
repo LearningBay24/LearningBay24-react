@@ -309,7 +309,7 @@ export class Klausurenuebersicht extends Component {
                 name="NewExamDate">
               </input>
               <label htmlFor="EditExamDuration">Dauer (in min):</label>
-              <input type="Text" id="EditExamDuration"
+              <input type="number" min="0" id="EditExamDuration"
                 placeholder="Dauer" onChange={this.onInputChange}
                 name="NewExamDuration">
               </input>
