@@ -365,34 +365,57 @@ function endOfWeek(date) {
   return new Date(date.setDate(diff));
 }
 
-
-export function getAppointments(caller, callback) {
-  console.log("(getAppointments): " + Actualadress + "appointments");
-  const startD = startOfWeek(new Date());
-  const endD = endOfWeek(new Date());
-  const object = {
-    "startDate": startD.toISOString().split("T")[0],
-    "endDate": endD.toISOString().split("T")[0],
-  };
-
+export function createAppointment(caller, object) {
+  console.log("(createAppointment): " + Actualadress + "appointments/add");
+  console.log(object);
   const requestOptions = {
     method: "POST",
-    credentials: "include",
     body: JSON.stringify(object),
+    credentials: "include",
   };
 
-  fetch(Actualadress + "appointments", requestOptions)
-      .then((response) => response.json())
+  fetch(Actualadress + "appointments/add", requestOptions)
+      .then(handleErrors)
+      .then(null, (reason) => alert(reason))
+      .catch((error) => console.error(error));
+}
+
+export function getAppointments(caller, callback) {
+  console.log("(getAppointments): " + Actualadress + "courses/appointments");
+
+  const requestOptions = {
+    method: "GET",
+    credentials: "include",
+  };
+
+  fetch(Actualadress + "courses/appointments", requestOptions)
+      .then(handleErrors)
       .then((data) => {
         console.log("data");
         console.log(data);
-        caller.setState({Apointments: data}, ()=> {
-          console.log("callback");
-          callback(caller);
+        caller.setState({Appointments: data}, () => {
+          if (callback != null) {
+            console.log("callback");
+            callback(caller);
+          }
         });
-      })
+      }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
+
+export function deleteAppointment(caller, appointmentId) {
+  console.log("(deleteAppointment): " + Actualadress +
+  `appointments/${appointmentId}`);
+
+  fetch(Actualadress + "appointments", {method: "DELETE",
+    body: JSON.stringify({appointment_id: appointmentId}),
+    credentials: "include"})
+      .then(handleErrors)
+      .then(null, (reason) => alert(reason))
+      .catch((error) => console.error(error));
+}
+
+
 
 export function getAttendedExams(caller) {
   console.log("(getExams): " + Actualadress + "users/exams/attended");
@@ -696,12 +719,13 @@ export function getExamSubmission(caller, userId, examId, filename) {
   fetch(Actualadress +
     `usersx/${userId}/exams/${examId}/files`, {method: "GET",
     credentials: "include"})
+      .then(handleErrors)
       .then((result) => {
         if (result.status != 200) {
           throw new Error("Bad server response");
         }
         return result.blob();
-      })
+      }, (reason) => alert(reason))
       .then((data) => {
         console.log(data);
         const url = window.URL.createObjectURL(data);
