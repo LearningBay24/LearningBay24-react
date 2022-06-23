@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Container, Row, Col} from "react-bootstrap";
 
 import {login} from "../api";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {ShowFooter} from "./Footer";
 
 import "../css/Overlay.css";
@@ -36,9 +36,7 @@ export function Login() {
 
   return (
     <div className="LoginContainer">
-      <Link to="/kursuebersicht">
-        <ShowLoginHeader />
-      </Link>
+      <ShowLoginHeader />
       <div className="Login">
         <div className="LoginHeader">
           <h1 className="LoginH1">Log in</h1>
