@@ -381,7 +381,6 @@ export function getAttendedExams(caller) {
     credentials: "include"})
       .then(handleErrors)
       .then((data) => {
-        console.log("attended");
         caller.setState({AttendedExams: data});
       }, (reason) => alert(reason));
 }
@@ -393,7 +392,6 @@ export function getPassedExams(caller) {
     credentials: "include"})
       .then(handleErrors)
       .then((data) => {
-        console.log("passed");
         caller.setState({PassedExams: data});
       })
       .catch((error) => console.error(error));
@@ -406,7 +404,6 @@ export function getCreatedExams(caller) {
     credentials: "include"})
       .then(handleErrors)
       .then((data) => {
-        console.log("created");
         caller.setState({CreatedExams: data});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
@@ -420,7 +417,6 @@ export function getRegisteredExams(caller, callback) {
     credentials: "include"})
       .then(handleErrors)
       .then((data) => {
-        console.log("registered");
         caller.setState({RegisteredExams: data}, () => {
           if (callback != null) {
             callback(caller);

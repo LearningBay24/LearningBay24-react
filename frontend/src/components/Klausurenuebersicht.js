@@ -565,8 +565,6 @@ function ShowCreatedExam(props) {
   const start = (new Date(props.Exam.date).getTime());
   const end = (new Date(props.Exam.date).getTime() +
   props.Exam.duration*1000);
-  console.log(actual);
-  console.log(end);
   return (
     <div className="Exam">
       <h4 className="ExamName">{props.Exam.name}</h4>
