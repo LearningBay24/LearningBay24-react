@@ -25,7 +25,8 @@ async function handleErrors(response) {
     throw new Error("Must be logged in to view another page");
   } else if (!response.ok) {
     throw await response.json();
-  } else if (response.headers.get("Content-Length") != 0) {
+  } else if (response.headers.get("Content-Length") != 0 &&
+    response.headers.get("Content-Type") == "application/json; charset=utf-8") {
     return response.json();
   }
 }

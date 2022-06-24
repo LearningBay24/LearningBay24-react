@@ -298,10 +298,12 @@ export class Kursansicht extends Component {
     const Generallist = [];
     if (this.state.Appointments != null) {
       for (const Appointment of this.state.Appointments) {
-        Generallist.push(<h3 hidden={this.state.CourseEdit}>
-          Datum: {Appointment.date} Dauer
+        if (Appointment.course_id == this.state.id) {
+          Generallist.push(<h3 hidden={this.state.CourseEdit}>
+          Datum: {new Date(Appointment.date).toLocaleString()} Dauer
           : {Appointment.duration / 60} Minuten
           Raum: {Appointment.location}</h3>);
+        }
       }
     }
 
@@ -339,9 +341,11 @@ export class Kursansicht extends Component {
             name={Exam.name}
             creator_id={Exam.creator_id}
             description={Exam.description}
-            register_deadline={Exam.register_deadline}
-            deregister_deadline={Exam.deregister_deadline}
-            date={Exam.date}
+            register_deadline=
+              {new Date(Exam.register_deadline).toLocaleString()}
+            deregister_deadline=
+              {new Date(Exam.deregister_deadline).toLocaleString()}
+            date={new Date(Exam.date).toLocaleString()}
             duration={Exam.duration / 60} /></Col>);
         }
       }
@@ -355,9 +359,11 @@ export class Kursansicht extends Component {
     EditAppointments.push(<option value="-1">Neuer Termin</option>);
     if (this.state.Appointments != null) {
       for (const Appointment of this.state.Appointments) {
-        EditAppointments.push(<option value={Appointment.id}>
-          {Appointment.date} {Appointment.location}
-        </option>);
+        if (Appointment.course_id == this.state.id) {
+          EditAppointments.push(<option value={Appointment.id}>
+            {new Date(Appointment.date).toLocaleString()} {Appointment.location}
+          </option>);
+        }
       }
     }
 
@@ -377,7 +383,8 @@ export class Kursansicht extends Component {
     EditAssignment.push(<option value="-1">Neue Aufgabe</option>);
     for (const Assignment of this.state.Course.CourseAssignments) {
       EditAssignment.push(<option value={Assignment.id}>
-        {Assignment.Name} {Assignment.Date}</option>);
+        {Assignment.Name} {""}
+        {new Date(Assignment.date).toLocaleString()}</option>);
     }
 
     const EditExam = [];
@@ -386,7 +393,7 @@ export class Kursansicht extends Component {
       for (const Exam of this.state.Exams) {
         if (Exam.id != -1) {
           EditExam.push(<option value={Exam.id}>
-            {Exam.name} {Exam.date}
+            {Exam.name} {new Date(Exam.date).toLocaleString()}
           </option>);
         }
       }
