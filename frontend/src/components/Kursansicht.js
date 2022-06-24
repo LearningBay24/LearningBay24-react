@@ -12,7 +12,7 @@ import "../css/Kursansicht.css";
 import {
   getCourse, getFiles, updateCourse, createExam, registerToExam,
   uploadFile, getFileByID, uploadLink, getExamsFromCourse, getSubmissionById,
-  createAppointment, deleteAppointment, editExam, getAppointments,
+  createAppointment, deleteAppointment, editExam, getAppointments, getUser,
   deleteExam,
 } from "../api";
 
@@ -62,6 +62,7 @@ export class Kursansicht extends Component {
       // actual structs from DB these get filled by the api call and should be
       // updated and send back to the server if a user made changes
       // _______________________________________________________________________
+      user_id: 0,
       CurrentCourse: {
         id: 0,
         name: "",
@@ -159,10 +160,12 @@ export class Kursansicht extends Component {
   }
 
 
-  componentDidMount() {
-    getCourse(this, this.state.id);
+  async componentDidMount() {
+    await getCourse(this, this.state.id);
     getFiles(this, this.state.id);
     getAppointments(this, null);
+
+    await getUser(this);
 
 
     // get Submission for current course
@@ -303,6 +306,8 @@ export class Kursansicht extends Component {
 
 
   render() {
+    console.log(this.state.user_id);
+    console.log(this.state.CurrentCourse);
     // ________________________________________________________________________
     // Lists for general view
     // ________________________________________________________________________
@@ -430,6 +435,8 @@ export class Kursansicht extends Component {
                 <h1>{this.state.CurrentCourse.name}</h1>
                 <div className="AdminArea" hidden={!this.state.CourseAdmin}>
                   <button className="btnCreateCourse"
+                    hidden={
+                      this.state.user_id != this.state.CurrentCourse.creator_id}
                     onClick={() =>
                       this.setState({CourseEdit: !this.state.CourseEdit})}>
                     {!this.state.CourseEdit?

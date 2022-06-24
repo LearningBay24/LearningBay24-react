@@ -396,11 +396,39 @@ export function getUser(caller) {
     credentials: "include"})
       .then(handleErrors)
       .then((data) => {
-        return (data);
+        console.log(data);
+        caller.setState({user_id: data.id});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
 
+export function userIsAdmin() {
+  fetch(
+      Actualadress + "users/cookie", {method: "GET",
+        credentials: "include"}).then((result)=>{
+    const data = result.json().then(()=>{
+      return data.role_id;
+    });
+  });
+}
+
+export async function role(callback) {
+  let userrole = 0;
+  await fetch(Actualadress + "users/cookie", {
+    method: "GET",
+    credentials: "include",
+  })
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(data.role_id);
+        userrole = data.role_id;
+        callback = userrole;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  return userrole;
+}
 
 export function getAttendedExams(caller) {
   console.log("(getAttendedExams): " + Actualadress + "users/exams/attended");
