@@ -17,7 +17,6 @@ if (Testlocal) {
   Actualadress = Serveradress;
 }
 
-let back=0;
 
 async function handleErrors(response) {
   if (response.status == 401) {
@@ -26,13 +25,6 @@ async function handleErrors(response) {
 
     throw new Error("Must be logged in to view another page");
   } else if (!response.ok) {
-    if (back == 0 && response.status != 400) {
-      back = 1;
-      history.back();
-      location.reload();
-    }
-
-
     if (response.headers.get("Content-Length") != 0 &&
     response.headers.get("Content-Type") == "application/json; charset=utf-8") {
       throw await response.json();
@@ -42,10 +34,8 @@ async function handleErrors(response) {
   } else {
     if (response.headers.get("Content-Length") != 0 &&
     response.headers.get("Content-Type") == "application/json; charset=utf-8") {
-      back = 0;
       return response.json();
     } else {
-      back = 0;
       return response;
     }
   }
