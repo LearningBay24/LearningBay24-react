@@ -108,7 +108,6 @@ export function getUsersInCourse(caller, id) {
     credentials: "include"})
       .then(handleErrors)
       .then((data) => {
-        console.log(data);
         caller.setState({Users: data});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
@@ -128,7 +127,6 @@ export function postNewCourse(caller, object) {
     body: JSON.stringify(object),
     credentials: "include",
   };
-  console.log(requestOptions.body);
 
   fetch(Actualadress + "courses", requestOptions)
       .then(handleErrors)
@@ -151,13 +149,10 @@ export function updateCourse(caller, object, id) {
     body: JSON.stringify(object),
     credentials: "include",
   };
-  console.log(requestOptions.body);
 
   fetch(Actualadress + `courses/${id}`, requestOptions)
       .then(handleErrors)
       .then((data) => {
-      //  console.log(data);
-      // TODO
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
@@ -192,7 +187,6 @@ export function deleteCourse(caller, id) {
     credentials: "include"})
       .then(handleErrors)
       .then((data) => {
-        console.log(data);
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
@@ -211,8 +205,6 @@ export async function login(data, callback) {
 
   if (returnVal.ok) {
     callback();
-  } else {
-    console.log("Login fehlgeschlagen");
   }
 }
 
@@ -227,7 +219,6 @@ export function logout(callback) {
   fetch(Actualadress + "logout", requestOptions)
       .then(handleErrors)
       .then((response) => {
-        alert("Logout erfolgreich");
         callback();
       }, (reason) => alert(reason))
       .catch((error) => {
@@ -243,12 +234,10 @@ export function register(caller, data) {
     body: JSON.stringify(data),
     credentials: "include",
   };
-  console.log(requestOptions.body);
 
   fetch(Actualadress + "register", requestOptions)
       .then(handleErrors)
       .then((data) => {
-        console.log(data);
         caller.setState({success: 1});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
@@ -290,7 +279,6 @@ export function uploadFile(caller, file, id) {
   fetch(Actualadress + `courses/${id}/files`, requestOptions)
       .then(handleErrors)
       .then((data) => {
-        console.log(data);
         caller.setState({success: 1});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
@@ -308,7 +296,6 @@ export function uploadLink(caller, link, name, id) {
   fetch(Actualadress + `courses/${id}/files`, requestOptions)
       .then(handleErrors)
       .then((data) => {
-        console.log(data);
         caller.setState({success: 1});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
@@ -322,7 +309,6 @@ export function getFiles(caller, id) {
     credentials: "include"})
       .then(handleErrors)
       .then((data) => {
-        console.log(data);
         caller.setState({Material: data});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
@@ -342,7 +328,6 @@ export function getFileByID(caller, courseID, fileId, filename) {
         return result.blob();
       }, (reason) => alert(reason))
       .then((data) => {
-        console.log(data);
         const url = window.URL.createObjectURL(data);
         const anchor = document.createElement("a");
         anchor.href = url;
@@ -362,7 +347,6 @@ export function getSubmissionFromUser(caller) {
     credentials: "include"})
       .then(handleErrors)
       .then((data) => {
-        console.log(data);
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
@@ -373,7 +357,6 @@ export function getSubmissionById(caller, id) {
     credentials: "include"})
       .then(handleErrors)
       .then((data) => {
-        console.log(data);
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
@@ -385,7 +368,6 @@ export function getUser(caller) {
     credentials: "include"})
       .then(handleErrors)
       .then((data) => {
-        console.log(data);
         return (data);
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
@@ -400,7 +382,6 @@ export function getAttendedExams(caller) {
       .then(handleErrors)
       .then((data) => {
         console.log("attended");
-        console.log(data);
         caller.setState({AttendedExams: data});
       }, (reason) => alert(reason));
 }
@@ -413,7 +394,6 @@ export function getPassedExams(caller) {
       .then(handleErrors)
       .then((data) => {
         console.log("passed");
-        console.log(data);
         caller.setState({PassedExams: data});
       })
       .catch((error) => console.error(error));
@@ -427,7 +407,6 @@ export function getCreatedExams(caller) {
       .then(handleErrors)
       .then((data) => {
         console.log("created");
-        console.log(data);
         caller.setState({CreatedExams: data});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
@@ -442,7 +421,6 @@ export function getRegisteredExams(caller, callback) {
       .then(handleErrors)
       .then((data) => {
         console.log("registered");
-        console.log(data);
         caller.setState({RegisteredExams: data}, () => {
           if (callback != null) {
             callback(caller);
@@ -460,7 +438,6 @@ export function getUnregisteredExams(caller) {
       .then(handleErrors)
       .then((data) => {
         console.log("unregistered");
-        console.log(data);
         caller.setState({UnregisteredExams: data});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
@@ -475,7 +452,6 @@ export async function getExamsFromCourse(caller, courseId) {
       .then(handleErrors)
       .then((data) => {
         console.log("fromcourse");
-        console.log(data);
         caller.setState({Exams: data});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
@@ -514,7 +490,6 @@ export function editExam(caller, object) {
   fetch(Actualadress + `exams/${object.id}/edit`, requestOptions)
       .then(handleErrors)
       .then((data) => {
-        // console.log(data);
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
@@ -565,7 +540,6 @@ export function getFileFromExam(caller, examId, filename) {
         return result.blob();
       }, (reason) => alert(reason))
       .then((data) => {
-        console.log(data);
         const url = window.URL.createObjectURL(data);
         const anchor = document.createElement("a");
         anchor.href = url;
@@ -629,7 +603,6 @@ export function getExamAttendees(caller, examId) {
     credentials: "include"})
       .then(handleErrors)
       .then((data) => {
-        console.log(data);
         caller.setState({ExamAttendees: data});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
@@ -643,7 +616,6 @@ export function getExamRegistered(caller, examId) {
     credentials: "include"})
       .then(handleErrors)
       .then((data) => {
-        console.log(data);
         caller.setState({ExamRegistered: data});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
@@ -662,7 +634,6 @@ export function gradeExam(caller, userId, examId, object) {
   fetch(Actualadress + `users/${userId}/exams/${examId}/grade`, requestOptions)
       .then(handleErrors)
       .then((data) => {
-        console.log(data);
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
@@ -693,7 +664,6 @@ export function getExamSubmission(caller, userId, examId, filename) {
         return result.blob();
       }, (reason) => alert(reason))
       .then((data) => {
-        console.log(data);
         const url = window.URL.createObjectURL(data);
         const anchor = document.createElement("a");
         anchor.href = url;
@@ -733,7 +703,6 @@ export function getAppointments(caller, callback) {
       .then(handleErrors)
       .then((data) => {
         console.log("data");
-        console.log(data);
         caller.setState({Appointments: data}, () => {
           if (callback != null) {
             console.log("callback");
