@@ -375,7 +375,7 @@ export function getUser(caller) {
 
 
 export function getAttendedExams(caller) {
-  console.log("(getExams): " + Actualadress + "users/exams/attended");
+  console.log("(getAttendedExams): " + Actualadress + "users/exams/attended");
 
   fetch(Actualadress + "users/exams/attended", {method: "GET",
     credentials: "include"})
@@ -386,7 +386,7 @@ export function getAttendedExams(caller) {
 }
 
 export function getPassedExams(caller) {
-  console.log("(getExams): " + Actualadress + "users/exams/passed");
+  console.log("(getPassedExams): " + Actualadress + "users/exams/passed");
 
   fetch(Actualadress + "users/exams/passed", {method: "GET",
     credentials: "include"})
@@ -398,7 +398,7 @@ export function getPassedExams(caller) {
 }
 
 export function getCreatedExams(caller) {
-  console.log("(getExams): " + Actualadress + "users/exams/created");
+  console.log("(getCreatedExams): " + Actualadress + "users/exams/created");
 
   fetch(Actualadress + "users/exams/created", {method: "GET",
     credentials: "include"})
@@ -411,7 +411,8 @@ export function getCreatedExams(caller) {
 
 
 export function getRegisteredExams(caller, callback) {
-  console.log("(getExams): " + Actualadress + "users/exams/registered");
+  console.log("(getRegisteredExams): " + Actualadress +
+  "users/exams/registered");
 
   fetch(Actualadress + "users/exams/registered", {method: "GET",
     credentials: "include"})
@@ -427,13 +428,13 @@ export function getRegisteredExams(caller, callback) {
 }
 
 export function getUnregisteredExams(caller) {
-  console.log("(getExams): " + Actualadress + "users/exams/unregistered");
+  console.log("(getUnregisteredExams): " + Actualadress +
+  "users/exams/unregistered");
 
   fetch(Actualadress + "users/exams/unregistered", {method: "GET",
     credentials: "include"})
       .then(handleErrors)
       .then((data) => {
-        console.log("unregistered");
         caller.setState({UnregisteredExams: data});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
@@ -462,7 +463,6 @@ export function createExam(caller, object) {
     body: JSON.stringify(object),
     credentials: "include",
   };
-  console.log(requestOptions.body);
 
   fetch(Actualadress + "exams", requestOptions)
       .then(handleErrors)
@@ -481,7 +481,6 @@ export function editExam(caller, object) {
     body: JSON.stringify(object),
     credentials: "include",
   };
-  console.log(requestOptions.body);
 
   fetch(Actualadress + `exams/${object.id}/edit`, requestOptions)
       .then(handleErrors)
@@ -674,7 +673,6 @@ export function getExamSubmission(caller, userId, examId, filename) {
 
 export function createAppointment(caller, object) {
   console.log("(createAppointment): " + Actualadress + "appointments/add");
-  console.log(object);
   const requestOptions = {
     method: "POST",
     body: JSON.stringify(object),
@@ -698,10 +696,8 @@ export function getAppointments(caller, callback) {
   fetch(Actualadress + "courses/appointments", requestOptions)
       .then(handleErrors)
       .then((data) => {
-        console.log("data");
         caller.setState({Appointments: data}, () => {
           if (callback != null) {
-            console.log("callback");
             callback(caller);
           }
         });
