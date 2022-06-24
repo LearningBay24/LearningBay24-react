@@ -44,10 +44,10 @@ function Suchergebnis(props) {
 
   const onAPICallFinished = (result) => {
     setMatchedCourses(result);
-    if (MatchedCourses.length == 0) {
-      setNoResultText("Keine Treffer gefunden");
-    } else {
+    if (result != null) {
       setNoResultText("");
+    } else {
+      setNoResultText("Keine Treffer gefunden");
     }
   };
 
