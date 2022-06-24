@@ -28,6 +28,8 @@ async function handleErrors(response) {
   } else if (response.headers.get("Content-Length") != 0 &&
     response.headers.get("Content-Type") == "application/json; charset=utf-8") {
     return response.json();
+  } else {
+    return response;
   }
 }
 
@@ -322,9 +324,6 @@ export function getFileByID(caller, courseID, fileId, filename) {
     credentials: "include"})
       .then(handleErrors)
       .then((result) => {
-        if (result.status != 200) {
-          throw new Error("Bad server response");
-        }
         return result.blob();
       }, (reason) => alert(reason))
       .then((data) => {
@@ -335,7 +334,6 @@ export function getFileByID(caller, courseID, fileId, filename) {
         anchor.click();
 
         window.URL.revokeObjectURL(url);
-        document.removeChild(anchor);
       })
       .catch((error) => console.error(error));
 }
@@ -542,7 +540,6 @@ export function getFileFromExam(caller, examId, filename) {
         anchor.click();
 
         window.URL.revokeObjectURL(url);
-        document.removeChild(anchor);
       })
       .catch((error) => console.error(error));
 }
@@ -666,7 +663,6 @@ export function getExamSubmission(caller, userId, examId, filename) {
         anchor.click();
 
         window.URL.revokeObjectURL(url);
-        document.removeChild(anchor);
       })
       .catch((error) => console.error(error));
 }

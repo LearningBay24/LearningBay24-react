@@ -633,12 +633,12 @@ Kursansicht.propTypes = {
 
 function ShowMaterial(props) {
   return (
-    <div className='MaterialContainer'>
+    <a href={props.uri? props.uri:null} download className='MaterialContainer'>
       <h6 onClick={() => getFileByID(this, props.courseid,
           props.fileid, props.name)}>
         {props.name}</h6>
-      <a href={props.uri} download>{props.uri}</a>
-    </div>);
+      <p>{props.uri}</p>
+    </a>);
 }
 ShowMaterial.propTypes = {
   name: PropTypes.string.isRequired,
