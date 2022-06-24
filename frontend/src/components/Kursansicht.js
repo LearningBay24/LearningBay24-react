@@ -297,6 +297,8 @@ export class Kursansicht extends Component {
 
     const Generallist = [];
     if (this.state.Appointments != null) {
+      Generallist.push(<h2 hidden={this.state.CourseEdit}>
+        Termine</h2>);
       for (const Appointment of this.state.Appointments) {
         if (Appointment.course_id == this.state.id) {
           Generallist.push(<h3 hidden={this.state.CourseEdit}>
@@ -307,6 +309,8 @@ export class Kursansicht extends Component {
       }
     }
 
+    Generallist.push(<h2 hidden={this.state.CourseEdit}>
+      Beschreibung</h2>);
     Generallist.push(<p hidden={this.state.CourseEdit}>
       {this.state.CurrentCourse.description}</p>);
 
