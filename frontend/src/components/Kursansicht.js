@@ -159,7 +159,7 @@ export class Kursansicht extends Component {
   }
 
 
-  async componentDidMount() {
+  componentDidMount() {
     getCourse(this, this.state.id);
     getFiles(this, this.state.id);
     getAppointments(this, null);
@@ -177,6 +177,13 @@ export class Kursansicht extends Component {
     this.setState({
       [event.target.name]: event.target.value,
     });
+    this.setState({successCourse: 0});
+    this.setState({successAppointment: 0});
+    this.setState({successDelAppointment: 0});
+    this.setState({successFile: 0});
+    this.setState({successDelFile: 0});
+    this.setState({successExam: 0});
+    this.setState({successDelExam: 0});
   }
 
   onFileChange(event) {
@@ -186,7 +193,7 @@ export class Kursansicht extends Component {
     this.setState({success: 0});
   }
 
-  onSaveDescriptionChange() {
+  async onSaveDescriptionChange() {
     let description = this.state.description;
     let key = this.state.key;
     let name = this.state.name;
@@ -208,10 +215,11 @@ export class Kursansicht extends Component {
       created_at: this.state.CurrentCourse.created_at,
       updated_at: this.state.CurrentCourse.updated_at,
     };
-    updateCourse(this, newCourse, this.state.id);
+    await updateCourse(this, newCourse, this.state.id);
+    this.componentDidMount();
   }
 
-  onSaveAppointmentChange() {
+  async onSaveAppointmentChange() {
     if (this.state.ChangeAppointmentId === "-1") {
       const Appointment = {
         date: new Date(this.state.NewAppointmentDate)
@@ -221,17 +229,19 @@ export class Kursansicht extends Component {
         online: this.state.NewAppointmentOnline,
         courseId: this.state.CurrentCourse.id.toString(),
       };
-      createAppointment(this, Appointment);
+      await createAppointment(this, Appointment);
+      this.componentDidMount();
     }
   }
 
-  onDeleteAppointment() {
+  async onDeleteAppointment() {
     if (this.state.ChangeAppointmentId !== "-1") {
-      deleteAppointment(this, this.state.ChangeAppointmentId);
+      await deleteAppointment(this, this.state.ChangeAppointmentId);
+      this.componentDidMount();
     }
   }
 
-  onSaveExam() {
+  async onSaveExam() {
     let online_ = 0;
     if (this.state.NewExamOnline != null) {
       online_ = this.state.NewExamOnline;
@@ -254,7 +264,8 @@ export class Kursansicht extends Component {
             (new Date(this.state.NewExamDeregister).getTime() +
             3600000 * 2)).toISOString().split(".")[0] + "Z",
       };
-      createExam(this, Exam);
+      await createExam(this, Exam);
+      this.componentDidMount();
     } else {
       let dateStr = "";
       let registerStr = "";
@@ -285,7 +296,8 @@ export class Kursansicht extends Component {
         register_deadline: registerStr,
         deregister_deadline: deregisterStr,
       };
-      editExam(this, object);
+      await editExam(this, object);
+      this.componentDidMount();
     }
   }
 
@@ -379,8 +391,10 @@ export class Kursansicht extends Component {
 
     const EditMaterial = [];
     EditMaterial.push(<option value="-1">Material hinzufügen</option>);
-    for (const Mat of this.state.Course.CourseMaterial) {
-      EditMaterial.push(<option value={Mat.id}>{Mat.Name}</option>);
+    if (this.state.Course.Material != null) {
+      for (const Mat of this.state.Course.Material) {
+        EditMaterial.push(<option value={Mat.id}>{Mat.Name}</option>);
+      }
     }
 
     const EditAssignment = [];
@@ -433,6 +447,9 @@ export class Kursansicht extends Component {
                         onClick={this.onSaveDescriptionChange}>
                         Speichern</button>
                     </div>
+                    <label id="successId">
+                      {this.state.successCourse? "erfolgreich gespeichert":""}
+                    </label>
                     <h2>Kursinformationen</h2>
                     <label>Kursname:</label>
                     <input type="text" id="EditCourseNameId" name="name"
@@ -457,6 +474,14 @@ export class Kursansicht extends Component {
                         Speichern
                       </button>
                     </div>
+                    <label id="successId">
+                      {this.state.successAppointment?
+                        "erfolgreich gespeichert":""}
+                    </label>
+                    <label id="successId">
+                      {this.state.successDelAppointment?
+                        "erfolgreich gelöscht":""}
+                    </label>
                     <h2>Termin</h2>
                     <select name="ChangeAppointmentId"
                       onChange={this.onInputChange}>
@@ -496,7 +521,10 @@ export class Kursansicht extends Component {
                         Link Speichern</button>
                     </div>
                     <label id="successId">
-                      {this.state.success? "erfolgreich hochgeladen":""}
+                      {this.state.successFile? "erfolgreich hochgeladen":""}
+                    </label>
+                    <label id="successDelId">
+                      {this.state.successDelFile? "erfolgreich gelöscht":""}
                     </label>
                     <h2>Material</h2>
                     <select>{EditMaterial}</select>
@@ -544,6 +572,14 @@ export class Kursansicht extends Component {
                         Speichern
                       </button>
                     </div>
+                    <label id="successId">
+                      {this.state.successExam?
+                        "erfolgreich gespeichert":""}
+                    </label>
+                    <label id="successId">
+                      {this.state.successDelExam?
+                        "erfolgreich gelöscht":""}
+                    </label>
                     <h2>Klausur</h2>
 
                     <select onChange={this.onInputChange} name="ChangeExamId">
