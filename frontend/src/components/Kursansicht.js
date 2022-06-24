@@ -4,8 +4,10 @@ import {ShowNavbar} from "./App";
 import {useParams} from "react-router-dom";
 import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
-import {ShowSubmission, ShowSubmissionEdit} from "./Abgabe";
-import {cutDateStringToDate} from "../api/helperfunctions";
+import {ShowSubmission,
+  ShowSubmissionEdit,
+  ShowUserSubmission,
+} from "./Abgabe";
 import {ShowConfirmation} from "./DialogComponent";
 
 import Dialog from "@mui/material/Dialog";
@@ -16,22 +18,18 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 import "../css/Overlay.css";
 import "../css/Kursansicht.css";
-/*
-import {
-  getCourse, getFiles, updateCourse,
-  uploadFile, getFileByID, uploadLink,
-  getSubmissionById,
-} from "../api";
-*/
+
 import {
   getCourse, updateCourse, getFiles,
   uploadFile, getFileByID, uploadLink,
   getSubmissionsFromCourse,
   createSubmission, deleteSubmission,
   createExam, registerToExam,
-  getExamsFromCourse, getSubmissionById,
+  getExamsFromCourse,
   createAppointment, deleteAppointment,
   getAppointments,
+  getUserSubmissionsFromSubmission,
+  gradeUserSubmission,
 } from "../api";
 
 import PropTypes from "prop-types";
@@ -135,6 +133,8 @@ export class Kursansicht extends Component {
         },
       ],
 
+      UserSubsFromSub: [],
+
       Material: [],
 
       NewExamName: "",
@@ -145,6 +145,7 @@ export class Kursansicht extends Component {
 
       // for editing and adding submissions
       FocusedSubId: -1,
+      CurrentGrade: 0,
       EditedSubmissionIds: [],
       NewAppointmentDate: "",
       NewAppointmentDuration: "90",
@@ -172,6 +173,7 @@ export class Kursansicht extends Component {
       // bools for Dialogs
       OpenAddSubDialog: false,
       OpenSubDeleteConfirmation: false,
+      openUserSubView: false,
     };
 
     this.onInputChange = this.onInputChange.bind(this);
@@ -187,6 +189,10 @@ export class Kursansicht extends Component {
       this.toggleSubDeleteConfirmation.bind(this);
     this.onDeleteAppointment = this.onDeleteAppointment.bind(this);
     this.onSaveExam = this.onSaveExam.bind(this);
+    this.toggleOpenUserSubs = this.toggleOpenUserSubs.bind(this);
+    this.onSubmissionClickCallback = this.onSubmissionClickCallback.bind(this);
+    this.gradeUserSub = this.gradeUserSub.bind(this);
+    this.userSubCallback = this.userSubCallback.bind(this);
   }
 
 
@@ -280,6 +286,18 @@ export class Kursansicht extends Component {
     this.setState({OpenAddSubDialog: !this.state.OpenAddSubDialog});
   }
 
+  toggleOpenUserSubs() {
+    this.setState({openUserSubView: !this.state.openUserSubView});
+  }
+
+
+  onSubmissionClickCallback(id) {
+    getUserSubmissionsFromSubmission(this, id);
+    this.toggleOpenUserSubs();
+    this.setState({FocusedSubId: id});
+    console.log(id);
+  }
+
   addSubmissionHandler(event) {
     event.preventDefault();
     let subid;
@@ -293,21 +311,31 @@ export class Kursansicht extends Component {
     const newSubmission = {
       id: subid,
       name: event.target.SubName.value,
-      deadline: event.target.SubDate.value + "T" +
-      event.target.SubTime.value + ":05Z",
+      deadline: new Date(
+          (new Date(event.target.SubDate.value).getTime() +
+          3600000 * 2)).toISOString().split(".")[0]+"Z",
       course_id: this.state.CurrentCourse.id,
       max_filesize: "5",
-      visible_from: event.target.SubVisDate.value + "T" +
-        event.target.SubVisTime.value + ":05Z",
-    };
-    console.log(cutDateStringToDate(newSubmission.deadline));
+      visible_from: new Date(
+          (new Date(event.target.SubVisDate.value).getTime() +
+          3600000 * 2)).toISOString().split(".")[0]+"Z",
 
-    console.log("posting...");
+    };
     console.log(newSubmission);
 
+    this.toggleAddSubDialog();
     const file = event.target.SubFile.files[0];
 
     createSubmission(this, newSubmission, file);
+  }
+
+  gradeUserSub() {
+    const gradeObj = {
+      grade: this.state.CurrentGrade,
+    };
+    console.log(this.state.FocusedSubId);
+    gradeUserSubmission(this,
+        this.state.FocusedSubId, gradeObj);
   }
 
   // called when any Submission is edited
@@ -339,6 +367,10 @@ export class Kursansicht extends Component {
       !this.state.OpenSubDeleteConfirmation});
   }
 
+  userSubCallback(id) {
+    this.setState({FocusedSubId: id});
+  }
+
 
   render() {
     // ________________________________________________________________________
@@ -359,7 +391,7 @@ export class Kursansicht extends Component {
           <p hidden={this.state.CourseEdit}>
             {this.state.CurrentCourse.description}</p>
           <p hidden={this.state.CourseEdit}>Kursersteller:
-            {this.state.CourseOwner}</p>
+            {this.state.Course.CourseOwner.LastName}</p>
         </div>,
     );
 
@@ -373,16 +405,35 @@ export class Kursansicht extends Component {
     }
 
     const Submissionlist = [];
-    for (const Submission of this.state.Submissions) {
-      Submissionlist.push(<ShowSubmission
-        id={Submission.id}
-        submissionname={Submission.name}
-        coursename={this.state.Course.name}
-        owner={this.state.Course.CourseOwner.LastName}
-        link={Submission.content}
-        created_at={Submission.date}
-        deadline={Submission.deadline}
-        time={Submission.time}/>);
+    if (this.state.Submissions != null) {
+      for (const Submission of this.state.Submissions) {
+        Submissionlist.push(<ShowSubmission
+          id={Submission.id}
+          submissionname={Submission.name}
+          coursename={this.state.CurrentCourse.name}
+          owner={this.state.Course.CourseOwner.LastName}
+          created_at={Submission.date}
+          deadline={Submission.deadline}
+          isAdmin={this.state.CourseAdmin}
+          callback={this.onSubmissionClickCallback}
+        />);
+      }
+    }
+
+    const UserSubslist = [];
+    if (this.state.UserSubsFromSub != null) {
+      for (const Sub of this.state.UserSubsFromSub) {
+        UserSubslist.push(<ShowUserSubmission
+          id={Sub.id}
+          submissionname={Sub.name}
+          coursename={this.state.CurrentCourse.name}
+          owner={this.state.Course.CourseOwner.LastName}
+          created_at={Sub.date}
+          deadline={Sub.deadline}
+          isAdmin={this.state.CourseAdmin}
+          callback={this.userSubCallback}
+        />);
+      }
     }
 
     const Surveylist = [];
@@ -435,20 +486,21 @@ export class Kursansicht extends Component {
     }
 
     const SubmissionEditList = [];
-    for (const Submission of this.state.Submissions) {
-      SubmissionEditList.push(
-          <ShowSubmissionEdit
-            id={Submission.id}
-            submissionname={Submission.name}
-            coursename={this.state.Course.name}
-            owner={this.state.Course.CourseOwner.LastName}
-            link={Submission.content}
-            created_at={Submission.date}
-            deadline={Submission.deadline}
-            callback={this.onSubmissionEditedCallback}
-            state={this}
-          />,
-      );
+    if (this.state.Submissions != null) {
+      for (const Submission of this.state.Submissions) {
+        SubmissionEditList.push(
+            <ShowSubmissionEdit
+              id={Submission.id}
+              submissionname={Submission.name}
+              coursename={this.state.CurrentCourse.name}
+              owner={this.state.Course.CourseOwner.LastName}
+              created_at={Submission.date}
+              deadline={Submission.deadline}
+              callback={this.onSubmissionEditedCallback}
+              state={this}
+            />,
+        );
+      }
     }
 
     const EditExam = [];
@@ -588,25 +640,21 @@ export class Kursansicht extends Component {
                                 <input type="Text" id="SubName"
                                   placeholder="Abgabenname" required></input>
                                 <label htmlFor="SubDate">
-                                  Abgabendatum:</label>
-                                <input type="Date" id="SubDate" required>
-                                </input>
-                                <label htmlFor="SubTime">
-                                  Abgabenuhrzeit:</label>
-                                <input type="Time" id="SubTime" required>
+                                  Abgabefrist:</label>
+                                <input type="Datetime-local"
+                                  id="SubDate" required>
                                 </input>
                                 <div className="SubVisibilityContainer">
                                   <label htmlFor="SubVisCB">
-                                    Sichbarkeitsdatum</label>
+                                    Sichtbar ab</label>
                                   <input type="checkbox"
                                     value="Abgabe sichtbar ab:"
                                     id="SubVisCB">
                                   </input>
                                   <div
                                     className="SubVisibilityDate">
-                                    <input type="Date" id="SubVisDate">
-                                    </input>
-                                    <input type="Time" id="SubVisTime">
+                                    <input type="Datetime-local"
+                                      id="SubVisDate">
                                     </input>
                                   </div>
                                   <label htmlFor="SubAfterDeadline">
@@ -645,70 +693,73 @@ export class Kursansicht extends Component {
                       <button className="EditButton">Löschen</button>
                       <button className="EditButton">Speichern</button>
                     </div>
-                  {/* Exams */}
+                    {/* Exams */}
 
-                  <div className="EditSectionPart">
-                    <div className="EditArea">
-                      <button className="EditButton">Löschen</button>
-                      <button className="EditButton">Speichern</button>
+                    <div className="EditSectionPart">
+                      <div className="EditArea">
+                        <button className="EditButton">Löschen</button>
+                        <button className="EditButton">Speichern</button>
+                      </div>
+                      <h2>Klausur</h2>
+
+                      <select onChange={this.onInputChange} name="ChangeExamId">
+                        {EditExam}
+                      </select>
+                      <label htmlFor="EditExamName">Name:</label>
+                      <input type="Text" id="EditExamName"
+                        placeholder="Klausurname" onChange={this.onInputChange}
+                        name="NewExamName">
+                      </input>
+                      <label htmlFor="EditExamDescription">Beschreibung:</label>
+                      <input type="Text" id="EditExamDescription"
+                        placeholder="Klausurbeschreibung"
+                        onChange={this.onInputChange}
+                        name="NewExamDescription">
+                      </input>
+                      <label htmlFor="EditExamDate">Datum:</label>
+                      <input type="Datetime-local" id="EditExamDate"
+                        onChange={this.onInputChange}
+                        name="NewExamDate">
+                      </input>
+                      <label htmlFor="EditExamDuration">Dauer(in min):</label>
+                      <input type="number" pattern="[0-9]*"
+                        id="EditExamDuration"
+                        placeholder="Dauer" onChange={this.onInputChange}
+                        name="NewExamDuration">
+                      </input>
+                      <label>Offline/Online</label>
+                      <select onChange={this.onInputChange}
+                        name="NewExamOnline">
+                        <option value="0">Offline</option>
+                        <option value="1">Online</option>
+                      </select>
+                      <label htmlFor="EditExamLocation">
+                        Raum(Zoomlink falls online):</label>
+                      <input type="Text" id="EditExamLocation"
+                        placeholder="Raum" onChange={this.onInputChange}
+                        name="NewExamLocation"></input>
+                      <label htmlFor="EditExamRegDate">
+                        Deadline Anmeldung:</label>
+                      <input type="Datetime-local" id="EditExamRegDate"
+                        onChange={this.onInputChange}
+                        name="NewExamRegister">
+                      </input>
+                      <label htmlFor="EditExamDeregDate">
+                        Deadline Abmeldung:</label>
+                      <input type="Datetime-local" id="EditExamDeregDate"
+                        onChange={this.onInputChange}
+                        name="NewExamDeregister">
+                      </input>
+
+                      {
+                        // TODO add material
+                      }
+                      <br />
+                      <button>Löschen</button>
+                      <button onClick={this.onSaveExam}>Speichern</button>
                     </div>
-                    <h2>Klausur</h2>
-
-                    <select onChange={this.onInputChange} name="ChangeExamId">
-                      {EditExam}
-                    </select>
-                    <label htmlFor="EditExamName">Name:</label>
-                    <input type="Text" id="EditExamName"
-                      placeholder="Klausurname" onChange={this.onInputChange}
-                      name="NewExamName">
-                    </input>
-                    <label htmlFor="EditExamDescription">Beschreibung:</label>
-                    <input type="Text" id="EditExamDescription"
-                      placeholder="Klausurbeschreibung"
-                      onChange={this.onInputChange}
-                      name="NewExamDescription">
-                    </input>
-                    <label htmlFor="EditExamDate">Datum:</label>
-                    <input type="Datetime-local" id="EditExamDate"
-                      onChange={this.onInputChange}
-                      name="NewExamDate">
-                    </input>
-                    <label htmlFor="EditExamDuration">Dauer(in min):</label>
-                    <input type="number" pattern="[0-9]*" id="EditExamDuration"
-                      placeholder="Dauer" onChange={this.onInputChange}
-                      name="NewExamDuration">
-                    </input>
-                    <label>Offline/Online</label>
-                    <select onChange={this.onInputChange}
-                      name="NewExamOnline">
-                      <option value="0">Offline</option>
-                      <option value="1">Online</option>
-                    </select>
-                    <label htmlFor="EditExamLocation">
-                      Raum(Zoomlink falls online):</label>
-                    <input type="Text" id="EditExamLocation"
-                      placeholder="Raum" onChange={this.onInputChange}
-                      name="NewExamLocation"></input>
-                    <label htmlFor="EditExamRegDate">Deadline Anmeldung:</label>
-                    <input type="Datetime-local" id="EditExamRegDate"
-                      onChange={this.onInputChange}
-                      name="NewExamRegister">
-                    </input>
-                    <label htmlFor="EditExamDeregDate">
-                      Deadline Abmeldung:</label>
-                    <input type="Datetime-local" id="EditExamDeregDate"
-                      onChange={this.onInputChange}
-                      name="NewExamDeregister">
-                    </input>
-
-                    {
-                      // TODO add material
-                    }
                     <br />
-                    <button>Löschen</button>
-                    <button onClick={this.onSaveExam}>Speichern</button>
                   </div>
-                  <br />
                 </div>
 
                 <div className="InfoSection">
@@ -732,9 +783,31 @@ export class Kursansicht extends Component {
                   <h2>Klausuren</h2>
                   {Examlist}
                 </div>
-
               </Col>
             </Row>
+
+            <Dialog open={this.state.openUserSubView}
+              onClose={this.toggleOpenUserSubs}
+              className="DialogUserSubsView">
+              <DialogTitle>Nutzerabgaben</DialogTitle>
+              <DialogContent className="DConfirmationContent">
+                <DialogContentText>
+                  Nutzerabgaben
+                </DialogContentText>
+                {UserSubslist}
+              </DialogContent>
+              <DialogActions>
+                <button
+                  onClick={this.gradeUserSub}
+                  className="DialogButton">
+                  Bewerten</button>
+                <button
+                  onClick={this.toggleOpenUserSubs}
+                  className="DialogButton">
+                  Abbrechen</button>
+              </DialogActions>
+            </Dialog>
+
           </Container>
           <ShowConfirmation
             open={this.state.OpenSubDeleteConfirmation}
@@ -790,6 +863,14 @@ function ShowUnregisteredExam(props) {
     </div>
   );
 }
+ShowUnregisteredExam.propTypes = {
+  name: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  duration: PropTypes.string,
+  date: PropTypes.string,
+  location: PropTypes.string,
+  id: PropTypes.number.isRequired,
+};
 
 function ShowSurvey(props) {
   return (

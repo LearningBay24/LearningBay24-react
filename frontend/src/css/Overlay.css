@@ -280,3 +280,8 @@ button {
     background-color: var(--dark);
     color: var(--white);
 }
+
+.GradeInput {
+    height: 1.2rem;
+    width: 1.2rem;
+}
