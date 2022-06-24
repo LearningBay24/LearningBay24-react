@@ -31,7 +31,7 @@ function App() {
 
 function ShowNavbar() {
   const [Admin, setAdmin] = useState([]);
-  role(setAdmin);
+  role(setAdmin, null);
   return (
     <div className="Navbar">
       <ul>

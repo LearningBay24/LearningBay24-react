@@ -402,17 +402,8 @@ export function getUser(caller) {
       .catch((error) => console.error(error));
 }
 
-export function userIsAdmin() {
-  fetch(
-      Actualadress + "users/cookie", {method: "GET",
-        credentials: "include"}).then((result)=>{
-    const data = result.json().then(()=>{
-      return data.role_id;
-    });
-  });
-}
 
-export async function role(callback) {
+export async function role(callback, caller) {
   let userrole = 0;
   await fetch(Actualadress + "users/cookie", {
     method: "GET",
@@ -422,7 +413,11 @@ export async function role(callback) {
       .then((data) => {
         // console.log(data.role_id);
         userrole = data.role_id;
-        callback = userrole;
+        if (caller != null) {
+          caller.setState({Role: userrole});
+        } else {
+          callback(userrole);
+        }
       })
       .catch((error) => {
         console.error(error);

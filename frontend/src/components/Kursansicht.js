@@ -435,8 +435,6 @@ export class Kursansicht extends Component {
                 <h1>{this.state.CurrentCourse.name}</h1>
                 <div className="AdminArea" hidden={!this.state.CourseAdmin}>
                   <button className="btnCreateCourse"
-                    hidden={
-                      this.state.user_id != this.state.CurrentCourse.creator_id}
                     onClick={() =>
                       this.setState({CourseEdit: !this.state.CourseEdit})}>
                     {!this.state.CourseEdit?

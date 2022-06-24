@@ -11,7 +11,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import {getMyCourses, postNewCourse} from "../api";
+import {getMyCourses, postNewCourse, role} from "../api";
 import {ShowCourse} from "../components/Kurs";
 
 import "../css/Overlay.css";
@@ -63,6 +63,7 @@ export class Kursuebersicht extends Component {
 
   componentDidMount() {
     getMyCourses(this);
+    role(null, this);
   }
 
 
@@ -100,7 +101,8 @@ export class Kursuebersicht extends Component {
                 <Row className="SectionContainer">
                   <h1>Kursübersicht</h1>
                   <div className="AdminArea">
-                    <button className="btnCreateCourse"
+                    <button hidden={this.state.Role > 2}
+                      className="btnCreateCourse"
                       onClick={this.toggleCreateCourse}>
                       Kurs erstellen
                     </button>
