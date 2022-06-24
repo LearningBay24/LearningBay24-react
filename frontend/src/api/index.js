@@ -189,8 +189,11 @@ export async function enrollUserIntoCourse(courseID, enrollKey, callback) {
   const result = await fetch(
       Actualadress + "courses/" + courseID.toString(), requestOptions);
   const data = await result.json();
-  console.log("(enrollAPOI");
   console.log(data);
+  if (data) {
+    history.replaceState(null, "", `/kursansicht/${courseID}`);
+    location.reload();
+  }
   return data;
 }
 
