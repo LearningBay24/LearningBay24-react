@@ -13,7 +13,7 @@ import {
   getCourse, getFiles, updateCourse, createExam, registerToExam,
   uploadFile, getFileByID, uploadLink, getExamsFromCourse, getSubmissionById,
   createAppointment, deleteAppointment, editExam, getAppointments,
-  deleteExam, roleId, Admin,
+  deleteExam, roleId, Admin, courseRoleId, User,
 } from "../api";
 
 import PropTypes from "prop-types";
@@ -431,7 +431,8 @@ export class Kursansicht extends Component {
               <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" >
                 <h1>{this.state.CurrentCourse.name}</h1>
-                <div className="AdminArea" hidden={roleId != Admin}>
+                <div className="AdminArea"
+                  hidden={roleId != Admin || courseRoleId == User}>
                   <button className="btnCreateCourse"
                     onClick={() =>
                       this.setState({CourseEdit: !this.state.CourseEdit})}>
@@ -717,7 +718,7 @@ function ShowUnregisteredExam(props) {
       <p className="Examduration">Dauer: {props.duration}min.</p>
       <p className="ExamDate">{props.date}</p>
       <p className="ExamRoom">{props.location}</p>
-      <button onClick={() => {
+      <button hidden={courseRoleId != User} onClick={() => {
         registerToExam(this, props.id);
       }}>Anmelden</button>
     </div>

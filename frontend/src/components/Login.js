@@ -43,7 +43,7 @@ export function Login() {
         </div>
         <div className="LoginBody">
           <div className="EmptySpace"></div>
-          <label id="emaillabel" htmlFor="email">E-Mail</label>
+          <label id="emaillabel" htmlFor="email">Nutzername</label>
           <input id="email" type="text" name="Email"
             onChange={onEmailChange}></input>
           <div className="EmptySpace"></div>

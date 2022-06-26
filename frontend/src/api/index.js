@@ -18,6 +18,7 @@ if (Testlocal) {
 }
 
 export let roleId = -1;
+export let courseRoleId = -1;
 export const Admin = 1;
 export const Moderator = 2;
 export const User = 3;
@@ -54,11 +55,23 @@ async function handleErrors(response) {
 export function getMyCourses(caller) {
   console.log("(getMyCourses): " + Actualadress + "users/courses");
 
-  fetch(Actualadress + "users/courses", {method: "GET",
+  fetch(Actualadress + "users/createdcourses", {method: "GET",
     credentials: "include"})
       .then(handleErrors)
       .then((data) => {
         caller.setState({MyCourses: data});
+      }, (reason) => alert(reason))
+      .catch((error) => console.error(error));
+}
+
+export function getTakenCourses(caller) {
+  console.log("(getTakenCourses): " + Actualadress + "users/courses");
+
+  fetch(Actualadress + "users/courses", {method: "GET",
+    credentials: "include"})
+      .then(handleErrors)
+      .then((data) => {
+        caller.setState({CoursesTaken: data});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
@@ -106,6 +119,7 @@ export function getCourse(caller, id) {
       .then(handleErrors)
       .then((data) => {
         caller.setState({CurrentCourse: data});
+        courseRole();
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
@@ -410,15 +424,28 @@ export function getUser(caller) {
 }
 
 
-export async function role(callback, caller) {
+export async function role() {
   await fetch(Actualadress + "users/cookie", {
     method: "GET",
     credentials: "include",
   })
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data.role_id);
         roleId = data.role_id;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+}
+
+export async function courseRole(id) {
+  await fetch(Actualadress + `courses/${id}/role`, {
+    method: "GET",
+    credentials: "include",
+  })
+      .then((response) => response.json())
+      .then((data) => {
+        courseRoleId = data;
       })
       .catch((error) => {
         console.error(error);

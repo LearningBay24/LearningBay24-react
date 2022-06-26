@@ -11,7 +11,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import {getMyCourses, Moderator, postNewCourse, roleId} from "../api";
+import {getMyCourses, getTakenCourses, Moderator,
+  postNewCourse, roleId} from "../api";
 import {ShowCourse} from "../components/Kurs";
 
 import "../css/Overlay.css";
@@ -62,6 +63,7 @@ export class Kursuebersicht extends Component {
 
   componentDidMount() {
     getMyCourses(this);
+    getTakenCourses(this);
   }
 
 
