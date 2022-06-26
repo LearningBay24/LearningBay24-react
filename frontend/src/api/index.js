@@ -119,7 +119,7 @@ export function getCourse(caller, id) {
       .then(handleErrors)
       .then((data) => {
         caller.setState({CurrentCourse: data});
-        courseRole();
+        courseRole(id);
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
