@@ -572,7 +572,7 @@ export function uploadFileExam(caller, id, file) {
   console.log("(uploadFileExam): " + Actualadress + `exams/${id}/files`);
 
   const formData = new FormData();
-  formData.append("file", file);
+  formData.append(file.name, file);
 
   const requestOptions = {
     method: "POST",
@@ -618,7 +618,7 @@ export function getFileFromExam(caller, examId, filename) {
         const url = window.URL.createObjectURL(data);
         const anchor = document.createElement("a");
         anchor.href = url;
-        anchor.download = filename;
+        // anchor.download = filename;
         anchor.click();
 
         window.URL.revokeObjectURL(url);
