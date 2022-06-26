@@ -188,18 +188,16 @@ export class Kursansicht extends Component {
         name: this.state.NewExamName,
         description: this.state.NewExamDescription,
         date: new Date(
-            (new Date(this.state.NewExamDate).getTime() +
-            3600000 * 2)).toISOString().split(".")[0] + "Z",
+            this.state.NewExamDate)
+            .toISOString().split(".")[0] + "Z",
         duration: (this.state.NewExamDuration * 60).toString(),
         location: this.state.NewExamLocation,
         online: online_,
         course_id: this.state.CurrentCourse.id.toString(),
-        register_deadline: new Date(
-            (new Date(this.state.NewExamRegister).getTime() +
-            3600000 * 2)).toISOString().split(".")[0] + "Z",
-        deregister_deadline: new Date(
-            (new Date(this.state.NewExamDeregister).getTime() +
-            3600000 * 2)).toISOString().split(".")[0] + "Z",
+        register_deadline: new Date(this.state.NewExamRegister)
+            .toISOString().split(".")[0] + "Z",
+        deregister_deadline: new Date(this.state.NewExamDeregister)
+            .toISOString().split(".")[0] + "Z",
       };
       await createExam(this, Exam);
       this.componentDidMount();
@@ -208,19 +206,19 @@ export class Kursansicht extends Component {
       let registerStr = "";
       let deregisterStr = "";
       if (this.state.NewExamDate != null) {
-        dateStr = new Date(
-            (new Date(this.state.NewExamDate).getTime() + 3600000 * 2))
-            .toISOString().split(".")[0] + "Z";
+        dateStr =
+            new Date(this.state.NewExamDate)
+                .toISOString().split(".")[0] + "Z";
       }
       if (this.state.NewExamRegister != null) {
-        registerStr = new Date(
-            (new Date(this.state.NewExamRegister).getTime() +
-            3600000 * 2)).toISOString().split(".")[0] + "Z";
+        registerStr =
+            new Date(this.state.NewExamRegister)
+                .toISOString().split(".")[0] + "Z";
       }
       if (this.state.NewExamDeregister != null) {
-        deregisterStr = new Date(
-            (new Date(this.state.NewExamDeregister).getTime() +
-            3600000 * 2)).toISOString().split(".")[0] + "Z";
+        deregisterStr =
+            new Date(this.state.NewExamDeregister)
+                .toISOString().split(".")[0] + "Z";
       }
       const object = {
         id: this.state.ChangeExamId,
@@ -286,16 +284,8 @@ export class Kursansicht extends Component {
       for (const Exam of this.state.Exams) {
         if (Exam.id != -1) {
           Examlist.push(<Col xs={4} ><ShowUnregisteredExam
-            id={Exam.id}
-            name={Exam.name}
-            creator_id={Exam.creator_id}
-            description={Exam.description}
-            register_deadline=
-              {new Date(Exam.register_deadline).toLocaleString()}
-            deregister_deadline=
-              {new Date(Exam.deregister_deadline).toLocaleString()}
-            date={new Date(Exam.date).toLocaleString()}
-            duration={Exam.duration / 60} /></Col>);
+            component={this}
+            Exam={Exam}/></Col>);
         }
       }
     }
@@ -637,15 +627,20 @@ ShowAssignment.propTypes = {
 };
 
 function ShowUnregisteredExam(props) {
+  const actual = (new Date().getTime());
+  const register = (new Date(props.Exam.register_deadline).getTime());
   return (
     <div className="Exam">
-      <h4 className="ExamName">{props.name}</h4>
-      <p className="ExamDescription">{props.description}</p>
-      <p className="Examduration">Dauer: {props.duration}min.</p>
-      <p className="ExamDate">{props.date}</p>
-      <p className="ExamRoom">{props.location}</p>
-      <button hidden={courseRoleId != User} onClick={() => {
-        registerToExam(this, props.id);
+      <h4 className="ExamName">{props.Exam.name}</h4>
+      <p className="ExamDescription">{props.Exam.description}</p>
+      <p className="Examduration">Dauer :{props.Exam.duration / 60}min.</p>
+      <p className="ExamDate">{new Date(props.Exam.date).toLocaleString()}</p>
+      <p className="ExamRoom">{props.Exam.location}</p>
+      <p className="ExamRegister">{
+        new Date(props.Exam.register_deadline).toLocaleString()}</p>
+      <button hidden={actual > register} onClick={() => {
+        registerToExam(props.component, props.Exam.id);
+        props.component.componentDidMount();
       }}>Anmelden</button>
     </div>
   );

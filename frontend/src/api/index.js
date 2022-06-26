@@ -642,7 +642,7 @@ export function uploadSolutionExam(caller, id, file) {
   fetch(Actualadress + `users/exams/${id}/submit`, requestOptions)
       .then(handleErrors)
       .then(
-          () => caller.setState({success: 1}), (reason) => alert(reason))
+          (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
 
