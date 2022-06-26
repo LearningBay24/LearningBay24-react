@@ -81,13 +81,15 @@ export class Kursuebersicht extends Component {
     }
 
     const CoursesTakenlist = [];
-    for (const Course of this.state.CoursesTaken) {
-      CoursesTakenlist.push(
-          <Link to={"/kursansicht/" + Course.id} className="Course">
-            <ShowCourse name={Course.name}
-              owner={Course.CourseOwner} description={Course.description}
-              created_at={Course.created_at} id={Course.id}
-              callback={null} /></Link>);
+    if (this.state.CoursesTaken != null) {
+      for (const Course of this.state.CoursesTaken) {
+        CoursesTakenlist.push(
+            <Link to={"/kursansicht/" + Course.id} className="Course">
+              <ShowCourse name={Course.name}
+                owner={Course.CourseOwner} description={Course.description}
+                created_at={Course.created_at} id={Course.id}
+                callback={null} /></Link>);
+      }
     }
 
     return (
