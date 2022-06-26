@@ -17,6 +17,11 @@ if (Testlocal) {
   Actualadress = Serveradress;
 }
 
+export let roleId = -1;
+export const Admin = 1;
+export const Moderator = 2;
+export const User = 3;
+
 
 async function handleErrors(response) {
   if (response.status == 401) {
@@ -219,6 +224,7 @@ export async function login(data, callback) {
 
   if (returnVal.ok) {
     callback();
+    role();
   }
 }
 
@@ -234,6 +240,7 @@ export function logout(callback) {
       .then(handleErrors)
       .then((response) => {
         callback();
+        roleId = 0;
       }, (reason) => alert(reason))
       .catch((error) => {
         console.error(error);
@@ -404,7 +411,6 @@ export function getUser(caller) {
 
 
 export async function role(callback, caller) {
-  let userrole = 0;
   await fetch(Actualadress + "users/cookie", {
     method: "GET",
     credentials: "include",
@@ -412,17 +418,11 @@ export async function role(callback, caller) {
       .then((response) => response.json())
       .then((data) => {
         // console.log(data.role_id);
-        userrole = data.role_id;
-        if (caller != null) {
-          caller.setState({Role: userrole});
-        } else {
-          callback(userrole);
-        }
+        roleId = data.role_id;
       })
       .catch((error) => {
         console.error(error);
       });
-  return userrole;
 }
 
 export function getAttendedExams(caller) {

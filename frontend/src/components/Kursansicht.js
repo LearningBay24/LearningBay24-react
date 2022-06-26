@@ -12,8 +12,8 @@ import "../css/Kursansicht.css";
 import {
   getCourse, getFiles, updateCourse, createExam, registerToExam,
   uploadFile, getFileByID, uploadLink, getExamsFromCourse, getSubmissionById,
-  createAppointment, deleteAppointment, editExam, getAppointments, getUser,
-  deleteExam,
+  createAppointment, deleteAppointment, editExam, getAppointments,
+  deleteExam, roleId, Admin,
 } from "../api";
 
 import PropTypes from "prop-types";
@@ -164,8 +164,6 @@ export class Kursansicht extends Component {
     await getCourse(this, this.state.id);
     getFiles(this, this.state.id);
     getAppointments(this, null);
-
-    await getUser(this);
 
 
     // get Submission for current course
@@ -433,7 +431,7 @@ export class Kursansicht extends Component {
               <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
               <Col xs={10} className="ColContent" >
                 <h1>{this.state.CurrentCourse.name}</h1>
-                <div className="AdminArea" hidden={!this.state.CourseAdmin}>
+                <div className="AdminArea" hidden={roleId != Admin}>
                   <button className="btnCreateCourse"
                     onClick={() =>
                       this.setState({CourseEdit: !this.state.CourseEdit})}>
