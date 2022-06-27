@@ -338,6 +338,7 @@ export class Kursansicht extends Component {
 
     // ________________________________________________________________________
 
+    console.log(roleId);
     return (
       <div className="Kursansicht">
         <ShowHeader />
@@ -348,7 +349,7 @@ export class Kursansicht extends Component {
               <Col className="ColContent" >
                 <h1>{this.state.CurrentCourse.name}</h1>
                 <div className="AdminArea"
-                  hidden={roleId != Admin || courseRoleId == User}>
+                  hidden={roleId != Admin && courseRoleId == User}>
                   <button className="btnCreateCourse"
                     onClick={() =>
                       this.setState({CourseEdit: !this.state.CourseEdit})}>
