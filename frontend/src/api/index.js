@@ -618,7 +618,6 @@ export function getFileFromExam(caller, examId, filename) {
         const url = window.URL.createObjectURL(data);
         const anchor = document.createElement("a");
         anchor.href = url;
-        // anchor.download = filename;
         anchor.click();
 
         window.URL.revokeObjectURL(url);
