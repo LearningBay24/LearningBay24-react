@@ -266,11 +266,11 @@ export class Klausurenuebersicht extends Component {
     }
 
     const examAttendeeList = [];
-    examAttendeeList.push(<option value={0}>Teilnehmer auswählen</option>);
+    examAttendeeList.push(<option value="0">Teilnehmer auswählen</option>);
     if (this.state.ExamAttendees != null) {
       for (const Attendee of this.state.ExamAttendees) {
         if (Attendee.user_id != -1) {
-          examAttendeeList.push(<option value={[Attendee.user_id]}>
+          examAttendeeList.push(<option value={Attendee.id}>
             {Attendee.title} {Attendee.firstname} {Attendee.surname},  Punkte:
             {Attendee.grade}
           </option>);
