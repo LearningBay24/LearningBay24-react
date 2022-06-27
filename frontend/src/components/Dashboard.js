@@ -16,7 +16,7 @@ export class Dashboard extends Component {
           <Container className="Container" >
             <Row className="Content" >
               <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" ><h1>Dashboard</h1></Col>
+              <Col className="ColContent" ><h1>Dashboard</h1></Col>
             </Row>
           </Container>
         </div>

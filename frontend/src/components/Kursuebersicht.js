@@ -96,10 +96,10 @@ export class Kursuebersicht extends Component {
       <div className="Kursuebersicht">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" >
+          <Container fluid className="Container" >
             <Row className="Content" >
               <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" >
+              <Col className="ColContent" >
                 <Row className="SectionContainer">
                   <h1>Kursübersicht</h1>
                   <div className="AdminArea">

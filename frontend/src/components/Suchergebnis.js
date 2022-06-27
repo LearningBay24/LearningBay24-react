@@ -121,10 +121,10 @@ function Suchergebnis(props) {
     <div className="Suchergebnis">
       <ShowHeader />
       <div className="Body">
-        <Container className="Container" >
+        <Container fluid className="Container" >
           <Row className="Content" >
             <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
-            <Col xs={10} className="ColContent" >
+            <Col className="ColContent" >
 
               <Dialog open={EnrollCourse}
                 onClose={toggleEnrollCourse}

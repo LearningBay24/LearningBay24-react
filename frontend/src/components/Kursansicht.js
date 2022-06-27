@@ -342,10 +342,10 @@ export class Kursansicht extends Component {
       <div className="Kursansicht">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" >
+          <Container fluid className="Container" >
             <Row className="Content" >
               <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" >
+              <Col className="ColContent" >
                 <h1>{this.state.CurrentCourse.name}</h1>
                 <div className="AdminArea"
                   hidden={roleId != Admin || courseRoleId == User}>
@@ -521,7 +521,7 @@ export class Kursansicht extends Component {
                       onChange={this.onInputChange}
                       name="NewExamDate">
                     </input>
-                    <label htmlFor="EditExamDuration">Dauer(in min):</label>
+                    <label htmlFor="EditExamDuration">Dauer (in min):</label>
                     <input type="number" pattern="[0-9]*" id="EditExamDuration"
                       placeholder="Dauer" onChange={this.onInputChange}
                       name="NewExamDuration">
@@ -633,7 +633,7 @@ function ShowUnregisteredExam(props) {
     <div className="Exam">
       <h4 className="ExamName">{props.Exam.name}</h4>
       <p className="ExamDescription">{props.Exam.description}</p>
-      <p className="Examduration">Dauer :{props.Exam.duration / 60}min.</p>
+      <p className="Examduration">Dauer: {props.Exam.duration / 60}min.</p>
       <p className="ExamDate">{new Date(props.Exam.date).toLocaleString()}</p>
       <p className="ExamRoom">{props.Exam.location}</p>
       <p className="ExamRegister">{

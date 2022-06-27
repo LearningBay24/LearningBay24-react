@@ -1,5 +1,4 @@
 .LoginContainer {
-    height: 100vh;
     background-color: var(--white);
 }
 
@@ -62,7 +61,6 @@
 
 #email, #password {
     padding-left: 0.5rem;
-    width: 100%;
 }
 
 .EmptySpace {
