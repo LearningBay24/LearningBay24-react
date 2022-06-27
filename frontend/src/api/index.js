@@ -5,7 +5,7 @@
  * data in the components state
  */
 
-const Testlocal = 0;
+const Testlocal = 1;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
 const Localadress = "http://learningbay24.local:8080/";
@@ -237,12 +237,11 @@ export async function login(data, callback) {
   };
 
   const returnVal = await fetch(Actualadress + "login", requestOptions);
-  await handleErrors(returnVal).then(null, (reason) => alert(reason));
-
-  if (returnVal.ok) {
-    callback();
+  await handleErrors(returnVal).then(async () => {
     await role();
+    callback();
   }
+  , (reason) => alert(reason));
 }
 
 export function logout(callback) {
