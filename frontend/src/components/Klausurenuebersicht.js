@@ -268,7 +268,7 @@ export class Klausurenuebersicht extends Component {
     examAttendeeList.push(<option value="0">Teilnehmer auswählen</option>);
     if (this.state.ExamAttendees != null) {
       for (const Attendee of this.state.ExamAttendees) {
-        if (Attendee.user_id != -1 && Attendee.attended == 0) {
+        if (Attendee.user_id != -1 && Attendee.attended == 1) {
           examAttendeeList.push(<option value={Attendee.id}>
             {Attendee.title} {Attendee.firstname} {Attendee.surname}
             , Punkte: {Attendee.grade} {Attendee.passed? "B":"NB"}
