@@ -120,9 +120,9 @@ export function getCourse(caller, id) {
   fetch(Actualadress + `courses/${id}`, {method: "GET",
     credentials: "include"})
       .then(handleErrors)
-      .then((data) => {
+      .then(async (data) => {
+        await courseRole(id);
         caller.setState({CurrentCourse: data});
-        courseRole(id);
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
