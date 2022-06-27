@@ -303,7 +303,7 @@ export class Kursansicht extends Component {
     if (this.state.Exams != null) {
       for (const Exam of this.state.Exams) {
         if (Exam.id != -1) {
-          Examlist.push(<Col xs={4} ><ShowUnregisteredExam
+          Examlist.push(<Col xs={6} ><ShowUnregisteredExam
             component={this}
             Exam={Exam}/></Col>);
         }
@@ -588,9 +588,9 @@ export class Kursansicht extends Component {
                   {Assignmentlist}
                 </div>
 
+                <h2>Klausuren</h2>
                 <div className="ExamSection"
                   hidden={this.state.CourseEdit}>
-                  <h2>Klausuren</h2>
                   {Examlist}
                 </div>
 
