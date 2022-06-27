@@ -601,10 +601,11 @@ function ShowCreatedExam(props) {
         onClick={() => {
           toggleGrade(props.Exam.id, props.Exam.name);
         }}>Bewerten</button>
-      <button hidden={actual < start || actual > end} onClick={() => {
-        toggleAttendency(props.Exam.id);
-        props.component.componentDidMount();
-      }}>Anwesenheit</button>
+      <button hidden={actual < start || actual > end || !props.exam.online}
+        onClick={() => {
+          toggleAttendency(props.Exam.id);
+          props.component.componentDidMount();
+        }}>Anwesenheit</button>
     </div>
   );
 }
