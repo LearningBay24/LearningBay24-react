@@ -588,7 +588,7 @@ export class Kursansicht extends Component {
                   {Assignmentlist}
                 </div>
 
-                <h2>Klausuren</h2>
+                <h2 hidden={this.state.CourseEdit}>Klausuren</h2>
                 <div className="ExamSection"
                   hidden={this.state.CourseEdit}>
                   {Examlist}
