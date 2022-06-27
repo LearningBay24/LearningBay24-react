@@ -39,7 +39,7 @@ async function handleErrors(response) {
     }
   } else {
     if (roleId == -1) {
-      role();
+      await role();
     }
     if (response.headers.get("Content-Length") != 0 &&
     response.headers.get("Content-Type") == "application/json; charset=utf-8") {
@@ -241,7 +241,7 @@ export async function login(data, callback) {
 
   if (returnVal.ok) {
     callback();
-    role();
+    await role();
   }
 }
 
