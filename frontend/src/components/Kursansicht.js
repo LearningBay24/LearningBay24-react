@@ -184,6 +184,26 @@ export class Kursansicht extends Component {
       online_ = this.state.NewExamOnline;
     }
     if (this.state.ChangeExamId === "-1") {
+      if (this.state.NewExamName === undefined) {
+        alert("Feld 'Name' darf nicht leer sein");
+        return;
+      }
+      if (this.state.NewExamDate === undefined) {
+        alert("Feld 'Datum' darf nicht leer sein");
+        return;
+      }
+      if (this.state.NewExamDuration === undefined) {
+        alert("Feld 'Dauer' darf nicht leer sein");
+        return;
+      }
+      if (this.state.NewExamRegister === undefined) {
+        alert("Feld 'Deadline Anmeldung' darf nicht leer sein");
+        return;
+      }
+      if (this.state.NewExamDeregister === undefined) {
+        alert("Feld 'Deadline Abmeldung' darf nicht leer sein");
+        return;
+      }
       const Exam = {
         name: this.state.NewExamName,
         description: this.state.NewExamDescription,
