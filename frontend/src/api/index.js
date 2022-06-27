@@ -579,7 +579,7 @@ export function uploadFileExam(caller, id, file) {
   console.log("(uploadFileExam): " + Actualadress + `exams/${id}/files`);
 
   const formData = new FormData();
-  formData.append(file.name, file);
+  formData.append("file", file);
 
   const requestOptions = {
     method: "POST",
