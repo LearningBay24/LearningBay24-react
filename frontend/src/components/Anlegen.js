@@ -25,10 +25,10 @@ export class Anlegen extends Component {
       <div className="Anlegen">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" >
+          <Container fluid className="Container" >
             <Row className="Content" >
               <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" >
+              <Col className="ColContent" >
                 <div className="AddUserContainer">
                   <h1>Nutzer Anlegen</h1>
                   <div className="AddUserSection">

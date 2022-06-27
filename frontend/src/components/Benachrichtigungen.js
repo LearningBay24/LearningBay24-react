@@ -16,7 +16,7 @@ export class Benachrichtigungen extends Component {
           <Container className="Container" >
             <Row className="Content" >
               <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" >
+              <Col className="ColContent" >
                 <h1>Benachrichtigungen</h1>
               </Col>
             </Row>

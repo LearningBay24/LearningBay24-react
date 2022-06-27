@@ -458,10 +458,10 @@ export class Klausurenuebersicht extends Component {
         </Dialog>
 
         <div className="Body">
-          <Container className="Container" >
+          <Container fluid className="Container" >
             <Row className="Content" >
               <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" >
+              <Col className="ColContent" >
                 <h1>Klausurenübersicht</h1>
                 <Row className="Section" hidden={createdList.length == 0}>
                   <h2>Erstellte Klausuren</h2>

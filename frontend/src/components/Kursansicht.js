@@ -342,10 +342,10 @@ export class Kursansicht extends Component {
       <div className="Kursansicht">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" >
+          <Container fluid className="Container" >
             <Row className="Content" >
               <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" >
+              <Col className="ColContent" >
                 <h1>{this.state.CurrentCourse.name}</h1>
                 <div className="AdminArea"
                   hidden={roleId != Admin || courseRoleId == User}>

@@ -105,10 +105,10 @@ export class Stundenplan extends Component {
       <div className="Stundenplan">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" >
+          <Container fluid className="Container" >
             <Row className="Content" >
               <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" >
+              <Col className="ColContent" >
                 <h1>Stundenplan</h1>
                 <FullCalendar ref={this.calendarRef}
                   plugins={[dayGridPlugin, timeGridPlugin]}
