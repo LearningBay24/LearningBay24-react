@@ -420,6 +420,11 @@ export class Klausurenuebersicht extends Component {
               Schließen
             </button>
             <button onClick={() => {
+              if (this.state.examAtendeeGrade > 100 ||
+                this.state.examAtendeeGrade < 0) {
+                alert("Note muss zwischen 0 und 100 liegen");
+                return;
+              }
               const object = {
                 grade: this.state.examAtendeeGrade.toString(),
                 passed: this.state.examAtendeePassed.toString(),
