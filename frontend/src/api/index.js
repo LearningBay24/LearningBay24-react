@@ -38,6 +38,9 @@ async function handleErrors(response) {
       throw await new Error("http-Status: " + response.status);
     }
   } else {
+    if (roleId == -1) {
+      role();
+    }
     if (response.headers.get("Content-Length") != 0 &&
     response.headers.get("Content-Type") == "application/json; charset=utf-8") {
       return response.json();
@@ -432,9 +435,14 @@ export async function role() {
       .then((response) => response.json())
       .then((data) => {
         roleId = data.role_id;
+        if (roleId != -1 && window.location.pathname == "/") {
+          history.replaceState(null, "", "/kursuebersicht");
+          location.reload();
+        }
       })
       .catch((error) => {
         console.error(error);
+        roleId = 0;
       });
 }
 

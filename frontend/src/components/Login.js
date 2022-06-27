@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Container, Row, Col} from "react-bootstrap";
 
-import {login} from "../api";
+import {login, role, roleId} from "../api";
 import {useNavigate} from "react-router-dom";
 import {ShowFooter} from "./Footer";
 
@@ -33,6 +33,10 @@ export function Login() {
   const onSuccessfulLogin = () => {
     navigate("/kursuebersicht");
   };
+
+  if (roleId != 0) {
+    role();
+  }
 
   return (
     <div className="LoginContainer">
