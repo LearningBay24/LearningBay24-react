@@ -5,7 +5,7 @@
  * data in the components state
  */
 
-const Testlocal = 1;
+const Testlocal = 0;
 
 const Serveradress = "https://learningbay24.de/api/v1/";
 const Localadress = "http://learningbay24.local:8080/";
@@ -256,7 +256,7 @@ export function logout(callback) {
       .then(handleErrors)
       .then((response) => {
         callback();
-        roleId = 0;
+        roleId = -1;
       }, (reason) => alert(reason))
       .catch((error) => {
         console.error(error);
