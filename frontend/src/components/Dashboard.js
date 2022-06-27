@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
-import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
 
 import "../css/Overlay.css";
@@ -20,7 +19,6 @@ export class Dashboard extends Component {
             </Row>
           </Container>
         </div>
-        <ShowFooter />
       </div>
     );
   }

@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
-import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
 import {getUser, logout} from "../api";
 
@@ -55,7 +54,6 @@ export class Profil extends Component {
             </Row>
           </Container>
         </div>
-        <ShowFooter />
       </div>
     );
   }

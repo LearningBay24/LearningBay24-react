@@ -2,7 +2,6 @@
 import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
-import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
 import {
   getAttendedExams, getCreatedExams, deleteExam, editExam, getFileFromExam,
@@ -492,7 +491,6 @@ export class Klausurenuebersicht extends Component {
             </Row>
           </Container>
         </div>
-        <ShowFooter />
       </div>
     );
   }

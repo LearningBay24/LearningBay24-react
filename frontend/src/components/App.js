@@ -1,7 +1,6 @@
 import {React} from "react";
 import {Link} from "react-router-dom";
 import {Container, Row, Col} from "react-bootstrap";
-import {ShowFooter} from "./Footer";
 import {ShowHeader} from "../components/Kopfzeile";
 
 import "../css/Overlay.css";
@@ -23,7 +22,6 @@ function App() {
           </Row>
         </Container>
       </div>
-      <ShowFooter />
     </div>
 
   );

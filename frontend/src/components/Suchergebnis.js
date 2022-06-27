@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
-import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
 import {useNavigate, useLocation} from "react-router-dom";
 
@@ -166,7 +165,6 @@ function Suchergebnis(props) {
           </Row>
         </Container>
       </div>
-      <ShowFooter />
     </div>
   );
 }

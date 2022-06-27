@@ -3,7 +3,6 @@ import {Container, Row, Col} from "react-bootstrap";
 
 import {login, role, roleId} from "../api";
 import {useNavigate} from "react-router-dom";
-import {ShowFooter} from "./Footer";
 
 import "../css/Overlay.css";
 import "../css/Login.css";
@@ -63,7 +62,6 @@ export function Login() {
         <br />
         <br />
       </div>
-      <ShowFooter />
     </div>
   );
 }

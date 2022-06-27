@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import {ShowNavbar} from "./App";
-import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
 
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
@@ -119,7 +118,6 @@ export class Stundenplan extends Component {
             </Row>
           </Container>
         </div>
-        <ShowFooter />
       </div>
     );
   }

@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
-import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
 import {getSubmissionFromUser} from "../api/index";
 import {ShowAssignment} from "./Abgabe";
@@ -116,7 +115,6 @@ export class Abgabenuebersicht extends Component {
             </Row>
           </Container>
         </div>
-        <ShowFooter/>
       </div>
     );
   }
