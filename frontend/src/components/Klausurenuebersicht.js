@@ -255,7 +255,7 @@ export class Klausurenuebersicht extends Component {
     if (this.state.CreatedExams != null) {
       for (const Exam of this.state.CreatedExams) {
         if (Exam.id != -1) {
-          createdList.push(<Col xs={4} ><ShowCreatedExam Exam={Exam}
+          createdList.push(<Col xs={6} ><ShowCreatedExam Exam={Exam}
             toggleAttendency = {this.toggleAttendency}
             toggleGrade = {this.toggleGradeExam}
             toggleEdit = {this.toggleEditExam}
@@ -463,7 +463,8 @@ export class Klausurenuebersicht extends Component {
               <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
               <Col className="ColContent" >
                 <h1>Klausurenübersicht</h1>
-                <Row className="Section" hidden={createdList.length == 0}>
+                <Row className="ExamListing"
+                  hidden={createdList.length == 0}>
                   <h2>Erstellte Klausuren</h2>
                   {createdList}
                 </Row>

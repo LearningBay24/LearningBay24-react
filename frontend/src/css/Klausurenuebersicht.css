@@ -8,6 +8,12 @@
     border-bottom: solid 2px var(--grey);
 }
 
+.ExamListing {
+    flex: auto;
+    flex-wrap: wrap;
+    display: flex;
+}
+
 .ExamWrapper {
     margin: 0;
     padding: 0;
@@ -20,7 +26,6 @@
     padding: 0.5rem;
 
     height: auto;
-    width: clamp(40rem, 70%, 50rem);
 
     color: var(--dark);
     font-weight: 600;
