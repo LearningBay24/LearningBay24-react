@@ -268,10 +268,10 @@ export class Klausurenuebersicht extends Component {
     examAttendeeList.push(<option value="0">Teilnehmer auswählen</option>);
     if (this.state.ExamAttendees != null) {
       for (const Attendee of this.state.ExamAttendees) {
-        if (Attendee.user_id != -1) {
+        if (Attendee.user_id != -1 && Attendee.attended == 0) {
           examAttendeeList.push(<option value={Attendee.id}>
-            {Attendee.title} {Attendee.firstname} {Attendee.surname},  Punkte:
-            {Attendee.grade}
+            {Attendee.title} {Attendee.firstname} {Attendee.surname}
+            , Punkte: {Attendee.grade} {Attendee.passed? "B":"NB"}
           </option>);
         }
       }
@@ -428,7 +428,7 @@ export class Klausurenuebersicht extends Component {
               gradeExam(this, this.state.examAtendeeId,
                   this.state.gradeExamId, object);
             }}>
-              bewerten
+              Bewerten
             </button>
           </DialogActions>
         </Dialog>
@@ -503,7 +503,9 @@ function ShowAttendedExam(props) {
       <h4 className="ExamName">{props.Exam.name}</h4>
       <p className="ExamOwner">Prüfer:{props.Exam.creator_id}</p>
       <p className="ExamDescription">{props.Exam.description}</p>
-      <p className="ExamDate">{new Date(props.Exam.date).toLocaleString()}</p>
+      <p className="ExamDate">
+        Datum: {new Date(props.Exam.date).toLocaleString()}
+      </p>
       <p className="ExamGraded">Punkte: {props.graded}
         {props.Exam.grade? "/100":null}</p>
       <p className="ExamFeedback">Feedback: {props.Exam.feedback}</p>
@@ -519,10 +521,12 @@ function ShowUnregisteredExam(props) {
       <h4 className="ExamName">{props.Exam.name}</h4>
       <p className="ExamDescription">{props.Exam.description}</p>
       <p className="Examduration">Dauer: {props.Exam.duration / 60}min.</p>
-      <p className="ExamDate">{new Date(props.Exam.date).toLocaleString()}</p>
-      <p className="ExamRoom">{props.Exam.location}</p>
-      <p className="ExamRegister">
-        {new Date(props.Exam.register_deadline).toLocaleString()}</p>
+      <p className="ExamDate">
+        Datum: {new Date(props.Exam.date).toLocaleString()}
+      </p>
+      <p className="ExamRoom">Raum: {props.Exam.location}</p>
+      <p className="ExamRegister"> Deadline Registrieren: {
+        new Date(props.Exam.register_deadline).toLocaleString()}</p>
       <button hidden={actual > register} onClick={() => {
         registerToExam(props.component, props.Exam.id);
         props.component.componentDidMount();
@@ -544,10 +548,11 @@ function ShowRegisteredExam(props) {
       <h4 className="ExamName">{props.Exam.name}</h4>
       <p className="ExamDescription">{props.Exam.description}</p>
       <p className="Examduration">Dauer: {props.Exam.duration / 60}min.</p>
-      <p className="ExamDate">{new Date(props.Exam.date).toLocaleString()}</p>
-      <p className="ExamRoom">{props.Exam.location}</p>
-      <p className="ExamDeregister">
-        {new Date(props.Exam.deregister_deadline).toLocaleString()}</p>
+      <p className="ExamDate">
+        Datum: {new Date(props.Exam.date).toLocaleString()}</p>
+      <p className="ExamRoom">Raum: {props.Exam.location}</p>
+      <p className="ExamDeregister"> Deadline Abmelden: {
+        new Date(props.Exam.deregister_deadline).toLocaleString()}</p>
       <button hidden={actual > deregister} onClick={() => {
         deregisterFromExam(props.component, props.Exam.id);
         props.component.componentDidMount();
@@ -564,7 +569,7 @@ function ShowRegisteredExam(props) {
         </button>
         <button onClick={() => {
           uploadSolutionExam(props.component, props.Exam.id, solution_);
-          props.component.componentDidMount();
+          props.component.render();
         }}>
           Lösung hochladen
         </button>
@@ -586,22 +591,24 @@ function ShowCreatedExam(props) {
       <h4 className="ExamName">{props.Exam.name}</h4>
       <p className="ExamDescription">{props.Exam.description}</p>
       <p className="Examduration">Dauer: {props.Exam.duration / 60}min</p>
-      <p className="ExamDate">{new Date(props.Exam.date).toLocaleString()}</p>
-      <p className="ExamRoom">{props.Exam.location}</p>
+      <p className="ExamDate">
+        Datum: {new Date(props.Exam.date).toLocaleString()}
+      </p>
+      <p className="ExamRoom">Raum: {props.Exam.location}</p>
 
       <button hidden={actual > start} onClick={() => {
         toggleEdit(props.Exam.id);
         props.component.componentDidMount();
       }}>Bearbeiten</button>
-      <button onClick={() => {
+      <button hidden={actual > start} onClick={() => {
         deleteExam(props.component, props.Exam.id);
         props.component.componentDidMount();
       }}>Löschen</button>
-      <button
+      <button hidden={actual < end}
         onClick={() => {
           toggleGrade(props.Exam.id, props.Exam.name);
         }}>Bewerten</button>
-      <button hidden={actual < start || actual > end || !props.exam.online}
+      <button hidden={actual < start || actual > end || !props.Exam.online}
         onClick={() => {
           toggleAttendency(props.Exam.id);
           props.component.componentDidMount();
