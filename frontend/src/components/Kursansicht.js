@@ -23,35 +23,8 @@ export class Kursansicht extends Component {
     super(props);
     this.state = {
       id: parseInt(props.id),
-
-      // ______________________________________________________________________
-      // this is temporary example data
-      // ______________________________________________________________________
-
-      CourseAdmin: true, // true if active user has adminrights
       CourseEdit: false, // true if admin is editing course
-      Course: {
 
-        name: "",
-
-        CourseOwner: {LastName: "", FirstName: "", id: ""},
-        CourseParticipants: [{FirstName: "", LastName: "", Role: "", id: ""}],
-        CourseTutors: [{FirstName: "", LastName: "", Role: "", id: ""}],
-
-
-        CourseAppointments: [],
-
-        CourseBio: "",
-        CourseCreatedAt: "",
-        CourseForum: "",
-
-
-        CourseMaterial: [],
-        CourseAssignments: [],
-
-        CourseSurveys: [],
-        CourseExams: [],
-      },
       // ______________________________________________________________________
 
       // variables for editing course
@@ -73,25 +46,6 @@ export class Kursansicht extends Component {
         updated_at: "",
       },
 
-      Users: [{
-        id: 0,
-        title: "",
-        first_name: "",
-        last_name: "",
-        email: "",
-        password: "",
-        role_id: "",
-        graduation_level: "",
-        semester: "",
-        phone_number: "",
-        residence: "",
-        profile_picture: "",
-        biography: "",
-        preferred_language_id: "",
-        created_at: "",
-        updated_at: "",
-        deleted_at: "",
-      }],
 
       Appointments: [{
         id: 0,
@@ -130,24 +84,6 @@ export class Kursansicht extends Component {
       NewAppointmentDuration: "90",
       NewAppointmentLocation: "",
       NewAppointmentOnline: "0",
-
-      // Exams: [{
-      //   id: -1,
-      //   name: "",
-      //   description: "",
-      //   date: "",
-      //   duration: "",
-      //   online: "",
-      //   location: "",
-      //   course_id: "",
-      //   creator_id: "",
-      //   graded: "",
-      //   register_deadline: "",
-      //   deregister_deadline: "",
-      //   created_at: "",
-      //   updated_at: "",
-      //   deleted_at: "",
-      // }],
 
     };
 
@@ -252,18 +188,16 @@ export class Kursansicht extends Component {
         name: this.state.NewExamName,
         description: this.state.NewExamDescription,
         date: new Date(
-            (new Date(this.state.NewExamDate).getTime() +
-            3600000 * 2)).toISOString().split(".")[0] + "Z",
+            this.state.NewExamDate)
+            .toISOString().split(".")[0] + "Z",
         duration: (this.state.NewExamDuration * 60).toString(),
         location: this.state.NewExamLocation,
         online: online_,
         course_id: this.state.CurrentCourse.id.toString(),
-        register_deadline: new Date(
-            (new Date(this.state.NewExamRegister).getTime() +
-            3600000 * 2)).toISOString().split(".")[0] + "Z",
-        deregister_deadline: new Date(
-            (new Date(this.state.NewExamDeregister).getTime() +
-            3600000 * 2)).toISOString().split(".")[0] + "Z",
+        register_deadline: new Date(this.state.NewExamRegister)
+            .toISOString().split(".")[0] + "Z",
+        deregister_deadline: new Date(this.state.NewExamDeregister)
+            .toISOString().split(".")[0] + "Z",
       };
       await createExam(this, Exam);
       this.componentDidMount();
@@ -272,19 +206,19 @@ export class Kursansicht extends Component {
       let registerStr = "";
       let deregisterStr = "";
       if (this.state.NewExamDate != null) {
-        dateStr = new Date(
-            (new Date(this.state.NewExamDate).getTime() + 3600000 * 2))
-            .toISOString().split(".")[0] + "Z";
+        dateStr =
+            new Date(this.state.NewExamDate)
+                .toISOString().split(".")[0] + "Z";
       }
       if (this.state.NewExamRegister != null) {
-        registerStr = new Date(
-            (new Date(this.state.NewExamRegister).getTime() +
-            3600000 * 2)).toISOString().split(".")[0] + "Z";
+        registerStr =
+            new Date(this.state.NewExamRegister)
+                .toISOString().split(".")[0] + "Z";
       }
       if (this.state.NewExamDeregister != null) {
-        deregisterStr = new Date(
-            (new Date(this.state.NewExamDeregister).getTime() +
-            3600000 * 2)).toISOString().split(".")[0] + "Z";
+        deregisterStr =
+            new Date(this.state.NewExamDeregister)
+                .toISOString().split(".")[0] + "Z";
       }
       const object = {
         id: this.state.ChangeExamId,
@@ -304,8 +238,6 @@ export class Kursansicht extends Component {
 
 
   render() {
-    console.log(this.state.user_id);
-    console.log(this.state.CurrentCourse);
     // ________________________________________________________________________
     // Lists for general view
     // ________________________________________________________________________
@@ -339,16 +271,12 @@ export class Kursansicht extends Component {
     }
 
     const Assignmentlist = [];
-    for (const Assignment of this.state.Course.CourseAssignments) {
-      Assignmentlist.push(<ShowAssignment Name={Assignment.Name}
-        Content={Assignment.Content} Date={Assignment.Date}
-        Deadline={Assignment.Deadline} className="Assignment" />);
-    }
-
-    const Surveylist = [];
-    for (const Survey of this.state.Course.CourseSurveys) {
-      Surveylist.push(<ShowSurvey Name={Survey.Name}
-        Content={Survey.Content} className="Survey" />);
+    if (this.state.Assignments != null) {
+      for (const Assignment of this.state.Assignments) {
+        Assignmentlist.push(<ShowAssignment Name={Assignment.Name}
+          Content={Assignment.Content} Date={Assignment.Date}
+          Deadline={Assignment.Deadline} className="Assignment" />);
+      }
     }
 
     const Examlist = [];
@@ -356,16 +284,8 @@ export class Kursansicht extends Component {
       for (const Exam of this.state.Exams) {
         if (Exam.id != -1) {
           Examlist.push(<Col xs={4} ><ShowUnregisteredExam
-            id={Exam.id}
-            name={Exam.name}
-            creator_id={Exam.creator_id}
-            description={Exam.description}
-            register_deadline=
-              {new Date(Exam.register_deadline).toLocaleString()}
-            deregister_deadline=
-              {new Date(Exam.deregister_deadline).toLocaleString()}
-            date={new Date(Exam.date).toLocaleString()}
-            duration={Exam.duration / 60} /></Col>);
+            component={this}
+            Exam={Exam}/></Col>);
         }
       }
     }
@@ -386,26 +306,22 @@ export class Kursansicht extends Component {
       }
     }
 
-    const EditParticipants = [];
-    for (const User of this.state.Users) {
-      EditParticipants.push(<option value={User.id}>{User.first_name}
-        {User.last_name} {User.role_id}</option>);
-    }
-
     const EditMaterial = [];
     EditMaterial.push(<option value="-1">Material hinzufügen</option>);
-    if (this.state.Course.Material != null) {
-      for (const Mat of this.state.Course.Material) {
-        EditMaterial.push(<option value={Mat.id}>{Mat.Name}</option>);
+    if (this.state.Material != null) {
+      for (const Mat of this.state.Material) {
+        EditMaterial.push(<option value={Mat.id}>{Mat.name}</option>);
       }
     }
 
     const EditAssignment = [];
     EditAssignment.push(<option value="-1">Neue Aufgabe</option>);
-    for (const Assignment of this.state.Course.CourseAssignments) {
-      EditAssignment.push(<option value={Assignment.id}>
-        {Assignment.Name} {""}
-        {new Date(Assignment.date).toLocaleString()}</option>);
+    if (this.state.Assignments != null) {
+      for (const Assignment of this.state.Assignments) {
+        EditAssignment.push(<option value={Assignment.id}>
+          {Assignment.name} {""}
+          {new Date(Assignment.date).toLocaleString()}</option>);
+      }
     }
 
     const EditExam = [];
@@ -711,32 +627,24 @@ ShowAssignment.propTypes = {
 };
 
 function ShowUnregisteredExam(props) {
+  const actual = (new Date().getTime());
+  const register = (new Date(props.Exam.register_deadline).getTime());
   return (
     <div className="Exam">
-      <h4 className="ExamName">{props.name}</h4>
-      <p className="ExamDescription">{props.description}</p>
-      <p className="Examduration">Dauer: {props.duration}min.</p>
-      <p className="ExamDate">{props.date}</p>
-      <p className="ExamRoom">{props.location}</p>
-      <button hidden={courseRoleId != User} onClick={() => {
-        registerToExam(this, props.id);
+      <h4 className="ExamName">{props.Exam.name}</h4>
+      <p className="ExamDescription">{props.Exam.description}</p>
+      <p className="Examduration">Dauer :{props.Exam.duration / 60}min.</p>
+      <p className="ExamDate">{new Date(props.Exam.date).toLocaleString()}</p>
+      <p className="ExamRoom">{props.Exam.location}</p>
+      <p className="ExamRegister">{
+        new Date(props.Exam.register_deadline).toLocaleString()}</p>
+      <button hidden={actual > register} onClick={() => {
+        registerToExam(props.component, props.Exam.id);
+        props.component.componentDidMount();
       }}>Anmelden</button>
     </div>
   );
 }
-
-function ShowSurvey(props) {
-  return (
-    <div className='SurveyContainer'>
-      <h6>{props.Name}</h6>
-      <a href={props.Content} target='_blank'
-        rel='noopener noreferrer'>{props.Content}</a>
-    </div>);
-}
-ShowSurvey.propTypes = {
-  Name: PropTypes.string.isRequired,
-  Content: PropTypes.string.isRequired,
-};
 
 function Wrapper(props) {
   const params = useParams();

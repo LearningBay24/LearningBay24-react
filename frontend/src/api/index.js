@@ -572,7 +572,7 @@ export function uploadFileExam(caller, id, file) {
   console.log("(uploadFileExam): " + Actualadress + `exams/${id}/files`);
 
   const formData = new FormData();
-  formData.append("file", file);
+  formData.append(file.name, file);
 
   const requestOptions = {
     method: "POST",
@@ -641,7 +641,7 @@ export function uploadSolutionExam(caller, id, file) {
   fetch(Actualadress + `users/exams/${id}/submit`, requestOptions)
       .then(handleErrors)
       .then(
-          () => caller.setState({success: 1}), (reason) => alert(reason))
+          (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
 
