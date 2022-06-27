@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
-import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
 import {Link} from "react-router-dom";
 
@@ -161,7 +160,6 @@ export class Kursuebersicht extends Component {
             </Row>
           </Container>
         </div>
-        <ShowFooter />
       </div>
     );
   }

@@ -3,7 +3,6 @@ import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
 import {useParams} from "react-router-dom";
-import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
 
 import "../css/Overlay.css";
@@ -184,6 +183,26 @@ export class Kursansicht extends Component {
       online_ = this.state.NewExamOnline;
     }
     if (this.state.ChangeExamId === "-1") {
+      if (this.state.NewExamName === undefined) {
+        alert("Feld 'Name' darf nicht leer sein");
+        return;
+      }
+      if (this.state.NewExamDate === undefined) {
+        alert("Feld 'Datum' darf nicht leer sein");
+        return;
+      }
+      if (this.state.NewExamDuration === undefined) {
+        alert("Feld 'Dauer' darf nicht leer sein");
+        return;
+      }
+      if (this.state.NewExamRegister === undefined) {
+        alert("Feld 'Deadline Anmeldung' darf nicht leer sein");
+        return;
+      }
+      if (this.state.NewExamDeregister === undefined) {
+        alert("Feld 'Deadline Abmeldung' darf nicht leer sein");
+        return;
+      }
       const Exam = {
         name: this.state.NewExamName,
         description: this.state.NewExamDescription,
@@ -283,7 +302,7 @@ export class Kursansicht extends Component {
     if (this.state.Exams != null) {
       for (const Exam of this.state.Exams) {
         if (Exam.id != -1) {
-          Examlist.push(<Col xs={4} ><ShowUnregisteredExam
+          Examlist.push(<Col xs={6} ><ShowUnregisteredExam
             component={this}
             Exam={Exam}/></Col>);
         }
@@ -569,9 +588,9 @@ export class Kursansicht extends Component {
                   {Assignmentlist}
                 </div>
 
+                <h2>Klausuren</h2>
                 <div className="ExamSection"
                   hidden={this.state.CourseEdit}>
-                  <h2>Klausuren</h2>
                   {Examlist}
                 </div>
 
@@ -579,7 +598,6 @@ export class Kursansicht extends Component {
             </Row>
           </Container>
         </div>
-        <ShowFooter />
       </div>
     );
   }
@@ -635,9 +653,10 @@ function ShowUnregisteredExam(props) {
       <h4 className="ExamName">{props.Exam.name}</h4>
       <p className="ExamDescription">{props.Exam.description}</p>
       <p className="Examduration">Dauer: {props.Exam.duration / 60}min.</p>
-      <p className="ExamDate">{new Date(props.Exam.date).toLocaleString()}</p>
-      <p className="ExamRoom">{props.Exam.location}</p>
-      <p className="ExamRegister">{
+      <p className="ExamDate">Datum: {new Date(props.Exam.date)
+          .toLocaleString()}</p>
+      <p className="ExamRoom">Raum: {props.Exam.location}</p>
+      <p className="ExamRegister">Deadline Anmeldung: {
         new Date(props.Exam.register_deadline).toLocaleString()}</p>
       <button hidden={actual > register} onClick={() => {
         registerToExam(props.component, props.Exam.id);
