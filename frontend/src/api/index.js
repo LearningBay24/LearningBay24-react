@@ -375,7 +375,7 @@ export function getFileByID(caller, courseID, fileId, filename) {
   `courses/${courseID}/files/${fileId}`);
 
   fetch(Actualadress + `courses/${courseID}/files/${fileId}`, {method: "GET",
-    credentials: "include"})
+    credentials: "include", headers: {"Cache-Control": "no-cache"}})
       .then(handleErrors)
       .then((result) => {
         return result.blob();
@@ -614,7 +614,7 @@ export function getFileFromExam(caller, examId, filename) {
   `exams/${examId}/files`);
 
   fetch(Actualadress + `exams/${examId}/files`, {method: "GET",
-    credentials: "include"})
+    credentials: "include", headers: {"Cache-Control": "no-cache"}})
       .then(handleErrors)
       .then((result) => {
         if (result.status != 200) {
@@ -736,7 +736,7 @@ export function getExamSubmission(caller, userId, examId, filename) {
 
   fetch(Actualadress +
     `usersx/${userId}/exams/${examId}/files`, {method: "GET",
-    credentials: "include"})
+    credentials: "include", headers: {"Cache-Control": "no-cache"}})
       .then(handleErrors)
       .then((result) => {
         if (result.status != 200) {
