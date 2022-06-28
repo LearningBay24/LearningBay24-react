@@ -60,10 +60,10 @@ export function getMyCourses(caller) {
 
   fetch(Actualadress + "users/createdcourses", {method: "GET",
     credentials: "include"})
-      .then((response) => response.json())
+      .then(handleErrors)
       .then((data) => {
         caller.setState({MyCourses: data});
-      })
+      }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
 
@@ -121,7 +121,7 @@ export function getCourse(caller, id) {
       .then(async (data) => {
         await courseRole(id);
         caller.setState({CurrentCourse: data});
-      })
+      }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
 
@@ -136,10 +136,10 @@ export function getUsersInCourse(caller, id) {
 
   fetch(Actualadress + `courses/${id}/users`, {method: "GET",
     credentials: "include"})
-      .then((response) => response.json())
+      .then(handleErrors)
       .then((data) => {
         caller.setState({Users: data});
-      })
+      }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
 
@@ -216,7 +216,7 @@ export function deleteCourse(caller, id) {
 
   fetch(Actualadress + `courses/${id}`, {method: "DELETE",
     credentials: "include"})
-      .then((response) => response.json())
+      .then(handleErrors)
       .then((data) => {
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
@@ -240,7 +240,7 @@ export async function login(data, callback) {
   , (reason) => alert(reason));
 }
 
-export function logout(caller) {
+export function logout(callback) {
   // console.log("(logout): " + Actualadress + "logout");
 
   const requestOptions = {
@@ -249,7 +249,9 @@ export function logout(caller) {
   };
 
   fetch(Actualadress + "logout", requestOptions)
+      .then(handleErrors)
       .then((response) => {
+        callback();
         roleId = -1;
       }, (reason) => alert(reason))
       .catch((error) => {
@@ -367,11 +369,12 @@ export function deleteMaterial(caller, courseId, fileId) {
 export function getFiles(caller, id) {
   // console.log("(getFiles): " + Actualadress + `courses/${id}/files`);
 
-  fetch(Actualadress + `courses/${id}/files`, {method: "GET"})
-      .then((response) => response.json())
+  fetch(Actualadress + `courses/${id}/files`, {method: "GET",
+    credentials: "include"})
+      .then(handleErrors)
       .then((data) => {
         caller.setState({Material: data});
-      })
+      }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
 
@@ -600,6 +603,24 @@ export function uploadFileExam(caller, id, file) {
       .catch((error) => console.error(error));
 }
 
+export function uploadSolutionExam(caller, id, file) {
+  console.log("(uploadFile): " + `Actualadress + users/exams/${id}/submit`);
+  console.log(file);
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const requestOptions = {
+    method: "POST",
+    body: formData,
+    credentials: "include",
+  };
+
+  fetch(Actualadress + `users/exams/${id}/submit`, requestOptions)
+      .then(handleErrors)
+      .then(null, (reason) => alert(reason))
+      .catch((error) => console.error(error));
+}
 
 export async function deleteExam(caller, examId) {
   console.log("(deleteExam): " + Actualadress +
@@ -637,12 +658,6 @@ export function getFileFromExam(caller, examId, filename) {
       .catch((error) => console.error(error));
 }
 
-/*
-function startOfWeek(date) {
-  const diff = date.getDate() - date.getDay() +
-    (date.getDay() === 0 ? -6 : 1)-1;
-  return new Date(date.setDate(diff));
-}
 
 export function registerToExam(caller, examId) {
   console.log("(registerToExam): " + Actualadress +
@@ -745,7 +760,7 @@ export function getExamSubmission(caller, userId, examId, filename) {
       })
       .catch((error) => console.error(error));
 }
-*/
+
 
 export function createAppointment(caller, object) {
   console.log("(createAppointment): " + Actualadress + "appointments/add");
@@ -794,124 +809,6 @@ export function deleteAppointment(caller, appointmentId) {
           (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
-
-
-export function registerToExam(caller, examId) {
-  // console.log("(registerToExam): " + Actualadress +
-  // `users/exams/${examId}`);
-
-  fetch(Actualadress + `users/exams/${examId}`, {method: "POST",
-    credentials: "include"})
-      .then((response) => {
-        if (response.status != 200) {
-          alert("error");
-        }
-      })
-      .catch((error) => console.error(error));
-}
-
-export function deregisterFromExam(caller, examId) {
-  // console.log("(deregisterFromExam): " + Actualadress +
-  // `users/exams/${examId}`);
-
-  fetch(Actualadress + `users/exams/${examId}`, {method: "DELETE",
-    credentials: "include"})
-      .then((response) => {
-        if (response.status != 204) {
-          alert("error");
-        }
-      })
-      .catch((error) => console.error(error));
-}
-
-export function getExamAttendees(caller, examId) {
-  // console.log("(getExamAttendees): " + Actualadress +
-  // `exams/${examId}/users/attended`);
-
-  fetch(Actualadress + `exams/${examId}/users`, {method: "GET",
-    credentials: "include"})
-      .then((response) => response.json())
-      .then((data) => {
-        // console.log(data);
-        caller.setState({ExamAttendees: data});
-      })
-      .catch((error) => console.error(error));
-}
-
-export function getExamRegistered(caller, examId) {
-  // console.log("(getExamregistered): " + Actualadress +
-  // `exams/${examId}/users`);
-
-  fetch(Actualadress + `exams/${examId}/users`, {method: "GET",
-    credentials: "include"})
-      .then((response) => response.json())
-      .then((data) => {
-        // console.log(data);
-        caller.setState({ExamRegistered: data});
-      })
-      .catch((error) => console.error(error));
-}
-
-export function gradeExam(caller, userId, examId, object) {
-  // console.log("(gradeExam): " + Actualadress +
-  // `users/${userId}/exams/${examId}/grade`);
-
-  const requestOptions = {
-    method: "PATCH",
-    body: JSON.stringify(object),
-    credentials: "include",
-  };
-
-  fetch(Actualadress + `users/${userId}/exams/${examId}/grade`, requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        // console.log(data);
-      })
-      .catch((error) => console.error(error));
-}
-
-export function setAttendency(caller, userId, examId) {
-  // console.log("(setAttendency): " + Actualadress +
-  // `users/${userId}/exams/${examId}/attend`);
-
-  fetch(Actualadress + `users/${userId}/exams/${examId}/attend`,
-      {method: "PATCH", credentials: "include"})
-      .then((response) => {
-        if (response.status != 200) {
-          alert("error");
-        }
-      })
-      .catch((error) => console.error(error));
-}
-
-export function getExamSubmission(caller, userId, examId, filename) {
-  // console.log("(getExamSubmission): " + Actualadress +
-  // `usersx/exams/${userId}/${examId}/files`);
-
-  fetch(Actualadress +
-    `usersx/${userId}/exams/${examId}/files`, {method: "GET",
-    credentials: "include"})
-      .then(handleErrors)
-      .then((result) => {
-        if (result.status != 200) {
-          throw new Error("Bad server response");
-        }
-        return result.blob();
-      }, (reason) => alert(reason))
-      .then((data) => {
-        // console.log(data);
-        const url = window.URL.createObjectURL(data);
-        const anchor = document.createElement("a");
-        anchor.href = url;
-        anchor.download = filename;
-        anchor.click();
-
-        window.URL.revokeObjectURL(url);
-        document.removeChild(anchor);
-      })
-      .catch((error) => console.error(error));
-}
-
 
 export function getSubmissionsFromCourse(caller, courseId) {
   fetch(Actualadress + `courses/${courseId}/submissions`, {method: "GET",
