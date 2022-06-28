@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
-import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
 import {Link} from "react-router-dom";
 
@@ -11,7 +10,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import {getMyCourses, postNewCourse} from "../api";
+import {getMyCourses, getTakenCourses, Moderator,
+  postNewCourse, roleId} from "../api";
 import {ShowCourse} from "../components/Kurs";
 
 import "../css/Overlay.css";
@@ -24,11 +24,12 @@ export class Kursuebersicht extends Component {
 
     this.state = {
       NewCourseID: 0,
-      UserRights: true, // true if active user can create courses
       MyCourses: [],
       CoursesTaken: [],
       createCourse: false,
-      NewCourse: {name: "", user_id: "", description: "", enroll_key: ""},
+
+      NewBio: "", // Defaultvalue for creating new Course
+      NewKey: "", // Defaultvalue for creating new Course
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onCreateCourse = this.onCreateCourse.bind(this);
@@ -45,14 +46,14 @@ export class Kursuebersicht extends Component {
     });
   }
 
-  onCreateCourse() {
+  async onCreateCourse() {
     const NewCourse = {
       name: this.state.NewName,
       description: this.state.NewBio,
       enroll_key: this.state.NewKey,
     };
 
-    postNewCourse(this, NewCourse);
+    await postNewCourse(this, NewCourse);
     this.toggleCreateCourse();
     getMyCourses(this);
     this.componentDidMount();
@@ -61,6 +62,7 @@ export class Kursuebersicht extends Component {
 
   componentDidMount() {
     getMyCourses(this);
+    getTakenCourses(this);
   }
 
 
@@ -78,32 +80,35 @@ export class Kursuebersicht extends Component {
     }
 
     const CoursesTakenlist = [];
-    for (const Course of this.state.CoursesTaken) {
-      CoursesTakenlist.push(
-          <Link to={"/kursansicht/" + Course.id} className="Course">
-            <ShowCourse name={Course.name}
-              owner={Course.CourseOwner} description={Course.description}
-              created_at={Course.created_at} id={Course.id}
-              callback={null} /></Link>);
+    if (this.state.CoursesTaken != null) {
+      for (const Course of this.state.CoursesTaken) {
+        CoursesTakenlist.push(
+            <Link to={"/kursansicht/" + Course.id} className="Course">
+              <ShowCourse name={Course.name}
+                owner={Course.CourseOwner} description={Course.description}
+                created_at={Course.created_at} id={Course.id}
+                callback={null} /></Link>);
+      }
     }
 
     return (
       <div className="Kursuebersicht">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" >
+          <Container fluid className="Container" >
             <Row className="Content" >
               <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" >
+              <Col className="ColContent" >
                 <Row className="SectionContainer">
                   <h1>Kursübersicht</h1>
                   <div className="AdminArea">
-                    <button className="btnCreateCourse"
+                    <button hidden={roleId > Moderator}
+                      className="btnCreateCourse"
                       onClick={this.toggleCreateCourse}>
                       Kurs erstellen
                     </button>
                   </div>
-                  <Row className="Section" hidden={!this.state.UserRights}>
+                  <Row className="Section" hidden={roleId > Moderator}>
                     <h2>Meine Kurse</h2>
                     <div className="CourseList">
                       {MyCourseslist}
@@ -155,7 +160,6 @@ export class Kursuebersicht extends Component {
             </Row>
           </Container>
         </div>
-        <ShowFooter />
       </div>
     );
   }

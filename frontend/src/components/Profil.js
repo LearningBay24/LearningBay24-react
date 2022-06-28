@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
-import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
 import {getUser, logout} from "../api";
 
@@ -35,10 +34,10 @@ export class Profil extends Component {
       <div className="Profil">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" >
+          <Container fluid className="Container" >
             <Row className="Content" >
               <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" ><h1>Profil</h1>
+              <Col className="ColContent" ><h1>Profil</h1>
                 <p>Name :{this.state.title} {this.state.surname},
                   {this.state.firstname}</p>
                 <p>Email: {this.state.email}</p>
@@ -55,7 +54,6 @@ export class Profil extends Component {
             </Row>
           </Container>
         </div>
-        <ShowFooter />
       </div>
     );
   }

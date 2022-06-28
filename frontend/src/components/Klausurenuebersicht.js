@@ -2,7 +2,6 @@
 import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
-import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
 import {
   getAttendedExams, getCreatedExams, deleteExam, editExam, getFileFromExam,
@@ -109,6 +108,7 @@ export class Klausurenuebersicht extends Component {
         course_id: "",
         creator_id: "",
         graded: "",
+        grade: null,
         register_deadline: "",
         deregister_deadline: "",
         created_at: "",
@@ -203,6 +203,7 @@ export class Klausurenuebersicht extends Component {
       for (const Exam of this.state.UnregisteredExams) {
         if (Exam.id != -1) {
           unregisteredList.push(<Col xs={4} ><ShowUnregisteredExam
+            component={this}
             Exam={Exam}/></Col>);
         }
       }
@@ -213,6 +214,7 @@ export class Klausurenuebersicht extends Component {
       for (const Exam of this.state.RegisteredExams) {
         if (Exam.id != -1) {
           registeredList.push(<Col xs={4} ><ShowRegisteredExam Exam={Exam}
+            component={this}
             solution={null}/></Col>);
         }
       }
@@ -228,7 +230,9 @@ export class Klausurenuebersicht extends Component {
             grade = "Noch nicht bewertet";
           }
           attendedList.push(<Col xs={4} ><ShowAttendedExam Exam={Exam}
-            graded={grade}/></Col>);
+            graded={grade}
+            component={this}
+          /></Col>);
         }
       }
     }
@@ -238,7 +242,9 @@ export class Klausurenuebersicht extends Component {
       for (const Exam of this.state.PassedExams) {
         if (Exam.id != -1) {
           passedList.push(<Col xs={4} >
-            <ShowAttendedExam Exam={Exam} graded={Exam.grade}/>
+            <ShowAttendedExam Exam={Exam} graded={Exam.grade}
+              component={this}
+            />
           </Col>);
         }
       }
@@ -248,23 +254,24 @@ export class Klausurenuebersicht extends Component {
     if (this.state.CreatedExams != null) {
       for (const Exam of this.state.CreatedExams) {
         if (Exam.id != -1) {
-          createdList.push(<Col xs={4} ><ShowCreatedExam Exam={Exam}
+          createdList.push(<Col xs={6} ><ShowCreatedExam Exam={Exam}
             toggleAttendency = {this.toggleAttendency}
             toggleGrade = {this.toggleGradeExam}
-            toggleEdit = {this.toggleEditExam} />
+            toggleEdit = {this.toggleEditExam}
+            component={this} />
           </Col>);
         }
       }
     }
 
     const examAttendeeList = [];
-    examAttendeeList.push(<option value={0}>Teilnehmer auswählen</option>);
+    examAttendeeList.push(<option value="0">Teilnehmer auswählen</option>);
     if (this.state.ExamAttendees != null) {
       for (const Attendee of this.state.ExamAttendees) {
-        if (Attendee.user_id != -1) {
-          examAttendeeList.push(<option value={[Attendee.user_id]}>
-            {Attendee.title} {Attendee.firstname} {Attendee.surname},  Punkte:
-            {Attendee.grade}
+        if (Attendee.user_id != -1 && Attendee.attended == 1) {
+          examAttendeeList.push(<option value={Attendee.id}>
+            {Attendee.title} {Attendee.firstname} {Attendee.surname}
+            , Punkte: {Attendee.grade} {Attendee.passed? "B":"NB"}
           </option>);
         }
       }
@@ -275,7 +282,7 @@ export class Klausurenuebersicht extends Component {
     if (this.state.ExamRegistered != null) {
       for (const Attendee of this.state.ExamRegistered) {
         if (Attendee.user_id != -1) {
-          examRegisteredList.push(<option value={Attendee.user_id}>
+          examRegisteredList.push(<option value={Attendee.id}>
             {Attendee.title} {Attendee.firstname} {Attendee.surname}
           </option>);
         }
@@ -309,7 +316,7 @@ export class Klausurenuebersicht extends Component {
                 name="NewExamDate">
               </input>
               <label htmlFor="EditExamDuration">Dauer (in min):</label>
-              <input type="Text" id="EditExamDuration"
+              <input type="number" min="0" id="EditExamDuration"
                 placeholder="Dauer" onChange={this.onInputChange}
                 name="NewExamDuration">
               </input>
@@ -350,19 +357,19 @@ export class Klausurenuebersicht extends Component {
               let registerStr = "";
               let deregisterStr = "";
               if (this.state.NewExamDate != null) {
-                dateStr = new Date(
-                    (new Date(this.state.NewExamDate).getTime() + 3600000 * 2))
-                    .toISOString().split(".")[0]+"Z";
+                dateStr =
+                    new Date(this.state.NewExamDate)
+                        .toISOString().split(".")[0]+"Z";
               }
               if (this.state.NewExamRegister != null) {
-                registerStr = new Date(
-                    (new Date(this.state.NewExamRegister).getTime() +
-                    3600000 * 2)).toISOString().split(".")[0]+"Z";
+                registerStr =
+                    new Date(this.state.NewExamRegister)
+                        .toISOString().split(".")[0]+"Z";
               }
               if (this.state.NewExamDeregister != null) {
-                deregisterStr = new Date(
-                    (new Date(this.state.NewExamDeregister).getTime() +
-                    3600000 * 2)).toISOString().split(".")[0]+"Z";
+                deregisterStr =
+                    new Date(this.state.NewExamDeregister)
+                        .toISOString().split(".")[0]+"Z";
               }
               const object = {
                 id: this.state.editExamId,
@@ -413,6 +420,11 @@ export class Klausurenuebersicht extends Component {
               Schließen
             </button>
             <button onClick={() => {
+              if (this.state.examAtendeeGrade > 100 ||
+                this.state.examAtendeeGrade < 0) {
+                alert("Note muss zwischen 0 und 100 liegen");
+                return;
+              }
               const object = {
                 grade: this.state.examAtendeeGrade.toString(),
                 passed: this.state.examAtendeePassed.toString(),
@@ -421,7 +433,7 @@ export class Klausurenuebersicht extends Component {
               gradeExam(this, this.state.examAtendeeId,
                   this.state.gradeExamId, object);
             }}>
-              bewerten
+              Bewerten
             </button>
           </DialogActions>
         </Dialog>
@@ -450,12 +462,13 @@ export class Klausurenuebersicht extends Component {
         </Dialog>
 
         <div className="Body">
-          <Container className="Container" >
+          <Container fluid className="Container" >
             <Row className="Content" >
               <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" >
+              <Col className="ColContent" >
                 <h1>Klausurenübersicht</h1>
-                <Row className="Section" hidden={createdList.length == 0}>
+                <Row className="ExamListing"
+                  hidden={createdList.length == 0}>
                   <h2>Erstellte Klausuren</h2>
                   {createdList}
                 </Row>
@@ -483,7 +496,6 @@ export class Klausurenuebersicht extends Component {
             </Row>
           </Container>
         </div>
-        <ShowFooter />
       </div>
     );
   }
@@ -496,25 +508,33 @@ function ShowAttendedExam(props) {
       <h4 className="ExamName">{props.Exam.name}</h4>
       <p className="ExamOwner">Prüfer:{props.Exam.creator_id}</p>
       <p className="ExamDescription">{props.Exam.description}</p>
-      <p className="ExamDate">{props.Exam.date}</p>
-      <p className="ExamGraded">Punkte: {props.graded}/100</p>
+      <p className="ExamDate">
+        Datum: {new Date(props.Exam.date).toLocaleString()}
+      </p>
+      <p className="ExamGraded">Punkte: {props.graded}
+        {props.Exam.grade? "/100":null}</p>
       <p className="ExamFeedback">Feedback: {props.Exam.feedback}</p>
     </div>
   );
 }
 
 function ShowUnregisteredExam(props) {
-  const actual = (new Date().getTime()+3600000*2);
+  const actual = (new Date().getTime());
   const register = (new Date(props.Exam.register_deadline).getTime());
   return (
-    <div className="Exam">
+    <div className="Exam" hidden={actual > register}>
       <h4 className="ExamName">{props.Exam.name}</h4>
       <p className="ExamDescription">{props.Exam.description}</p>
-      <p className="Examduration">Dauer :{props.Exam.duration / 60}min.</p>
-      <p className="ExamDate">{props.Exam.date}</p>
-      <p className="ExamRoom">{props.Exam.location}</p>
+      <p className="Examduration">Dauer: {props.Exam.duration / 60}min.</p>
+      <p className="ExamDate">
+        Datum: {new Date(props.Exam.date).toLocaleString()}
+      </p>
+      <p className="ExamRoom">Raum: {props.Exam.location}</p>
+      <p className="ExamRegister"> Deadline Registrieren: {
+        new Date(props.Exam.register_deadline).toLocaleString()}</p>
       <button hidden={actual > register} onClick={() => {
-        registerToExam(this, props.Exam.id);
+        registerToExam(props.component, props.Exam.id);
+        props.component.componentDidMount();
       }}>Anmelden</button>
     </div>
   );
@@ -522,7 +542,7 @@ function ShowUnregisteredExam(props) {
 
 function ShowRegisteredExam(props) {
   let solution_ = props.solution;
-  const actual = (new Date().getTime()+3600000*2);
+  const actual = (new Date().getTime());
   const start = (new Date(props.Exam.date).getTime());
   const end = (new Date(props.Exam.date).getTime() +
     props.duration*1000);
@@ -532,23 +552,29 @@ function ShowRegisteredExam(props) {
     <div className="Exam">
       <h4 className="ExamName">{props.Exam.name}</h4>
       <p className="ExamDescription">{props.Exam.description}</p>
-      <p className="Examduration">Dauer :{props.Exam.duration / 60}min.</p>
-      <p className="ExamDate">{props.Exam.date}</p>
-      <p className="ExamRoom">{props.Exam.location}</p>
+      <p className="Examduration">Dauer: {props.Exam.duration / 60}min.</p>
+      <p className="ExamDate">
+        Datum: {new Date(props.Exam.date).toLocaleString()}</p>
+      <p className="ExamRoom">Raum: {props.Exam.location}</p>
+      <p className="ExamDeregister"> Deadline Abmelden: {
+        new Date(props.Exam.deregister_deadline).toLocaleString()}</p>
       <button hidden={actual > deregister} onClick={() => {
-        deregisterFromExam(this, props.id);
+        deregisterFromExam(props.component, props.Exam.id);
+        props.component.componentDidMount();
       }}>Abmelden</button>
       <div hidden={actual < start || actual > end}>
         <input type="file" name="solution" onChange={() => {
           solution_=event.target.files[0];
         }} />
         <button onClick={() => {
-          getFileFromExam(this, props.Exam.id, props.Exam.name);
+          getFileFromExam(props.component, props.Exam.id, props.Exam.name);
+          props.component.componentDidMount();
         }}>
           Klausur herunterladen
         </button>
         <button onClick={() => {
-          uploadSolutionExam(this, props.Exam.id, solution_);
+          uploadSolutionExam(props.component, props.Exam.id, solution_);
+          props.component.render();
         }}>
           Lösung hochladen
         </button>
@@ -561,33 +587,37 @@ function ShowCreatedExam(props) {
   const toggleEdit = props.toggleEdit;
   const toggleGrade = props.toggleGrade;
   const toggleAttendency = props.toggleAttendency;
-  const actual = (new Date().getTime()+3600000*2);
+  const actual = (new Date().getTime());
   const start = (new Date(props.Exam.date).getTime());
   const end = (new Date(props.Exam.date).getTime() +
   props.Exam.duration*1000);
-  console.log(actual);
-  console.log(end);
   return (
     <div className="Exam">
       <h4 className="ExamName">{props.Exam.name}</h4>
       <p className="ExamDescription">{props.Exam.description}</p>
-      <p className="Examduration">Dauer :{props.Exam.duration / 60}min</p>
-      <p className="ExamDate">{props.Exam.date}</p>
-      <p className="ExamRoom">{props.Exam.location}</p>
+      <p className="Examduration">Dauer: {props.Exam.duration / 60}min</p>
+      <p className="ExamDate">
+        Datum: {new Date(props.Exam.date).toLocaleString()}
+      </p>
+      <p className="ExamRoom">Raum: {props.Exam.location}</p>
 
       <button hidden={actual > start} onClick={() => {
         toggleEdit(props.Exam.id);
+        props.component.componentDidMount();
       }}>Bearbeiten</button>
-      <button onClick={() => {
-        deleteExam(this, props.Exam.id);
+      <button hidden={actual > start} onClick={() => {
+        deleteExam(props.component, props.Exam.id);
+        props.component.componentDidMount();
       }}>Löschen</button>
-      <button
+      <button hidden={actual < end}
         onClick={() => {
           toggleGrade(props.Exam.id, props.Exam.name);
         }}>Bewerten</button>
-      <button hidden={actual < start || actual > end} onClick={() => {
-        toggleAttendency(props.Exam.id);
-      }}>Anwesenheit</button>
+      <button hidden={actual < start || actual > end || !props.Exam.online}
+        onClick={() => {
+          toggleAttendency(props.Exam.id);
+          props.component.componentDidMount();
+        }}>Anwesenheit</button>
     </div>
   );
 }

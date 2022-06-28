@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
-import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
 
 import {register} from "../api";
@@ -25,14 +24,14 @@ export class Anlegen extends Component {
       <div className="Anlegen">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" >
+          <Container fluid className="Container" >
             <Row className="Content" >
               <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" >
+              <Col className="ColContent" >
                 <div className="AddUserContainer">
                   <h1>Nutzer Anlegen</h1>
                   <div className="AddUserSection">
-                    <label className="AddUserLabel">E-Mail</label>
+                    <label className="AddUserLabel">Nutzername</label>
                     <br />
                     <input className="AddUserInput" type="text" name="Email"
                       onChange={this.onInputChange}></input>
@@ -40,7 +39,7 @@ export class Anlegen extends Component {
                     <label className="AddUserLabel">Vorname</label>
                     <br />
                     <input className="AddUserInput" type="text"
-                      name="firstname"
+                      name="firstname" pattern="[A-Za-z]"
                       onChange={this.onInputChange}></input>
                     <br />
                     <label className="AddUserLabel">Nachname</label>
@@ -67,12 +66,14 @@ export class Anlegen extends Component {
                       onClick={this.UserRegister}
                       value="Neuen Nutzer anlegen" />
                   </div>
+                  <label id="successId">
+                    {this.state.success? "erfolgreich angelegt":""}
+                  </label>
                 </div>
               </Col>
             </Row>
           </Container>
         </div>
-        <ShowFooter/>
       </div>
     );
   }
@@ -81,6 +82,7 @@ export class Anlegen extends Component {
     this.setState({
       [event.target.name]: event.target.value,
     });
+    this.setState({success: 0});
   }
 
   UserRegister() {

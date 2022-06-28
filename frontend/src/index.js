@@ -33,6 +33,7 @@ ReactDOM.render(
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/stundenplan" element={<Stundenplan />} />
         <Route exact path="/suchergebnis" element={<Suchergebnis />} />
+        <Route path= "*" element={<Kursuebersicht/>}/>
       </Routes>
     </Router>,
     document.getElementById("root"),

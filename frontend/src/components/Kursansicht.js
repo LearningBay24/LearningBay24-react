@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
 import {useParams} from "react-router-dom";
-import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
 import {ShowSubmission,
 } from "./submissions/Abgabe";
@@ -22,16 +21,15 @@ import "../css/Overlay.css";
 import "../css/Kursansicht.css";
 
 import {
-  getCourse, updateCourse, getFiles,
-  uploadFile, getFileByID, uploadLink,
+  uploadFile,
   getSubmissionsFromCourse,
   createSubmission,
-  createExam, registerToExam,
-  getExamsFromCourse,
-  createAppointment, deleteAppointment,
-  getAppointments,
   getUserSubmissionsFromSubmission,
   gradeUserSubmission,
+  getCourse, getFiles, updateCourse, createExam, registerToExam,
+  getFileByID, uploadLink, getExamsFromCourse, getSubmissionById,
+  createAppointment, deleteAppointment, editExam, getAppointments,
+  deleteExam, roleId, Admin, courseRoleId, User,
 } from "../api";
 
 import PropTypes from "prop-types";
@@ -41,33 +39,8 @@ export class Kursansicht extends Component {
     super(props);
     this.state = {
       id: parseInt(props.id),
-
-      // ______________________________________________________________________
-      // this is temporary example data
-      // ______________________________________________________________________
-
-      CourseAdmin: true, // true if active user has adminrights
       CourseEdit: false, // true if admin is editing course
-      Course: {
 
-        name: "",
-
-        CourseOwner: {LastName: "", FirstName: "", id: ""},
-        CourseParticipants: [{FirstName: "", LastName: "", Role: "", id: ""}],
-        CourseTutors: [{FirstName: "", LastName: "", Role: "", id: ""}],
-
-
-        CourseAppointments: [],
-
-        CourseBio: "",
-        CourseCreatedAt: "",
-        CourseForum: "",
-
-        CourseMaterial: [],
-
-        CourseSurveys: [],
-        CourseExams: [],
-      },
       // ______________________________________________________________________
 
       // variables for editing course
@@ -78,6 +51,7 @@ export class Kursansicht extends Component {
       // actual structs from DB these get filled by the api call and should be
       // updated and send back to the server if a user made changes
       // _______________________________________________________________________
+      user_id: 0,
       CurrentCourse: {
         id: 0,
         name: "",
@@ -88,25 +62,6 @@ export class Kursansicht extends Component {
         updated_at: "",
       },
 
-      Users: [{
-        id: 0,
-        title: "",
-        first_name: "",
-        last_name: "",
-        email: "",
-        password: "",
-        role_id: "",
-        graduation_level: "",
-        semester: "",
-        phone_number: "",
-        residence: "",
-        profile_picture: "",
-        biography: "",
-        preferred_language_id: "",
-        created_at: "",
-        updated_at: "",
-        deleted_at: "",
-      }],
 
       Appointments: [{
         id: 0,
@@ -155,24 +110,6 @@ export class Kursansicht extends Component {
       NewAppointmentLocation: "",
       NewAppointmentOnline: "0",
 
-      // Exams: [{
-      //   id: -1,
-      //   name: "",
-      //   description: "",
-      //   date: "",
-      //   duration: "",
-      //   online: "",
-      //   location: "",
-      //   course_id: "",
-      //   creator_id: "",
-      //   graded: "",
-      //   register_deadline: "",
-      //   deregister_deadline: "",
-      //   created_at: "",
-      //   updated_at: "",
-      //   deleted_at: "",
-      // }],
-
       // bools for Dialogs
       OpenAddSubDialog: false,
       openUserSubView: false,
@@ -195,7 +132,7 @@ export class Kursansicht extends Component {
 
 
   async componentDidMount() {
-    getCourse(this, this.state.id);
+    await getCourse(this, this.state.id);
     getFiles(this, this.state.id);
     getAppointments(this, null);
 
@@ -210,71 +147,145 @@ export class Kursansicht extends Component {
     this.setState({
       [event.target.name]: event.target.value,
     });
+    this.setState({successCourse: 0});
+    this.setState({successAppointment: 0});
+    this.setState({successDelAppointment: 0});
+    this.setState({successFile: 0});
+    this.setState({successDelFile: 0});
+    this.setState({successExam: 0});
+    this.setState({successDelExam: 0});
   }
 
   onFileChange(event) {
     this.setState({
       newFile: event.target.files[0],
     });
+    this.setState({success: 0});
   }
 
-  onSaveDescriptionChange() {
+  async onSaveDescriptionChange() {
+    let description = this.state.description;
+    let key = this.state.key;
+    let name = this.state.name;
+    if (name == null) {
+      name = this.state.CurrentCourse.name;
+    }
+    if (description == null) {
+      description = this.state.CurrentCourse.description;
+    }
+    if (key == null) {
+      key = this.state.CurrentCourse.enroll_key;
+    }
     const newCourse = {
       id: this.state.CurrentCourse.id,
-      name: this.state.CurrentCourse.name,
+      name: name,
       description: this.state.description,
-      enroll_key: this.state.CurrentCourse.enroll_key,
+      enroll_key: key,
       forum_id: this.state.CurrentCourse.forum_id,
       created_at: this.state.CurrentCourse.created_at,
       updated_at: this.state.CurrentCourse.updated_at,
     };
-    updateCourse(this, newCourse, this.state.id);
+    await updateCourse(this, newCourse, this.state.id);
+    this.componentDidMount();
   }
 
-  onSaveAppointmentChange() {
+  async onSaveAppointmentChange() {
     if (this.state.ChangeAppointmentId === "-1") {
       const Appointment = {
         date: new Date(this.state.NewAppointmentDate)
-            .toISOString().split(".")[0]+"Z",
+            .toISOString().split(".")[0] + "Z",
         duration: (this.state.NewAppointmentDuration * 60).toString(),
         location: this.state.NewAppointmentLocation,
         online: this.state.NewAppointmentOnline,
         courseId: this.state.CurrentCourse.id.toString(),
       };
-      createAppointment(this, Appointment);
+      await createAppointment(this, Appointment);
+      this.componentDidMount();
     }
   }
 
-  onDeleteAppointment() {
+  async onDeleteAppointment() {
     if (this.state.ChangeAppointmentId !== "-1") {
-      deleteAppointment(this, this.state.ChangeAppointmentId);
+      await deleteAppointment(this, this.state.ChangeAppointmentId);
+      this.componentDidMount();
     }
   }
 
-  onSaveExam() {
+  async onSaveExam() {
+    let online_ = 0;
+    if (this.state.NewExamOnline != null) {
+      online_ = this.state.NewExamOnline;
+    }
     if (this.state.ChangeExamId === "-1") {
-      let online_ = 0;
-      if (this.state.NewExamOnline != null) {
-        online_ = this.state.NewExamOnline;
+      if (this.state.NewExamName === undefined) {
+        alert("Feld 'Name' darf nicht leer sein");
+        return;
+      }
+      if (this.state.NewExamDate === undefined) {
+        alert("Feld 'Datum' darf nicht leer sein");
+        return;
+      }
+      if (this.state.NewExamDuration === undefined) {
+        alert("Feld 'Dauer' darf nicht leer sein");
+        return;
+      }
+      if (this.state.NewExamRegister === undefined) {
+        alert("Feld 'Deadline Anmeldung' darf nicht leer sein");
+        return;
+      }
+      if (this.state.NewExamDeregister === undefined) {
+        alert("Feld 'Deadline Abmeldung' darf nicht leer sein");
+        return;
       }
       const Exam = {
         name: this.state.NewExamName,
         description: this.state.NewExamDescription,
         date: new Date(
-            (new Date(this.state.NewExamDate).getTime() +
-            3600000 * 2)).toISOString().split(".")[0]+"Z",
+            this.state.NewExamDate)
+            .toISOString().split(".")[0] + "Z",
         duration: (this.state.NewExamDuration * 60).toString(),
         location: this.state.NewExamLocation,
         online: online_,
         course_id: this.state.CurrentCourse.id.toString(),
-        register_deadline: new Date(
-            (new Date(this.state.NewExamRegister).getTime() +
-            3600000 * 2)).toISOString().split(".")[0]+"Z",
-        deregister_deadline: new Date(
-            (new Date(this.state.NewExamDeregister).getTime() +
-            3600000 * 2)).toISOString().split(".")[0]+"Z",
+        register_deadline: new Date(this.state.NewExamRegister)
+            .toISOString().split(".")[0] + "Z",
+        deregister_deadline: new Date(this.state.NewExamDeregister)
+            .toISOString().split(".")[0] + "Z",
       };
-      createExam(this, Exam);
+      await createExam(this, Exam);
+      this.componentDidMount();
+    } else {
+      let dateStr = "";
+      let registerStr = "";
+      let deregisterStr = "";
+      if (this.state.NewExamDate != null) {
+        dateStr =
+            new Date(this.state.NewExamDate)
+                .toISOString().split(".")[0] + "Z";
+      }
+      if (this.state.NewExamRegister != null) {
+        registerStr =
+            new Date(this.state.NewExamRegister)
+                .toISOString().split(".")[0] + "Z";
+      }
+      if (this.state.NewExamDeregister != null) {
+        deregisterStr =
+            new Date(this.state.NewExamDeregister)
+                .toISOString().split(".")[0] + "Z";
+      }
+      const object = {
+        id: this.state.ChangeExamId,
+        name: this.state.NewExamName,
+        description: this.state.NewExamDescription,
+        date: dateStr,
+        duration: (this.state.NewExamDuration * 60).toString(),
+        online: this.state.NewExamOnline,
+        location: this.state.NewExamLocation,
+        register_deadline: registerStr,
+        deregister_deadline: deregisterStr,
+      };
+      await editExam(this, object);
+      this.componentDidMount();
     }
   }
 
@@ -356,21 +367,21 @@ export class Kursansicht extends Component {
 
     const Generallist = [];
     if (this.state.Appointments != null) {
+      Generallist.push(<h2 hidden={this.state.CourseEdit}>
+        Termine</h2>);
       for (const Appointment of this.state.Appointments) {
-        Generallist.push(<h3 hidden={this.state.CourseEdit}>
-          Datum: {Appointment.date} Dauer
+        if (Appointment.course_id == this.state.id) {
+          Generallist.push(<h3 hidden={this.state.CourseEdit}>
+          Datum: {new Date(Appointment.date).toLocaleString()} Dauer
           : {Appointment.duration / 60} Minuten
           Raum: {Appointment.location}</h3>);
+        }
       }
     }
-    Generallist.push(
-        <div>
-          <p hidden={this.state.CourseEdit}>
-            {this.state.CurrentCourse.description}</p>
-          <p hidden={this.state.CourseEdit}>Kursersteller:
-            {this.state.Course.CourseOwner.LastName}</p>
-        </div>,
-    );
+    Generallist.push(<h2 hidden={this.state.CourseEdit}>
+      Beschreibung</h2>);
+    Generallist.push(<p hidden={this.state.CourseEdit}>
+      {this.state.CurrentCourse.description}</p>);
 
     const Materiallist = [];
     if (this.state.Material != null) {
@@ -447,21 +458,23 @@ export class Kursansicht extends Component {
     for (const Survey of this.state.Course.CourseSurveys) {
       Surveylist.push(<ShowSurvey Name={Survey.Name}
         Content={Survey.Content} className="Survey" />);
+
+    const Assignmentlist = [];
+    if (this.state.Assignments != null) {
+      for (const Assignment of this.state.Assignments) {
+        Assignmentlist.push(<ShowAssignment Name={Assignment.Name}
+          Content={Assignment.Content} Date={Assignment.Date}
+          Deadline={Assignment.Deadline} className="Assignment" />);
+      }
     }
 
     const Examlist = [];
     if (this.state.Exams != null) {
       for (const Exam of this.state.Exams) {
         if (Exam.id != -1) {
-          Examlist.push(<Col xs={4} ><ShowUnregisteredExam
-            id={Exam.id}
-            name={Exam.name}
-            creator_id={Exam.creator_id}
-            description={Exam.description}
-            register_deadline={Exam.register_deadline}
-            deregister_deadline={Exam.deregister_deadline}
-            date={Exam.date}
-            duration={Exam.duration / 60} /></Col>);
+          Examlist.push(<Col xs={6} ><ShowUnregisteredExam
+            component={this}
+            Exam={Exam}/></Col>);
         }
       }
     }
@@ -474,46 +487,63 @@ export class Kursansicht extends Component {
     EditAppointments.push(<option value="-1">Neuer Termin</option>);
     if (this.state.Appointments != null) {
       for (const Appointment of this.state.Appointments) {
-        EditAppointments.push(<option value={Appointment.id}>
-          {Appointment.date} {Appointment.location}
-        </option>);
+        if (Appointment.course_id == this.state.id) {
+          EditAppointments.push(<option value={Appointment.id}>
+            {new Date(Appointment.date).toLocaleString()} {Appointment.location}
+          </option>);
+        }
       }
-    }
-
-    const EditParticipants = [];
-    for (const User of this.state.Users) {
-      EditParticipants.push(<option value={User.id}>{User.first_name}
-        {User.last_name} {User.role_id}</option>);
     }
 
     const EditMaterial = [];
     EditMaterial.push(<option value="-1">Material hinzufügen</option>);
-    for (const Mat of this.state.Course.CourseMaterial) {
-      EditMaterial.push(<option value={Mat.id}>{Mat.Name}</option>);
+    if (this.state.Material != null) {
+      for (const Mat of this.state.Material) {
+        EditMaterial.push(<option value={Mat.id}>{Mat.name}</option>);
+      }
+    }
+
+    const EditAssignment = [];
+    EditAssignment.push(<option value="-1">Neue Aufgabe</option>);
+    if (this.state.Assignments != null) {
+      for (const Assignment of this.state.Assignments) {
+        EditAssignment.push(<option value={Assignment.id}>
+          {Assignment.name} {""}
+          {new Date(Assignment.date).toLocaleString()}</option>);
+      }
     }
 
     const EditExam = [];
     EditExam.push(<option value="-1">Neue Prüfung</option>);
-    for (const Exam of this.state.Course.CourseExams) {
-      EditExam.push(<option value={Exam.id}>{Exam.Name} {Exam.Date}</option>);
+    if (this.state.Exams != null) {
+      for (const Exam of this.state.Exams) {
+        if (Exam.id != -1) {
+          EditExam.push(<option value={Exam.id}>
+            {Exam.name} {new Date(Exam.date).toLocaleString()}
+          </option>);
+        }
+      }
     }
 
     // ________________________________________________________________________
 
+    console.log(roleId);
     return (
       <div className="Kursansicht">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" >
+          <Container fluid className="Container" >
             <Row className="Content" >
               <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" >
+              <Col className="ColContent" >
                 <h1>{this.state.CurrentCourse.name}</h1>
-                <div className="AdminArea" hidden={!this.state.CourseAdmin}>
+                <div className="AdminArea"
+                  hidden={roleId != Admin && courseRoleId == User}>
                   <button className="btnCreateCourse"
                     onClick={() =>
                       this.setState({CourseEdit: !this.state.CourseEdit})}>
-                    Kurs Bearbeiten
+                    {!this.state.CourseEdit?
+                    "Kurs bearbeiten" : "Zurück zum Kurs"}
                   </button>
                 </div>
 
@@ -525,11 +555,23 @@ export class Kursansicht extends Component {
                     <div className="EditArea">
                       <button className="EditButton"
                         onClick={this.onSaveDescriptionChange}>
-                        Beschreibung speichern</button>
+                        Speichern</button>
                     </div>
+                    <label id="successId">
+                      {this.state.successCourse? "erfolgreich gespeichert":""}
+                    </label>
                     <h2>Kursinformationen</h2>
+                    <label>Kursname:</label>
+                    <input type="text" id="EditCourseNameId" name="name"
+                      placeholder={this.state.CurrentCourse.name}
+                      onChange={this.onInputChange} />
+                    <label>Beschreibung:</label>
                     <input type="text" id="EditCourseBioId" name="description"
                       placeholder={this.state.CurrentCourse.description}
+                      onChange={this.onInputChange} />
+                    <label>Einschreibeschlüssel:</label>
+                    <input type="text" id="EditCourseKeyId" name="key"
+                      placeholder={this.state.CurrentCourse.enroll_key}
                       onChange={this.onInputChange} />
                   </div>
                   <br />
@@ -542,6 +584,14 @@ export class Kursansicht extends Component {
                         Speichern
                       </button>
                     </div>
+                    <label id="successId">
+                      {this.state.successAppointment?
+                        "erfolgreich gespeichert":""}
+                    </label>
+                    <label id="successId">
+                      {this.state.successDelAppointment?
+                        "erfolgreich gelöscht":""}
+                    </label>
                     <h2>Termin</h2>
                     <select name="ChangeAppointmentId"
                       onChange={this.onInputChange}>
@@ -582,6 +632,12 @@ export class Kursansicht extends Component {
                             this.state.uriName, this.state.CurrentCourse.id)}>
                         Link Speichern</button>
                     </div>
+                    <label id="successId">
+                      {this.state.successFile? "erfolgreich hochgeladen":""}
+                    </label>
+                    <label id="successDelId">
+                      {this.state.successDelFile? "erfolgreich gelöscht":""}
+                    </label>
                     <h2>Material</h2>
                     <select>{EditMaterial}</select>
                     <label>Datei auswählen</label>
@@ -666,8 +722,15 @@ export class Kursansicht extends Component {
                   <br />
                   <div className="EditSectionPart">
                     <div className="EditArea">
-                      <button className="EditButton">Löschen</button>
-                      <button className="EditButton">Speichern</button>
+                      <button className="EditButton"
+                        onClick={() => {
+                          deleteExam(this, this.state.ChangeExamId);
+                        }}>
+                        Löschen
+                      </button>
+                      <button className="EditButton" onClick={this.onSaveExam}>
+                        Speichern
+                      </button>
                     </div>
                     {/* Exams */}
 
@@ -735,6 +798,62 @@ export class Kursansicht extends Component {
                       <button onClick={this.onSaveExam}>Speichern</button>
                     </div>
                     <br />
+                    <label id="successId">
+                      {this.state.successExam?
+                        "erfolgreich gespeichert":""}
+                    </label>
+                    <label id="successId">
+                      {this.state.successDelExam?
+                        "erfolgreich gelöscht":""}
+                    </label>
+                    <h2>Klausur</h2>
+
+                    <select onChange={this.onInputChange} name="ChangeExamId">
+                      {EditExam}
+                    </select>
+                    <label htmlFor="EditExamName">Name:</label>
+                    <input type="Text" id="EditExamName"
+                      placeholder="Klausurname" onChange={this.onInputChange}
+                      name="NewExamName">
+                    </input>
+                    <label htmlFor="EditExamDescription">Beschreibung:</label>
+                    <input type="Text" id="EditExamDescription"
+                      placeholder="Klausurbeschreibung"
+                      onChange={this.onInputChange}
+                      name="NewExamDescription">
+                    </input>
+                    <label htmlFor="EditExamDate">Datum:</label>
+                    <input type="Datetime-local" id="EditExamDate"
+                      onChange={this.onInputChange}
+                      name="NewExamDate">
+                    </input>
+                    <label htmlFor="EditExamDuration">Dauer (in min):</label>
+                    <input type="number" pattern="[0-9]*" id="EditExamDuration"
+                      placeholder="Dauer" onChange={this.onInputChange}
+                      name="NewExamDuration">
+                    </input>
+                    <label>Offline/Online</label>
+                    <select onChange={this.onInputChange}
+                      name="NewExamOnline">
+                      <option value="0">Offline</option>
+                      <option value="1">Online</option>
+                    </select>
+                    <label htmlFor="EditExamLocation">
+                      Raum(Zoomlink falls online):</label>
+                    <input type="Text" id="EditExamLocation"
+                      placeholder="Raum" onChange={this.onInputChange}
+                      name="NewExamLocation"></input>
+                    <label htmlFor="EditExamRegDate">Deadline Anmeldung:</label>
+                    <input type="Datetime-local" id="EditExamRegDate"
+                      onChange={this.onInputChange}
+                      name="NewExamRegister">
+                    </input>
+                    <label htmlFor="EditExamDeregDate">
+                      Deadline Abmeldung:</label>
+                    <input type="Datetime-local" id="EditExamDeregDate"
+                      onChange={this.onInputChange}
+                      name="NewExamDeregister">
+                    </input>
                   </div>
                 </div>
 
@@ -754,9 +873,9 @@ export class Kursansicht extends Component {
                   {Subslist}
                 </div>
 
+                <h2 hidden={this.state.CourseEdit}>Klausuren</h2>
                 <div className="ExamSection"
                   hidden={this.state.CourseEdit}>
-                  <h2>Klausuren</h2>
                   {Examlist}
                 </div>
               </Col>
@@ -786,27 +905,19 @@ export class Kursansicht extends Component {
 
           </Container>
         </div>
-        <ShowFooter />
       </div>
     );
   }
 }
-Kursansicht.propTypes = {
-  id: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-};
-
 
 function ShowMaterial(props) {
   return (
-    <div className='MaterialContainer'>
-      <h6 onClick={() => getFileByID(this, props.courseid,
+    <a href={props.uri? props.uri:null} download className='MaterialContainer'>
+      <h6 onClick={props.uri? null:() => getFileByID(this, props.courseid,
           props.fileid, props.name)}>
         {props.name}</h6>
-      <a href={props.uri} download>{props.uri}</a>
-    </div>);
+      <p>{props.uri}</p>
+    </a>);
 }
 ShowMaterial.propTypes = {
   name: PropTypes.string.isRequired,
@@ -816,15 +927,21 @@ ShowMaterial.propTypes = {
 };
 
 function ShowUnregisteredExam(props) {
+  const actual = (new Date().getTime());
+  const register = (new Date(props.Exam.register_deadline).getTime());
   return (
     <div className="Exam">
-      <h4 className="ExamName">{props.name}</h4>
-      <p className="ExamDescription">{props.description}</p>
-      <p className="Examduration">Dauer: {props.duration}min.</p>
-      <p className="ExamDate">{props.date}</p>
-      <p className="ExamRoom">{props.location}</p>
-      <button onClick={() => {
-        registerToExam(this, props.id);
+      <h4 className="ExamName">{props.Exam.name}</h4>
+      <p className="ExamDescription">{props.Exam.description}</p>
+      <p className="Examduration">Dauer: {props.Exam.duration / 60}min.</p>
+      <p className="ExamDate">Datum: {new Date(props.Exam.date)
+          .toLocaleString()}</p>
+      <p className="ExamRoom">Raum: {props.Exam.location}</p>
+      <p className="ExamRegister">Deadline Anmeldung: {
+        new Date(props.Exam.register_deadline).toLocaleString()}</p>
+      <button hidden={actual > register} onClick={() => {
+        registerToExam(props.component, props.Exam.id);
+        props.component.componentDidMount();
       }}>Anmelden</button>
     </div>
   );
@@ -836,19 +953,6 @@ ShowUnregisteredExam.propTypes = {
   date: PropTypes.string,
   location: PropTypes.string,
   id: PropTypes.number.isRequired,
-};
-
-function ShowSurvey(props) {
-  return (
-    <div className='SurveyContainer'>
-      <h6>{props.Name}</h6>
-      <a href={props.Content} target='_blank'
-        rel='noopener noreferrer'>{props.Content}</a>
-    </div>);
-}
-ShowSurvey.propTypes = {
-  Name: PropTypes.string.isRequired,
-  Content: PropTypes.string.isRequired,
 };
 
 function Wrapper(props) {

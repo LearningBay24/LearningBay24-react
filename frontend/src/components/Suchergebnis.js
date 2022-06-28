@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ShowNavbar} from "./App";
-import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
 import {useNavigate, useLocation} from "react-router-dom";
 
@@ -44,10 +43,10 @@ function Suchergebnis(props) {
 
   const onAPICallFinished = (result) => {
     setMatchedCourses(result);
-    if (MatchedCourses.length == 0) {
-      setNoResultText("Keine Treffer gefunden");
-    } else {
+    if (result != null) {
       setNoResultText("");
+    } else {
+      setNoResultText("Keine Treffer gefunden");
     }
   };
 
@@ -122,10 +121,10 @@ function Suchergebnis(props) {
     <div className="Suchergebnis">
       <ShowHeader />
       <div className="Body">
-        <Container className="Container" >
+        <Container fluid className="Container" >
           <Row className="Content" >
             <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
-            <Col xs={10} className="ColContent" >
+            <Col className="ColContent" >
 
               <Dialog open={EnrollCourse}
                 onClose={toggleEnrollCourse}
@@ -167,7 +166,6 @@ function Suchergebnis(props) {
           </Row>
         </Container>
       </div>
-      <ShowFooter />
     </div>
   );
 }

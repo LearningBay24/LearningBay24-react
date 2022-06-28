@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import {ShowNavbar} from "./App";
-import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
 
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
@@ -51,7 +50,6 @@ export class Stundenplan extends Component {
 
   AppointmentsCallback(caller) {
     if (caller.state.Appointments != null) {
-      console.log(this.state.Appointments);
       for (const Appointment of this.state.Appointments) {
         this.state.eventsAppointments.push({
           title: Appointment.name + ": " + Appointment.location,
@@ -73,9 +71,7 @@ export class Stundenplan extends Component {
   }
 
   ExamsCallback(caller) {
-    console.log(this.state.RegisteredExams);
     if (this.state.RegisteredExams != null) {
-      console.log(this.state.RegisteredExams.length);
       for (const Exam of this.state.RegisteredExams) {
         this.state.eventsExams.push({
           title: Exam.name +": " +
@@ -92,7 +88,6 @@ export class Stundenplan extends Component {
         });
       }
     }
-    console.log(this.state.eventsExams);
     for (let i = 0; i < this.state.eventsExams.length; i++) {
       this.addEvent(this.state.eventsExams[i]);
     }
@@ -109,23 +104,20 @@ export class Stundenplan extends Component {
       <div className="Stundenplan">
         <ShowHeader />
         <div className="Body">
-          <Container className="Container" >
+          <Container fluid className="Container" >
             <Row className="Content" >
               <Col xs={2} className="ColNav" ><ShowNavbar /></Col>
-              <Col xs={10} className="ColContent" ><h1
-                onClick={() => {
-                  console.log(this.state.appointments.id);
-                }}>Stundenplan</h1>
-              <FullCalendar ref={this.calendarRef}
-                plugins={[dayGridPlugin, timeGridPlugin]}
-                initialView="timeGridWeek"
-                height={700}
-                events={this.state.events}
-              /></Col>
+              <Col className="ColContent" >
+                <h1>Stundenplan</h1>
+                <FullCalendar ref={this.calendarRef}
+                  plugins={[dayGridPlugin, timeGridPlugin]}
+                  initialView="timeGridWeek"
+                  height={700}
+                  events={this.state.events}
+                /></Col>
             </Row>
           </Container>
         </div>
-        <ShowFooter />
       </div>
     );
   }

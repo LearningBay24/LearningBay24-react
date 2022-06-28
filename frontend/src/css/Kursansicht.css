@@ -1,5 +1,4 @@
 .Kursansicht {
-    height: 100%;
 }
 
 .InfoSection, .MaterialSection, .SurveySection, .ExamSection, .SubmissionSection {
@@ -44,7 +43,9 @@
 }
 
 .ExamSection {
-    border: 0;
+    flex: auto;
+    flex-flow: wrap;
+    display: flex;
 }
 
 .EditSection {
