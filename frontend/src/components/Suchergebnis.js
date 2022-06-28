@@ -82,13 +82,14 @@ function Suchergebnis(props) {
   };
 
   const onEnrollKeyChange = (event) => {
-    console.log("(onEnrollKeyChange): " + event.target.value);
+    // console.log("(onEnrollKeyChange): " + event.target.value);
     setCurrentEnrollkey(event.target.value);
   };
 
   const onEnrollCourse = () => {
     enrollUserIntoCourse(
         FocusedCourseID, CurrentEnrollkey, onEnrollCourseFinished);
+    toggleEnrollCourse();
   };
 
   const onEnrollCourseFinished = () => {

@@ -89,7 +89,7 @@ label, input {
 
 /* --- Formular --- */
 
-.MuiPaper-root {
+.Kursuebersicht MuiPaper-root {
     width: 60%;
     height: 60%;
     color: var(--dark);

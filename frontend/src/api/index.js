@@ -56,7 +56,7 @@ async function handleErrors(response) {
  * @return {void} returns nothing.
  */
 export function getMyCourses(caller) {
-  console.log("(getMyCourses): " + Actualadress + "users/courses");
+  // console.log("(getMyCourses): " + Actualadress + "users/courses");
 
   fetch(Actualadress + "users/createdcourses", {method: "GET",
     credentials: "include"})
@@ -115,8 +115,6 @@ export async function checkIfUserEnrolledCourse(
  * @return {void} returns nothing.
  */
 export function getCourse(caller, id) {
-  console.log("(getCourse): " + Actualadress + `courses/${id}`);
-
   fetch(Actualadress + `courses/${id}`, {method: "GET",
     credentials: "include"})
       .then(handleErrors)
@@ -134,7 +132,7 @@ export function getCourse(caller, id) {
  * @return {void} returns nothing.
  */
 export function getUsersInCourse(caller, id) {
-  console.log("(getUsersInCourse): "+ Actualadress + `courses/${id}/users`);
+  // console.log("(getUsersInCourse): "+ Actualadress + `courses/${id}/users`);
 
   fetch(Actualadress + `courses/${id}/users`, {method: "GET",
     credentials: "include"})
@@ -152,8 +150,6 @@ export function getUsersInCourse(caller, id) {
  * @return {void} returns nothing.
  */
 export function postNewCourse(caller, object) {
-  console.log("(postNewCourse): " + Actualadress + "courses");
-
   const requestOptions = {
     method: "POST",
     body: JSON.stringify(object),
@@ -174,14 +170,13 @@ export function postNewCourse(caller, object) {
  * @return {void} returns nothing.
  */
 export function updateCourse(caller, object, id) {
-  console.log("(updateCourse): " + Actualadress + `courses/${id}`);
+  // console.log("(updateCourse): " + Actualadress + `courses/${id}`);
 
   const requestOptions = {
     method: "PATCH",
     body: JSON.stringify(object),
     credentials: "include",
   };
-
   fetch(Actualadress + `courses/${id}`, requestOptions)
       .then(handleErrors)
       .then(() => {
@@ -217,7 +212,7 @@ export async function enrollUserIntoCourse(courseID, enrollKey, callback) {
  * @return {void} returns nothing.
  */
 export function deleteCourse(caller, id) {
-  console.log("(deleteCourse): " + Actualadress + `courses/${id}`);
+  // console.log("(deleteCourse): " + Actualadress + `courses/${id}`);
 
   fetch(Actualadress + `courses/${id}`, {method: "DELETE",
     credentials: "include"})
@@ -228,7 +223,7 @@ export function deleteCourse(caller, id) {
 }
 
 export async function login(data, callback) {
-  console.log("(login): " + Actualadress + "login");
+  // console.log("(login): " + Actualadress + "login");
 
   const requestOptions = {
     method: "POST",
@@ -237,6 +232,7 @@ export async function login(data, callback) {
   };
 
   const returnVal = await fetch(Actualadress + "login", requestOptions);
+
   await handleErrors(returnVal).then(async () => {
     await role();
     callback();
@@ -245,7 +241,7 @@ export async function login(data, callback) {
 }
 
 export function logout(callback) {
-  console.log("(logout): " + Actualadress + "logout");
+  // console.log("(logout): " + Actualadress + "logout");
 
   const requestOptions = {
     method: "POST",
@@ -265,13 +261,12 @@ export function logout(callback) {
 
 
 export function register(caller, data) {
-  console.log("(register): " + Actualadress + "register");
+  // console.log("(register): " + Actualadress + "register");
   const requestOptions = {
     method: "POST",
     body: JSON.stringify(data),
     credentials: "include",
   };
-
   fetch(Actualadress + "register", requestOptions)
       .then(handleErrors)
       .then(() => {
@@ -286,9 +281,8 @@ export function register(caller, data) {
  * @param {any} callback gets called when the result is fetched
  * @return {void} returns nothing.
  */
-
 export async function getCoursesByQuery(query, callback) {
-  console.log("(getCoursesByQuery) query: " + query);
+  // console.log("(getCoursesByQuery) query: " + query);
 
   const requestOptions = {
     method: "GET",
@@ -300,9 +294,24 @@ export async function getCoursesByQuery(query, callback) {
   callback(await result.json());
 }
 
+export function getCoursesFromUser(caller) {
+  const requestOptions = {
+    method: "GET",
+    credentials: "include",
+  };
+
+  fetch(Actualadress + "users/courses", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        caller.setState({CoursesFromUser: data});
+      })
+      .catch((error) => console.error(error));
+}
+
 export function uploadFile(caller, file, id) {
-  console.log("(uploadFile): " + Actualadress + `courses/${id}/files`);
-  console.log(file);
+  // console.log("(uploadFile): " + Actualadress + `courses/${id}/files`);
+  // console.log(file);
 
   const formData = new FormData();
   formData.append("file", file);
@@ -322,7 +331,7 @@ export function uploadFile(caller, file, id) {
 }
 
 export function uploadLink(caller, link, name, id) {
-  console.log("(uploadLink): " + Actualadress + `courses/${id}/files`);
+  // console.log("(uploadLink): " + Actualadress + `courses/${id}/files`);
   const object = {uri: link, name: name};
 
   const requestOptions = {
@@ -358,7 +367,7 @@ export function deleteMaterial(caller, courseId, fileId) {
 
 
 export function getFiles(caller, id) {
-  console.log("(getFiles): " + Actualadress + `courses/${id}/files`);
+  // console.log("(getFiles): " + Actualadress + `courses/${id}/files`);
 
   fetch(Actualadress + `courses/${id}/files`, {method: "GET",
     credentials: "include"})
@@ -370,15 +379,14 @@ export function getFiles(caller, id) {
 }
 
 export function getFileByID(caller, courseID, fileId, filename) {
-  console.log("(getFileByID): " + Actualadress +
-  `courses/${courseID}/files/${fileId}`);
-
+  // console.log("(getFileByID): " + Actualadress +
+  // `courses/${courseID}/files/${fileId}`);
   fetch(Actualadress + `courses/${courseID}/files/${fileId}`, {method: "GET",
     credentials: "include", headers: {"Cache-Control": "no-cache"}})
       .then(handleErrors)
       .then((result) => {
         return result.blob();
-      }, (reason) => alert(reason))
+      })
       .then((data) => {
         const url = window.URL.createObjectURL(data);
         const anchor = document.createElement("a");
@@ -391,13 +399,13 @@ export function getFileByID(caller, courseID, fileId, filename) {
       .catch((error) => console.error(error));
 }
 
-
 export function getSubmissionFromUser(caller) {
   console.log("(getSubmissionsFromUser)");
   fetch(Actualadress + "user/submissions", {method: "GET",
     credentials: "include"})
       .then(handleErrors)
       .then((data) => {
+        caller.setState({Submissions: data});
       }, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
@@ -413,7 +421,7 @@ export function getSubmissionById(caller, id) {
 }
 
 export function getUser(caller) {
-  console.log("(getUser): " + Actualadress + "users");
+  // console.log("(getUser): " + Actualadress + "users");
 
   fetch(Actualadress + "users/cookie", {method: "GET",
     credentials: "include"})
@@ -595,6 +603,24 @@ export function uploadFileExam(caller, id, file) {
       .catch((error) => console.error(error));
 }
 
+export function uploadSolutionExam(caller, id, file) {
+  console.log("(uploadFile): " + `Actualadress + users/exams/${id}/submit`);
+  console.log(file);
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const requestOptions = {
+    method: "POST",
+    body: formData,
+    credentials: "include",
+  };
+
+  fetch(Actualadress + `users/exams/${id}/submit`, requestOptions)
+      .then(handleErrors)
+      .then(null, (reason) => alert(reason))
+      .catch((error) => console.error(error));
+}
 
 export async function deleteExam(caller, examId) {
   console.log("(deleteExam): " + Actualadress +
@@ -629,25 +655,6 @@ export function getFileFromExam(caller, examId, filename) {
 
         window.URL.revokeObjectURL(url);
       })
-      .catch((error) => console.error(error));
-}
-
-export function uploadSolutionExam(caller, id, file) {
-  console.log("(uploadFile): " + Actualadress + `users/exams/${id}/submit`);
-  console.log(file);
-
-  const formData = new FormData();
-  formData.append("file", file);
-
-  const requestOptions = {
-    method: "POST",
-    body: formData,
-    credentials: "include",
-  };
-
-  fetch(Actualadress + `users/exams/${id}/submit`, requestOptions)
-      .then(handleErrors)
-      .then(null, (reason) => alert(reason))
       .catch((error) => console.error(error));
 }
 
@@ -754,6 +761,7 @@ export function getExamSubmission(caller, userId, examId, filename) {
       .catch((error) => console.error(error));
 }
 
+
 export function createAppointment(caller, object) {
   console.log("(createAppointment): " + Actualadress + "appointments/add");
   const requestOptions = {
@@ -770,7 +778,7 @@ export function createAppointment(caller, object) {
 }
 
 export function getAppointments(caller, callback) {
-  console.log("(getAppointments): " + Actualadress + "courses/appointments");
+  // console.log("(getAppointments): " + Actualadress + "courses/appointments");
 
   const requestOptions = {
     method: "GET",
@@ -790,8 +798,8 @@ export function getAppointments(caller, callback) {
 }
 
 export function deleteAppointment(caller, appointmentId) {
-  console.log("(deleteAppointment): " + Actualadress +
-  `appointments/${appointmentId}`);
+  // console.log("(deleteAppointment): " + Actualadress +
+  // `appointments/${appointmentId}`);
 
   fetch(Actualadress + "appointments", {method: "DELETE",
     body: JSON.stringify({appointment_id: appointmentId}),
@@ -799,5 +807,288 @@ export function deleteAppointment(caller, appointmentId) {
       .then(handleErrors)
       .then(() => caller.setState({successDelAppointment: true}),
           (reason) => alert(reason))
+      .catch((error) => console.error(error));
+}
+
+export function getSubmissionsFromCourse(caller, courseId) {
+  fetch(Actualadress + `courses/${courseId}/submissions`, {method: "GET",
+    credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        caller.setState({Submissions: data});
+      })
+      .catch((error) => console.error(error));
+}
+
+export async function createSubmission(caller, newSub) {
+  const courseId = newSub.course_id;
+
+  const requestOptions1 = {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify(newSub),
+  };
+
+  // first upload to 'submissions'
+  const result = await fetch(Actualadress + `courses/${courseId}/submissions`,
+      requestOptions1);
+  if (result.error) {
+    console.log("error");
+  }
+}
+
+export function createSubmissionHasFiles(subId, file) {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const requestOptions = {
+    method: "POST",
+    body: formData,
+    credentials: "include",
+  };
+
+  fetch(Actualadress + `courses/submissions/${subId}/files`,
+      requestOptions).then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => console.error(error));
+}
+
+export async function createUserSubmissionHasFiles(subId, file) {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const requestOptions = {
+    method: "POST",
+    credentials: "include",
+    body: formData,
+  };
+
+  const result = await fetch(Actualadress +
+      `courses/submissions/usersubmissions/${subId}/files`,
+  requestOptions);
+
+  const data = await result.json();
+  console.log(data);
+}
+
+export function editSubmissionById(submissionId, patchObj) {
+  const requestOptions = {
+    method: "PATCH",
+    credentials: "include",
+    body: JSON.stringify(patchObj),
+  };
+
+  fetch(Actualadress + `courses/submissions/${submissionId}`
+      , requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.ok) {
+          console.log("Abgabe erfolgreich bearbeitet.");
+        }
+      })
+      .catch((error) => console.error(error));
+}
+
+export function deleteSubmission(submissionId) {
+  fetch(Actualadress + `courses/submissions/${submissionId}`
+      , {method: "DELETE", credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(submissionId);
+        console.log(data);
+      })
+      .catch((error) => console.error(error));
+}
+
+export async function getAllSubmissions(caller) {
+  const requestOptions = {
+    method: "GET",
+    credentials: "include",
+  };
+
+  const submissionsLists = [];
+
+  const result = await fetch(Actualadress + "users/courses", requestOptions);
+  const courses = await result.json();
+
+  for (const c of courses) {
+    const cid = c.id;
+    const subs = await getSubmissionsFromCourseAsync(cid);
+    submissionsLists.push(...subs);
+  }
+
+  caller.setState(
+      {Submissions: submissionsLists});
+  // getAllUserSubmissions(caller, submissionsLists);
+}
+
+export async function getSubmissionsFromCourseAsync(courseId) {
+  const requestOptions = {
+    method: "GET",
+    credentials: "include",
+  };
+
+  const result = await fetch(Actualadress +
+      `courses/${courseId}/submissions`, requestOptions);
+  const submissions = await result.json();
+  return submissions;
+}
+
+export async function getUserSubmissionsFromSubmission(subId, callback) {
+  const result = await fetch(Actualadress +
+    `courses/submissions/${subId}/usersubmissions`
+  , {method: "GET", credentials: "include"});
+
+  const data = await result.json();
+  callback(data);
+}
+
+export async function createUserSubmission(subData, callback) {
+  const requestOptions = {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify(subData),
+  };
+  const requestOptions2 = {
+    method: "GET",
+    credentials: "include",
+  };
+
+  const check = await fetch(Actualadress +
+    `users/submissions/${subData.id}`
+  , requestOptions2);
+
+  const data2 = await check.json();
+  console.log(data);
+  if (data2 != null) {
+    alert("Bereits eine Nutzerabgabe hochgeladen");
+    return;
+  }
+
+  const result =
+    await fetch(Actualadress +
+      `courses/submissions/${subData.submission_id}/usersubmissions`,
+    requestOptions);
+  const data = await result.json();
+  callback(data);
+}
+
+
+export function gradeUserSubmission(caller, subId, grade) {
+  const requestOptions = {
+    method: "PATCH",
+    credentials: "include",
+    body: JSON.stringify(grade),
+  };
+
+  fetch(Actualadress +
+    `courses/submissions/usersubmissions/${subId}/grade`
+  , requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => console.error(error));
+}
+
+
+export async function getUserSubmission(id, callback) {
+  const requestOptions = {
+    method: "GET",
+    credentials: "include",
+  };
+
+  const result = await fetch(Actualadress +
+    `users/submissions/${id}`
+  , requestOptions);
+
+  const data = await result.json();
+  callback(data);
+}
+
+export async function getAllUserSubmissions(caller, enrolledSubs) {
+  if (enrolledSubs == null || enrolledSubs.length == 0) {
+    console.log("list is null");
+    return;
+  }
+
+  for (const enrolledSub of enrolledSubs) {
+    getSubmissionsFromCourse(caller, enrolledSub.id);
+  }
+}
+
+
+export function getFileFromSubmission(subId, filename) {
+  fetch(Actualadress + `submission/${subId}/files`, {method: "GET",
+    credentials: "include"})
+      .then((result) => {
+        if (result.status != 200) {
+          throw new Error("Bad server response");
+        }
+        return result.blob();
+      })
+      .then((data) => {
+        // console.log(data);
+        const url = window.URL.createObjectURL(data);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = filename;
+        anchor.click();
+
+        window.URL.revokeObjectURL(url);
+        document.removeChild(anchor);
+      })
+      .catch((error) => console.error(error));
+}
+
+export function checkFileFromSubmission(subId) {
+  fetch(Actualadress + `courses/submissions/${subId}/files`,
+      {method: "GET", credentials: "include"})
+      .then((result) => {
+        if (result.status != 200) {
+          throw new Error("Bad server response");
+        }
+        return result.blob();
+      })
+      .then((data) => {
+        console.log(data);
+        return true;
+      });
+  return false;
+}
+
+export function getFileFromUserSubmission(subId, filename) {
+  fetch(Actualadress + `submission/${subId}/files`, {method: "GET",
+    credentials: "include"})
+      .then((result) => {
+        if (result.status != 200) {
+          throw new Error("Bad server response");
+        }
+        return result.blob();
+      })
+      .then((data) => {
+        // console.log(data);
+        const url = window.URL.createObjectURL(data);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = filename;
+        anchor.click();
+
+        window.URL.revokeObjectURL(url);
+        document.removeChild(anchor);
+      })
+      .catch((error) => console.error(error));
+}
+
+export function deleteUserSubmission(submissionId) {
+  fetch(Actualadress + `courses/submissions/usersubmissions/${submissionId}`
+      , {method: "DELETE", credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(submissionId);
+        console.log(data);
+      })
       .catch((error) => console.error(error));
 }
