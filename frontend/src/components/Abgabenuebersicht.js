@@ -6,16 +6,10 @@ import {ShowHeader} from "./Kopfzeile";
 import {
   getSubmissionFromUser,
   getAllSubmissions,
-  getUserSubmissionsFromSubmission,
-  getAllUserSubmissions,
 } from "../api/index";
-import {ShowSubmission} from "./Abgabe";
-
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+import {SubmissionContext} from "./submissions/SubmissionContext";
+import {Submission} from "./submissions/Submission";
+// import {EditContext} from "./submissions/EditContext";
 
 import "../css/Overlay.css";
 import "../css/Abgabenuebersicht.css";
@@ -25,6 +19,7 @@ export class Abgabenuebersicht extends Component {
     super(props);
 
     this.state = {
+      Submissions: [],
       AllAdminSub: [],
       AllEnrolledSub: [],
       AllUserSub: [],
@@ -32,101 +27,37 @@ export class Abgabenuebersicht extends Component {
       UserSubsFromSub: [],
       openUserSubView: false,
     };
-
-    this.toggleOpenUserSubs = this.toggleOpenUserSubs.bind(this);
-  }
-
-  toggleOpenUserSubs() {
-    this.setState({openUserSubView: !this.state.openUserSubView});
-  }
-
-
-  onSubmissionClickCallback(id) {
-    getUserSubmissionsFromSubmission(this, id);
-    this.toggleOpenUserSubs();
   }
 
   componentDidMount() {
     if (this.state.isAdmin) {
       getSubmissionFromUser(this);
     } else {
-      getAllSubmissions(this, this.state.isAdmin);
-      getAllUserSubmissions(this, this.state.AllEnrolledSub);
+      getAllSubmissions(this);
     }
   }
 
 
   render() {
-    const DueSubmissionList = [];
-    if (this.state.AllEnrolledSub != null) {
-      for (const Submission of this.state.AllEnrolledSub) {
-        DueSubmissionList.push(<div>
-          <ShowSubmission
-            id={Submission.id}
-            submissionname={Submission.name}
-            coursename={Submission.coursename}
-            owner={Submission.owner}
-            subject={Submission.subject}
-            created_at={Submission.date}
-            deadline={Submission.deadline}
-            comment={Submission.comment}
-            isAdmin={this.state.isAdmin}
-            callback={this.onSubmissionClickCallback}
-          /></div>);
-      }
-    }
-
-    const SubmittedSubmissionList = [];
-    if (this.state.AllUserSub != null) {
-      for (const Submission of this.state.AllUserSub) {
-        SubmittedSubmissionList.push(<div>
-          <ShowSubmission
-            id={Submission.id}
-            submissionname={Submission.submissionname}
-            coursename={Submission.coursename}
-            owner={Submission.owner}
-            subject={Submission.subject}
-            deadline={Submission.deadline}
-            created_at={Submission.date}
-            comment={Submission.comment}
-            isAdmin={this.state.isAdmin}
-          /></div>);
-      }
-    }
-
-    const EvalSubmissionList = [];
-    if (this.state.AllUserSub != null) {
-      for (const Submission of this.state.AllUserSub) {
-        EvalSubmissionList.push(<div>
-          <ShowSubmission
-            id={Submission.id}
-            submissionname={Submission.submissionname}
-            coursename={Submission.coursename}
-            owner={Submission.owner}
-            subject={Submission.subject}
-            deadline={Submission.deadline}
-            created_at={Submission.date}
-            comment={Submission.comment}
-            isAdmin={this.state.isAdmin}
-          /></div>);
-      }
-    }
-
-    const OwnSubmissionsList = [];
-    if (this.state.AllAdminSub != null) {
-      for (const Submission of this.state.AllAdminSub) {
-        OwnSubmissionsList.push(<div>
-          <ShowSubmission
-            id={Submission.id}
-            submissionname={Submission.submissionname}
-            coursename={Submission.coursename}
-            owner={Submission.owner}
-            subject={Submission.subject}
-            created_at={Submission.created_at}
-            deadline={Submission.deadline}
-            comment={Submission.comment}
-            isAdmin={this.state.isAdmin}
-          /></div>);
+    const SubmissionList = [];
+    if (this.state.Submissions != null) {
+      for (const Sub of this.state.Submissions) {
+        SubmissionList.push(
+            <SubmissionContext isAdmin={this.state.isAdmin}>
+              <Submission submission={
+                {
+                  id: Sub.id,
+                  subname: Sub.name,
+                  coursename: Sub.coursename,
+                  // owner: this.state.Course.CourseOwner.LastName,
+                  createdAt: Sub.date,
+                  deadline: Sub.deadline,
+                }
+              }
+              isAdmin={this.state.CourseAdmin}
+              />
+            </SubmissionContext>,
+        );
       }
     }
 
@@ -139,52 +70,9 @@ export class Abgabenuebersicht extends Component {
               <Col key={1} xs={2} className="ColNav" fluid><ShowNavbar /></Col>
               <Col key={2} xs={10} className="ColContent" fluid>
                 <h1>Abgabenübersicht</h1>
-                <div className="AdminArea">
-                  <button className="btnCreateCourse"
-                    onClick={this.toggleCreateCourse}>
-                    Bearbeiten
-                  </button>
-                </div>
-                <Row key={0} className="Section"
-                  hidden={!this.state.isAdmin}>
-                  <h2>Meine Abgaben</h2>
-                  {OwnSubmissionsList}
-                </Row>
-                <Row key={1} className="Section"
-                  hidden={this.state.isAdmin}>
-                  <h2>Abgaben fällig</h2>
-                  {DueSubmissionList}
-                </Row>
-                <Row key={2} className="Section"
-                  hidden={this.state.isAdmin}>
-                  <h2>Abgegeben</h2>
-                  {SubmittedSubmissionList}
-                </Row>
-                <Row key={3} className="Section"
-                  hidden={this.state.isAdmin}>
-                  <h2>Bewertet</h2>
-                  {EvalSubmissionList}
-                </Row>
+                {SubmissionList}
               </Col>
             </Row>
-
-            <Dialog open={this.state.openUserSubView}
-              onClose={this.toggleOpenUserSubs}
-              className="DialogUserSubsView">
-              <DialogTitle>Nutzerabgaben</DialogTitle>
-              <DialogContent className="DConfirmationContent">
-                <DialogContentText>
-                  <p>Hier finden Sie die Nutzerabgaben</p>
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <button
-                  onClick={this.toggleOpenUserSubs}
-                  className="DialogButton">
-                  Abbrechen</button>
-              </DialogActions>
-            </Dialog>
-
           </Container>
         </div>
         <ShowFooter/>

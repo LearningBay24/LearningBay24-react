@@ -5,10 +5,12 @@ import {useParams} from "react-router-dom";
 import {ShowFooter} from "./Footer";
 import {ShowHeader} from "./Kopfzeile";
 import {ShowSubmission,
-  ShowSubmissionEdit,
-  ShowUserSubmission,
-} from "./Abgabe";
-import {ShowConfirmation} from "./DialogComponent";
+} from "./submissions/Abgabe";
+import {SubmissionContext} from "./submissions/SubmissionContext";
+import {Submission} from "./submissions/Submission";
+import {EditContext} from "./submissions/EditContext";
+import {EditSubmission} from "./submissions/EditSubmission";
+import {getCurrentDateISO} from "../api/helperfunctions";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -23,7 +25,7 @@ import {
   getCourse, updateCourse, getFiles,
   uploadFile, getFileByID, uploadLink,
   getSubmissionsFromCourse,
-  createSubmission, deleteSubmission,
+  createSubmission,
   createExam, registerToExam,
   getExamsFromCourse,
   createAppointment, deleteAppointment,
@@ -44,7 +46,7 @@ export class Kursansicht extends Component {
       // this is temporary example data
       // ______________________________________________________________________
 
-      CourseAdmin: true, // true if active user has adminrights
+      CourseAdmin: false, // true if active user has adminrights
       CourseEdit: false, // true if admin is editing course
       Course: {
 
@@ -130,6 +132,7 @@ export class Kursansicht extends Component {
           updated_at: "",
           graded_at: "",
           deleted_at: "",
+          contains_file: "",
         },
       ],
 
@@ -172,7 +175,6 @@ export class Kursansicht extends Component {
 
       // bools for Dialogs
       OpenAddSubDialog: false,
-      OpenSubDeleteConfirmation: false,
       openUserSubView: false,
     };
 
@@ -180,13 +182,9 @@ export class Kursansicht extends Component {
     this.onFileChange = this.onFileChange.bind(this);
     this.onSaveDescriptionChange = this.onSaveDescriptionChange.bind(this);
     this.onSaveAppointmentChange = this.onSaveAppointmentChange.bind(this);
-    this.onSubmissionEditedCallback =
-      this.onSubmissionEditedCallback.bind(this);
     this.onSubmissionSaveClick = this.onSubmissionSaveClick.bind(this);
     this.toggleAddSubDialog = this.toggleAddSubDialog.bind(this);
     this.addSubmissionHandler = this.addSubmissionHandler.bind(this);
-    this.toggleSubDeleteConfirmation =
-      this.toggleSubDeleteConfirmation.bind(this);
     this.onDeleteAppointment = this.onDeleteAppointment.bind(this);
     this.onSaveExam = this.onSaveExam.bind(this);
     this.toggleOpenUserSubs = this.toggleOpenUserSubs.bind(this);
@@ -300,6 +298,7 @@ export class Kursansicht extends Component {
 
   addSubmissionHandler(event) {
     event.preventDefault();
+    /*
     let subid;
     if (this.state.Submissions == null) {
       subid = 0;
@@ -307,9 +306,10 @@ export class Kursansicht extends Component {
       const subLen = this.state.Submissions.length;
       subid = this.state.Submissions[subLen-1].id + 1;
       console.log(subid);
-    }
+    }*/
+    const currentDate = getCurrentDateISO();
+
     const newSubmission = {
-      id: subid,
       name: event.target.SubName.value,
       deadline: new Date(
           (new Date(event.target.SubDate.value).getTime() +
@@ -319,14 +319,14 @@ export class Kursansicht extends Component {
       visible_from: new Date(
           (new Date(event.target.SubVisDate.value).getTime() +
           3600000 * 2)).toISOString().split(".")[0]+"Z",
-
+      created_at: currentDate,
     };
     console.log(newSubmission);
 
-    this.toggleAddSubDialog();
     const file = event.target.SubFile.files[0];
-
     createSubmission(this, newSubmission, file);
+
+    this.toggleAddSubDialog();
   }
 
   gradeUserSub() {
@@ -338,23 +338,6 @@ export class Kursansicht extends Component {
         this.state.FocusedSubId, gradeObj);
   }
 
-  // called when any Submission is edited
-  onSubmissionEditedCallback(submissionId) {
-    // check if already contained
-    if (this.state.EditedSubmissionIds.length > 0) {
-      for (const id of this.state.EditedSubmissionIds) {
-        if ((id == submissionId)) {
-          return;
-        }
-      }
-      this.setState({EditedSubmissionIds:
-        [...this.state.EditedSubmissionIds, submissionId]});
-    } else {
-      this.setState({EditedSubmissionIds:
-        [...this.state.EditedSubmissionIds, submissionId]});
-    }
-  }
-
   onSubmissionSaveClick() {
     for (const id of this.state.EditedSubmissionIds) {
       console.log(id);
@@ -362,10 +345,6 @@ export class Kursansicht extends Component {
     }
   }
 
-  toggleSubDeleteConfirmation() {
-    this.setState({OpenSubDeleteConfirmation:
-      !this.state.OpenSubDeleteConfirmation});
-  }
 
   userSubCallback(id) {
     this.setState({FocusedSubId: id});
@@ -420,19 +399,49 @@ export class Kursansicht extends Component {
       }
     }
 
+    const Subslist = [];
+    if (this.state.Submissions != null) {
+      for (const Sub of this.state.Submissions) {
+        Subslist.push(
+            <SubmissionContext isAdmin={this.state.CourseAdmin}
+              courseEdit={this.state.CourseEdit}>
+              <Submission submission={
+                {
+                  id: Sub.id,
+                  subname: Sub.name,
+                  coursename: Sub.coursename,
+                  owner: this.state.Course.CourseOwner.LastName,
+                  createdAt: Sub.date,
+                  deadline: Sub.deadline,
+                }
+              }
+              isAdmin={this.state.CourseAdmin}
+              />
+            </SubmissionContext>,
+        );
+      }
+    }
+
     const UserSubslist = [];
     if (this.state.UserSubsFromSub != null) {
       for (const Sub of this.state.UserSubsFromSub) {
-        UserSubslist.push(<ShowUserSubmission
-          id={Sub.id}
-          submissionname={Sub.name}
-          coursename={this.state.CurrentCourse.name}
-          owner={this.state.Course.CourseOwner.LastName}
-          created_at={Sub.date}
-          deadline={Sub.deadline}
-          isAdmin={this.state.CourseAdmin}
-          callback={this.userSubCallback}
-        />);
+        UserSubslist.push(
+            <EditContext isAdmin={this.state.CourseAdmin}
+              courseEdit={this.state.CourseEdit}>
+              <EditSubmission submission={
+                {
+                  id: Sub.id,
+                  subname: Sub.name,
+                  coursename: Sub.coursename,
+                  owner: this.state.Course.CourseOwner.LastName,
+                  createdAt: Sub.date,
+                  deadline: Sub.deadline,
+                }
+              }
+              isAdmin={this.state.CourseAdmin}
+              />
+            </EditContext>,
+        );
       }
     }
 
@@ -483,24 +492,6 @@ export class Kursansicht extends Component {
     EditMaterial.push(<option value="-1">Material hinzufügen</option>);
     for (const Mat of this.state.Course.CourseMaterial) {
       EditMaterial.push(<option value={Mat.id}>{Mat.Name}</option>);
-    }
-
-    const SubmissionEditList = [];
-    if (this.state.Submissions != null) {
-      for (const Submission of this.state.Submissions) {
-        SubmissionEditList.push(
-            <ShowSubmissionEdit
-              id={Submission.id}
-              submissionname={Submission.name}
-              coursename={this.state.CurrentCourse.name}
-              owner={this.state.Course.CourseOwner.LastName}
-              created_at={Submission.date}
-              deadline={Submission.deadline}
-              callback={this.onSubmissionEditedCallback}
-              state={this}
-            />,
-        );
-      }
     }
 
     const EditExam = [];
@@ -613,9 +604,6 @@ export class Kursansicht extends Component {
                   <div className="EditSectionPart">
                     <div className="EditArea">
                       <button className="EditButton"
-                        onClick={this.toggleSubDeleteConfirmation}>
-                        Löschen</button>
-                      <button className="EditButton"
                         onClick={this.onSubmissionSaveClick}>
                         Speichern</button>
                       <button className="EditButton"
@@ -623,6 +611,7 @@ export class Kursansicht extends Component {
                       >Hinzufügen</button>
                     </div>
                     <h2>Abgaben</h2>
+                    {Subslist}
 
                     <div className="CreateSubDialog">
                       <Dialog open={this.state.OpenAddSubDialog}
@@ -684,8 +673,6 @@ export class Kursansicht extends Component {
                         </DialogActions>
                       </Dialog>
                     </div>
-
-                    {SubmissionEditList}
                   </div>
                   <br />
                   <div className="EditSectionPart">
@@ -775,7 +762,7 @@ export class Kursansicht extends Component {
                 <div className="SubmissionSection"
                   hidden={this.state.CourseEdit}>
                   <h2>Abgaben</h2>
-                  {Submissionlist}
+                  {Subslist}
                 </div>
 
                 <div className="ExamSection"
@@ -809,16 +796,6 @@ export class Kursansicht extends Component {
             </Dialog>
 
           </Container>
-          <ShowConfirmation
-            open={this.state.OpenSubDeleteConfirmation}
-            onCloseCallback={this.toggleSubDeleteConfirmation}
-            displayText="Sie löschen Abgabe"
-            onAcceptCallback={() =>{
-              deleteSubmission(this, this.state.CurrentCourse.id,
-                  this.state.FocusedSubId);
-            }
-            }
-            onDeclineCallback={this.toggleSubDeleteConfirmation}/>
         </div>
         <ShowFooter />
       </div>

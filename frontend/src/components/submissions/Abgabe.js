@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
-import {formatDateString} from "../api/helperfunctions";
+import {formatDateString} from "../../api/helperfunctions";
 import {
   createUserSubmission,
-} from "../api/index";
+} from "../../api/index";
 
 export function ShowSubmission(props) {
   const [selectedFile, setSelectedFile] = useState();
