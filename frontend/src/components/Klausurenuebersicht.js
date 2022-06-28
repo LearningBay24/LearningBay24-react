@@ -282,7 +282,7 @@ export class Klausurenuebersicht extends Component {
     if (this.state.ExamRegistered != null) {
       for (const Attendee of this.state.ExamRegistered) {
         if (Attendee.user_id != -1) {
-          examRegisteredList.push(<option value={Attendee.user_id}>
+          examRegisteredList.push(<option value={Attendee.id}>
             {Attendee.title} {Attendee.firstname} {Attendee.surname}
           </option>);
         }
