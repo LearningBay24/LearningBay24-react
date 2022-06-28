@@ -794,7 +794,7 @@ export function getSubmissionsFromCourse(caller, courseId) {
       .catch((error) => console.error(error));
 }
 
-export async function createSubmission(caller, newSub, file) {
+export async function createSubmission(caller, newSub) {
   const courseId = newSub.course_id;
 
   const requestOptions1 = {
@@ -806,12 +806,8 @@ export async function createSubmission(caller, newSub, file) {
   // first upload to 'submissions'
   const result = await fetch(Actualadress + `courses/${courseId}/submissions`,
       requestOptions1);
-
-  const subId = await result.json();
-
-  // then upload to 'submission_has_files'
-  if (file != null) {
-    createSubmissionHasFiles(subId, file);
+  if (result.error) {
+    console.log("error");
   }
 }
 
@@ -844,7 +840,7 @@ export async function createUserSubmissionHasFiles(subId, file) {
   };
 
   const result = await fetch(Actualadress +
-      `/courses/submissions/usersubmissions/${subId}/files`,
+      `courses/submissions/usersubmissions/${subId}/files`,
   requestOptions);
 
   const data = await result.json();
@@ -923,20 +919,34 @@ export async function getUserSubmissionsFromSubmission(subId, callback) {
   callback(data);
 }
 
-export async function createUserSubmission(subData) {
+export async function createUserSubmission(subData, callback) {
   const requestOptions = {
     method: "POST",
     credentials: "include",
     body: JSON.stringify(subData),
   };
+  const requestOptions2 = {
+    method: "GET",
+    credentials: "include",
+  };
+
+  const check = await fetch(Actualadress +
+    `users/submissions/${subData.id}`
+  , requestOptions2);
+
+  const data2 = await check.json();
+  console.log(data);
+  if (data2 != null) {
+    alert("Bereits eine Nutzerabgabe hochgeladen");
+    return;
+  }
 
   const result =
     await fetch(Actualadress +
       `courses/submissions/${subData.submission_id}/usersubmissions`,
     requestOptions);
   const data = await result.json();
-  console.log(data);
-  return data;
+  callback(data);
 }
 
 
@@ -1021,4 +1031,38 @@ export function checkFileFromSubmission(subId) {
         return true;
       });
   return false;
+}
+
+export function getFileFromUserSubmission(subId, filename) {
+  fetch(Actualadress + `submission/${subId}/files`, {method: "GET",
+    credentials: "include"})
+      .then((result) => {
+        if (result.status != 200) {
+          throw new Error("Bad server response");
+        }
+        return result.blob();
+      })
+      .then((data) => {
+        // console.log(data);
+        const url = window.URL.createObjectURL(data);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = filename;
+        anchor.click();
+
+        window.URL.revokeObjectURL(url);
+        document.removeChild(anchor);
+      })
+      .catch((error) => console.error(error));
+}
+
+export function deleteUserSubmission(submissionId) {
+  fetch(Actualadress + `courses/submissions/usersubmissions/${submissionId}`
+      , {method: "DELETE", credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(submissionId);
+        console.log(data);
+      })
+      .catch((error) => console.error(error));
 }

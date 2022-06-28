@@ -46,7 +46,7 @@ export class Kursansicht extends Component {
       // this is temporary example data
       // ______________________________________________________________________
 
-      CourseAdmin: false, // true if active user has adminrights
+      CourseAdmin: true, // true if active user has adminrights
       CourseEdit: false, // true if admin is editing course
       Course: {
 
@@ -298,16 +298,17 @@ export class Kursansicht extends Component {
 
   addSubmissionHandler(event) {
     event.preventDefault();
-    /*
-    let subid;
-    if (this.state.Submissions == null) {
-      subid = 0;
-    } else {
-      const subLen = this.state.Submissions.length;
-      subid = this.state.Submissions[subLen-1].id + 1;
-      console.log(subid);
-    }*/
     const currentDate = getCurrentDateISO();
+    let visDate = new Date(
+        (new Date().getTime() +
+          3600000 * 2)).toISOString().split(".")[0]+"Z";
+
+    if (event.target.SubVisCB.checked) {
+      visDate = new Date(
+          (new Date(event.target.SubVisDate.value).getTime() +
+          3600000 * 2)).toISOString().split(".")[0]+"Z";
+    }
+
 
     const newSubmission = {
       name: event.target.SubName.value,
@@ -316,15 +317,12 @@ export class Kursansicht extends Component {
           3600000 * 2)).toISOString().split(".")[0]+"Z",
       course_id: this.state.CurrentCourse.id,
       max_filesize: "5",
-      visible_from: new Date(
-          (new Date(event.target.SubVisDate.value).getTime() +
-          3600000 * 2)).toISOString().split(".")[0]+"Z",
+      visible_from: visDate,
       created_at: currentDate,
     };
     console.log(newSubmission);
 
-    const file = event.target.SubFile.files[0];
-    createSubmission(this, newSubmission, file);
+    createSubmission(this, newSubmission, null);
 
     this.toggleAddSubDialog();
   }
@@ -646,15 +644,6 @@ export class Kursansicht extends Component {
                                       id="SubVisDate">
                                     </input>
                                   </div>
-                                  <label htmlFor="SubAfterDeadline">
-                                    Abgabe nach Ablauf möglich</label>
-                                  <input type="checkbox"
-                                    id="SubAfterDeadline">
-                                  </input>
-                                  <label htmlFor="SubFile">
-                                    Aufgabenblatt</label>
-                                  <input type="file"
-                                    id="SubFile" accept="application/pdf"/>
                                 </div>
                               </form>
                             </div>

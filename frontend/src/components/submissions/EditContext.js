@@ -3,13 +3,15 @@ import PropTypes from "prop-types";
 import {ShowConfirmation} from "../DialogComponent";
 
 import {
-  deleteSubmission,
+  deleteUserSubmission,
+  getFileFromUserSubmission,
 } from "../../api/index";
 
 import "../../css/Submission.css";
 
 
 export function EditContext(props) {
+  console.log(props);
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   // const [containsFile, setContainsFile] = useState(false);
 
@@ -46,7 +48,10 @@ export function EditContext(props) {
         Bewerten
       </button>
       <button className="SubFileUploadButton"
-        onClick={console.log("Download User file")}>Datei herunterladen</button>
+        onClick={
+          getFileFromUserSubmission(props.children.props.submission.id,
+              props.children.props.submission.name)
+        }>Datei herunterladen</button>
     </div>
   ) : (
     <div className="SubContextButtons">
@@ -80,7 +85,8 @@ export function EditContext(props) {
         }}
         displayText="Sie löschen Abgabe"
         onAcceptCallback={() => {
-          deleteSubmission(props.children.props.submission.id);
+          deleteUserSubmission(props.children.props.submission.id);
+          props.deleteCB();
           setDeleteConfirmation(false);
         }
         }
@@ -94,4 +100,5 @@ export function EditContext(props) {
 EditContext.propTypes = {
   children: PropTypes.any.isRequired,
   isAdmin: PropTypes.bool,
+  deleteCB: PropTypes.func.isRequired,
 };

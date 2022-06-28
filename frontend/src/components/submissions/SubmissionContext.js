@@ -9,7 +9,6 @@ import {
   editSubmissionById,
   deleteSubmission,
   // checkFileFromSubmission,
-  getFileFromSubmission,
   getUserSubmissionsFromSubmission,
   getUserSubmission,
 } from "../../api/index";
@@ -46,9 +45,6 @@ export function SubmissionContext(props) {
   });
   */
 
-  const hochladenOnClick = () => {
-  };
-
   const bearbeitenOnClick = () => {
     if (editMode) {
       // call PATCH to update new data
@@ -62,7 +58,6 @@ export function SubmissionContext(props) {
     }
     setEditMode(!editMode);
   };
-
 
   const löschenOnClick = () => {
     setDeleteConfirmation(true);
@@ -79,11 +74,17 @@ export function SubmissionContext(props) {
     setUserSubs(data);
   };
 
+  const userSubDelete = () => {
+    setUserSub(null);
+  };
+
   const UserSubslist = [];
   if (userSubs != null && userSubs.length > 0) {
     for (const Sub of userSubs) {
       console.log(Sub);
-      UserSubslist.push(<EditContext isAdmin={props.isAdmin}>
+      UserSubslist.push(<EditContext isAdmin={props.isAdmin}
+        deleteCB={userSubDelete}
+      >
         <UserSubmission submission={
           {
             id: Sub.id,
@@ -104,26 +105,30 @@ export function SubmissionContext(props) {
   const userSubAnzeigenOnClick = () => {
     getUserSubmission(
         props.children.props.submission.id, getUserSubCallback);
-    console.log(props.children.props.submission);
 
     setViewUserSubs(!viewUserSubs);
   };
 
+
   const getUserSubCallback = (data) => {
-    if (userSub != null && Object.keys(userSub).length != 0) {
-      setUserSub(<EditContext isAdmin={this.props.isAdmin}>
-        <UserSubmission submission={
-          {
-            id: data.id,
-            subname: data.name,
-            coursename: data.coursename,
-            // owner: this.state.Course.CourseOwner.LastName,
-            createdAt: data.date,
-            deadline: data.deadline,
-          }
+    setUserSub(<EditContext isAdmin={props.isAdmin}
+      deleteCB={userSubDelete}
+    >
+      <UserSubmission submission={
+        {
+          id: data.id,
+          subname: data.name,
+          coursename: data.coursename,
+          // owner: this.state.Course.CourseOwner.LastName,
+          createdAt: data.date,
+          deadline: data.deadline,
         }
-        isAdmin={props.isAdmin}
-        /></EditContext>);
+      }
+      isAdmin={props.isAdmin}
+      /></EditContext>);
+
+    if (data != null) {
+      // get file
     }
   };
 
@@ -142,29 +147,17 @@ export function SubmissionContext(props) {
   );
 
 
-  const displayButtons = (props.courseEdit) ? (
+  const displayButtons = (!props.courseEdit) ? (
     <div className="SubContextButtons">
       <button className="SubButton"
-        onClick={hochladenOnClick}>
-        Hochladen
-      </button>
-      <button className="SubButton"
-        onClick={bearbeitenOnClick}>
-        Bearbeiten
-      </button>
-      <button className="SubButton"
-        onClick={löschenOnClick}>
-        Löschen
+        onClick={userSubAnzeigenOnClick}>
+        Nutzerabgabe anzeigen
       </button>
     </div>
   ) : (
     <div className="SubContextButtons">
       {(props.isAdmin) ? (
         <div>
-          <button className="SubButton"
-            onClick={hochladenOnClick}>
-            Hochladen
-          </button>
           <button className="SubButton"
             onClick={bearbeitenOnClick}>
             Bearbeiten
@@ -213,19 +206,6 @@ export function SubmissionContext(props) {
     );
   };*/
 
-  const showFile = (props.isAdmin) ? (
-      <input className="SubFileInput"
-        type="file" id="fileUpload"></input>
-    ) : (
-      <button className="SubButton"
-        onClick={getFileFromSubmission(
-            props.children.props.submission.id,
-            props.children.props.submission.subname,
-        )}>
-        Aufgabenblatt
-      </button>
-    );
-
   return (
     <div className="SubContext">
       <div className="SubContextChildren">
@@ -233,10 +213,6 @@ export function SubmissionContext(props) {
       </div>
       <div className="SubContextButtonArea">
         {displayButtons}
-
-        <div className="SubContextFileDiv">
-          {showFile}
-        </div>
       </div>
       <div className="UserSubsSection"
         hidden={viewUserSubs}>

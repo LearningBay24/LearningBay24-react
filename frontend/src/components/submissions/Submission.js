@@ -9,9 +9,20 @@ import {
 
 export function Submission(props) {
   // object that contains the submission data
+  // const [fileData, setFileData] = useState();
   const subData = props.submission;
+  let file = null;
+
+  const onFileInputChange = (event) => {
+    file = event.target.files[0];
+  };
+
 
   const hochladenOnClick = (event) => {
+    if (file == null) {
+      alert("Keine Datei angegeben");
+      return;
+    }
     const newSubmission = {
       // id: ...
       name: subData.subname,
@@ -23,17 +34,14 @@ export function Submission(props) {
     };
 
     // create new usersubmission and send to backend
-    createUserSubmission(newSubmission);
-
-    // if file has been chosen, send file
-    if (event.target.files[0] != null) {
-      console.log(event.target.files[0]);
-      handleFileUpload(event.target.files[0]);
-    }
+    createUserSubmission(newSubmission, onCreatedCB);
+    alert("Hochladen erfolgreich");
   };
 
-  const handleFileUpload = (file) => {
-    createUserSubmissionHasFiles(subData.id, file);
+  const onCreatedCB = (id) => {
+    if (file != null) {
+      createUserSubmissionHasFiles(id, file);
+    }
   };
 
   return (
@@ -52,6 +60,7 @@ export function Submission(props) {
         <div className="SubmissionFileSection">
           <input className="SubFileInput"
             type="file" id="fileUpload"
+            onChange={onFileInputChange}
             hidden={props.isAdmin}
           />
           <div className="SubButtonContainer">

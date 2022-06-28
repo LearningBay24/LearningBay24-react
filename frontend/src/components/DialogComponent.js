@@ -23,7 +23,6 @@ export function ShowConfirmation(props) {
           <button
             onClick={() => {
               props.onAcceptCallback();
-              window.location.reload(false);
               props.onCloseCallback();
             }}
             className="DialogButton">
